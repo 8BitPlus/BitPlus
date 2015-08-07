@@ -1,0 +1,5 @@
+# Files in this directory should not be commited to the git tree
+# but this directory should still exist.
+
+*
+!.gitignore
