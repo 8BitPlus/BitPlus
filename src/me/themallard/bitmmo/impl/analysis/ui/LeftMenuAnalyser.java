@@ -1,44 +1,23 @@
 package me.themallard.bitmmo.impl.analysis.ui;
 
-import org.objectweb.asm.tree.AbstractInsnNode;
 import org.objectweb.asm.tree.ClassNode;
-import org.objectweb.asm.tree.LdcInsnNode;
-import org.objectweb.asm.tree.MethodNode;
 
 import me.themallard.bitmmo.api.analysis.Builder;
 import me.themallard.bitmmo.api.analysis.ClassAnalyser;
 import me.themallard.bitmmo.api.analysis.IFieldAnalyser;
 import me.themallard.bitmmo.api.analysis.IMethodAnalyser;
 import me.themallard.bitmmo.api.analysis.SupportedHooks;
+import me.themallard.bitmmo.api.analysis.util.LdcContains;
 
 @SupportedHooks(fields = {}, methods = {})
 public class LeftMenuAnalyser extends ClassAnalyser {
-	private String className;
-
 	public LeftMenuAnalyser() {
 		super("ui/LeftMenuBar");
 	}
 
-	// unique String "You realize you cannot breathe underwater. DEATH!"
-
 	@Override
 	protected boolean matches(ClassNode cn) {
-		if (className == null) {
-			for (MethodNode mn : cn.methods) {
-				for (AbstractInsnNode ain : mn.instructions.toArray()) {
-					if (ain instanceof LdcInsnNode) {
-						if (((LdcInsnNode) ain).cst.toString()
-								.equals("$(UI-MenuInventory)")) {
-							className = cn.name;
-
-							return true;
-						}
-					}
-				}
-			}
-		}
-
-		return false;
+		return LdcContains.ClassContains(cn, "$(UI-MenuInventory)");
 	}
 
 	@Override
