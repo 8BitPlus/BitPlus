@@ -20,7 +20,9 @@ public class MainMenuAnalyser extends ClassAnalyser {
 	private String className;
 
 	public MainMenuAnalyser() {
-		super("MainMenu");
+		// the main menu must go in the HTMud package because this is where
+		// Pulpcore looks for it
+		super("HTMud/MainMenu");
 	}
 
 	@Override
