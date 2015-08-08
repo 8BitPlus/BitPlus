@@ -16,7 +16,7 @@ public class TradeWindowAnalyser extends ClassAnalyser {
 	private String className;
 
 	public TradeWindowAnalyser() {
-		super("TradeWindow");
+		super("ui/TradeWindow");
 	}
 
 	// unique String "You realize you cannot breathe underwater. DEATH!"

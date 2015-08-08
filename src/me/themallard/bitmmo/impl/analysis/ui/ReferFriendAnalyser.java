@@ -16,7 +16,7 @@ public class ReferFriendAnalyser extends ClassAnalyser {
 	private String className;
 
 	public ReferFriendAnalyser() {
-		super("ReferFriend");
+		super("ui/ReferFriend");
 	}
 
 	// unique String "You realize you cannot breathe underwater. DEATH!"

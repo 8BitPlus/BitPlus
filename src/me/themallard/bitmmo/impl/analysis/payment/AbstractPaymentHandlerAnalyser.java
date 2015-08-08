@@ -17,7 +17,7 @@ public abstract class AbstractPaymentHandlerAnalyser extends ClassAnalyser {
 	private String paymentUrl;
 
 	public AbstractPaymentHandlerAnalyser(String name, String paymentUrl) {
-		super(name + "PaymentHandler");
+		super("payment/" + name + "PaymentHandler");
 		this.paymentUrl = paymentUrl;
 	}
 

@@ -16,7 +16,7 @@ public class QuestPanelAnalyser extends ClassAnalyser {
 	private String className;
 
 	public QuestPanelAnalyser() {
-		super("QuestPanel");
+		super("ui/QuestPanel");
 	}
 
 	// unique String "You realize you cannot breathe underwater. DEATH!"

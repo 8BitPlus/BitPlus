@@ -16,7 +16,7 @@ public class InventoryAnalyser extends ClassAnalyser {
 	private String className;
 
 	public InventoryAnalyser() {
-		super("Inventory");
+		super("ui/Inventory");
 	}
 
 	@Override

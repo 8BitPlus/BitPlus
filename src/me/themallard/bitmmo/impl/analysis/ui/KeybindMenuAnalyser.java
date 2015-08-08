@@ -16,7 +16,7 @@ public class KeybindMenuAnalyser extends ClassAnalyser {
 	private String className;
 
 	public KeybindMenuAnalyser() {
-		super("KeybindMenu");
+		super("ui/KeybindMenu");
 	}
 
 	@Override

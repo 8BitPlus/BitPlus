@@ -16,7 +16,7 @@ public class HUDAnalyser extends ClassAnalyser {
 	private String className;
 
 	public HUDAnalyser() {
-		super("HUD");
+		super("ui/HUD");
 	}
 
 	@Override

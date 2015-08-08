@@ -16,7 +16,7 @@ public class ChatWindowAnalyser extends ClassAnalyser {
 	private String className;
 
 	public ChatWindowAnalyser() {
-		super("ChatWindow");
+		super("ui/ChatWindow");
 	}
 
 	// unique String "You realize you cannot breathe underwater. DEATH!"

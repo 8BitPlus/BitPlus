@@ -16,7 +16,7 @@ public class OptionsAnalyser extends ClassAnalyser {
 	private String className;
 
 	public OptionsAnalyser() {
-		super("Options");
+		super("ui/Options");
 	}
 
 	@Override

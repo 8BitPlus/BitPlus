@@ -16,7 +16,7 @@ public class BuildToolsAnalyser extends ClassAnalyser {
 	private String className;
 
 	public BuildToolsAnalyser() {
-		super("BuildTools");
+		super("ui/BuildTools");
 	}
 
 	// unique String "You realize you cannot breathe underwater. DEATH!"

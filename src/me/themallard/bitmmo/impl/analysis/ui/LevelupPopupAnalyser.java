@@ -16,7 +16,7 @@ public class LevelupPopupAnalyser extends ClassAnalyser {
 	private String className;
 
 	public LevelupPopupAnalyser() {
-		super("LevelupPopup");
+		super("ui/LevelupPopup");
 	}
 
 	// unique String "You realize you cannot breathe underwater. DEATH!"

@@ -16,7 +16,7 @@ public class BuyGoldAnalyser extends ClassAnalyser {
 	private String className;
 
 	public BuyGoldAnalyser() {
-		super("QuestWindow");
+		super("ui/QuestWindow");
 	}
 
 	// unique String "You realize you cannot breathe underwater. DEATH!"

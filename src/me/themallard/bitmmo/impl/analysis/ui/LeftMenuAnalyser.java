@@ -16,7 +16,7 @@ public class LeftMenuAnalyser extends ClassAnalyser {
 	private String className;
 
 	public LeftMenuAnalyser() {
-		super("LeftMenuBar");
+		super("ui/LeftMenuBar");
 	}
 
 	// unique String "You realize you cannot breathe underwater. DEATH!"

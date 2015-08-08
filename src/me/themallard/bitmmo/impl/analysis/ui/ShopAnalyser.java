@@ -16,7 +16,7 @@ public class ShopAnalyser extends ClassAnalyser {
 	private String className;
 
 	public ShopAnalyser() {
-		super("Shop");
+		super("ui/Shop");
 	}
 
 	@Override

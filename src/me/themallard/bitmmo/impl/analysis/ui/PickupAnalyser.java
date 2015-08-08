@@ -16,7 +16,7 @@ public class PickupAnalyser extends ClassAnalyser {
 	private String className;
 
 	public PickupAnalyser() {
-		super("Pickup");
+		super("ui/Pickup");
 	}
 
 	// unique String "You realize you cannot breathe underwater. DEATH!"
