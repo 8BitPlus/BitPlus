@@ -1,8 +1,6 @@
 package me.themallard.bitmmo.impl.analysis.ui;
 
-import org.objectweb.asm.tree.AbstractInsnNode;
 import org.objectweb.asm.tree.ClassNode;
-import org.objectweb.asm.tree.LdcInsnNode;
 import org.objectweb.asm.tree.MethodNode;
 
 import me.themallard.bitmmo.api.analysis.Builder;
@@ -10,39 +8,19 @@ import me.themallard.bitmmo.api.analysis.ClassAnalyser;
 import me.themallard.bitmmo.api.analysis.IFieldAnalyser;
 import me.themallard.bitmmo.api.analysis.IMethodAnalyser;
 import me.themallard.bitmmo.api.analysis.SupportedHooks;
+import me.themallard.bitmmo.api.analysis.util.LdcContains;
 
 @SupportedHooks(fields = {}, methods = {})
 public class OptionsAnalyser extends ClassAnalyser {
-	private String className;
-
 	public OptionsAnalyser() {
 		super("ui/Options");
 	}
 
 	@Override
 	protected boolean matches(ClassNode cn) {
-		if (className == null) {
-			boolean closebutton = false;
-			boolean menuoptions = false;
-
-			for (MethodNode mn : cn.methods) {
-				for (AbstractInsnNode ain : mn.instructions.toArray()) {
-					if (ain instanceof LdcInsnNode) {
-						if (((LdcInsnNode) ain).cst.toString().equals("closebutton.png")) {
-							closebutton = true;
-						}
-
-						if (((LdcInsnNode) ain).cst.toString().equals("$(UI-MenuOptions)")) {
-							menuoptions = true;
-						}
-					}
-				}
-			}
-
-			if (closebutton && menuoptions) {
-				className = cn.name;
+		for (MethodNode mn : cn.methods) {
+			if (LdcContains.MethodContains(mn, "closebutton.png") & LdcContains.MethodContains(mn, "$(UI-MenuOptions)"))
 				return true;
-			}
 		}
 
 		return false;

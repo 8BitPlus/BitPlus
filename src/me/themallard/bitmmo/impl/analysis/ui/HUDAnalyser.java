@@ -1,8 +1,6 @@
 package me.themallard.bitmmo.impl.analysis.ui;
 
-import org.objectweb.asm.tree.AbstractInsnNode;
 import org.objectweb.asm.tree.ClassNode;
-import org.objectweb.asm.tree.LdcInsnNode;
 import org.objectweb.asm.tree.MethodNode;
 
 import me.themallard.bitmmo.api.analysis.Builder;
@@ -10,39 +8,19 @@ import me.themallard.bitmmo.api.analysis.ClassAnalyser;
 import me.themallard.bitmmo.api.analysis.IFieldAnalyser;
 import me.themallard.bitmmo.api.analysis.IMethodAnalyser;
 import me.themallard.bitmmo.api.analysis.SupportedHooks;
+import me.themallard.bitmmo.api.analysis.util.LdcContains;
 
 @SupportedHooks(fields = {}, methods = {})
 public class HUDAnalyser extends ClassAnalyser {
-	private String className;
-
 	public HUDAnalyser() {
 		super("ui/HUD");
 	}
 
 	@Override
 	protected boolean matches(ClassNode cn) {
-		if (className == null) {
-			boolean uiactive = false;
-			boolean uidrop = false;
-
-			for (MethodNode mn : cn.methods) {
-				for (AbstractInsnNode ain : mn.instructions.toArray()) {
-					if (ain instanceof LdcInsnNode) {
-						if (((LdcInsnNode) ain).cst.toString().equals("$(UI-Active)")) {
-							uiactive = true;
-						}
-
-						if (((LdcInsnNode) ain).cst.toString().equals("$(UI-Drop)")) {
-							uidrop = true;
-						}
-					}
-				}
-			}
-
-			if (uiactive && uidrop) {
-				className = cn.name;
+		for (MethodNode mn : cn.methods) {
+			if (LdcContains.MethodContains(mn, "$(UI-Active)") & LdcContains.MethodContains(mn, "$(UI-Drop)"))
 				return true;
-			}
 		}
 
 		return false;
