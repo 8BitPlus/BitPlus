@@ -28,7 +28,7 @@ public class LaserAnalyser extends ClassAnalyser {
 		for (MethodNode mn : cn.methods) {
 			if (LdcContains.MethodContains(mn, "TakeSelfDamage")
 					& LdcContains.MethodContains(mn, "PlayerNearbyTriggerObject")
-					& LdcContains.MethodContains(mn, "serverName"))
+					& !LdcContains.MethodContains(mn, "serverName"))
 				return true;
 		}
 

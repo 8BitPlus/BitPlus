@@ -38,7 +38,7 @@ public class MainMenuAnalyser extends ClassAnalyser {
 			List<MethodHook> list = new ArrayList<MethodHook>();
 
 			for (MethodNode mn : cn.methods) {
-				if (LdcContains.ClassContains(cn, "   ___  _ ___ _  _ _  _ ____"))
+				if (LdcContains.MethodContains(mn, "   ___  _ ___ _  _ _  _ ____"))
 					list.add(asMethodHook(mn, "init"));
 			}
 

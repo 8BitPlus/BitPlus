@@ -17,7 +17,7 @@ public class ReferFriendAnalyser extends ClassAnalyser {
 
 	@Override
 	protected boolean matches(ClassNode cn) {
-		return LdcContains.ClassContains(cn, "($Refer-Title)");
+		return LdcContains.ClassContains(cn, "$(Refer-Title)");
 	}
 
 	@Override
