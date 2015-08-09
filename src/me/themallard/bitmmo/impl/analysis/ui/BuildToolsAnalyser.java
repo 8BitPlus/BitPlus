@@ -46,7 +46,7 @@ public class BuildToolsAnalyser extends ClassAnalyser implements Opcodes {
 			for (MethodNode mn : cn.methods) {
 				for (int i = 0; i < mn.instructions.size() - 5; i++) {
 					if (mn.instructions.get(i).opcode() == DUP & mn.instructions.get(i + 1).opcode() == GETFIELD
-							& mn.instructions.get(i + 2).opcode() == BIPUSH
+							&& mn.instructions.get(i + 2).opcode() == BIPUSH
 							&& mn.instructions.get(i + 3).opcode() == ISUB
 							|| mn.instructions.get(i + 3).opcode() == IADD
 									& mn.instructions.get(i + 4).opcode() == PUTFIELD) {
