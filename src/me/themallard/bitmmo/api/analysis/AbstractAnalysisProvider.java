@@ -85,10 +85,15 @@ public abstract class AbstractAnalysisProvider {
 	private void analyse() {
 		Map<String, ClassNode> classNodes = contents.getClassContents().namedMap();
 
-		for (ClassAnalyser a : analysers) {
+		// run class analysers first, and then other analysers
+		// because some of the field/method analysers depend on the results of
+		// class analysers
+
+		for (ClassAnalyser a : analysers)
 			a.preRun(classNodes);
+
+		for (ClassAnalyser a : analysers)
 			a.runSubs();
-		}
 	}
 
 	private void deobfuscate() {
@@ -233,7 +238,7 @@ public abstract class AbstractAnalysisProvider {
 		for (OutputResource or : resourceList) {
 			contents.getResourceContents().add(new JarResource(or.getName(), or.getData()));
 		}
-		
+
 		CompleteJarDumper dumper = new CompleteJarDumper(contents);
 		String name = getRevision().getName();
 		File file = new File("out/" + name + "/refactor_" + name + ".jar");

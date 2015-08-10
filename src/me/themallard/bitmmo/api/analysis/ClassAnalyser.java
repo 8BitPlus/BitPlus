@@ -17,6 +17,7 @@ package me.themallard.bitmmo.api.analysis;
 
 import java.lang.reflect.Modifier;
 import java.util.Map;
+import java.util.stream.Stream;
 
 import org.nullbool.pi.core.hook.api.Constants;
 import org.objectweb.asm.Opcodes;
@@ -25,6 +26,8 @@ import org.objectweb.asm.tree.FieldInsnNode;
 import org.objectweb.asm.tree.FieldNode;
 import org.objectweb.asm.tree.MethodInsnNode;
 import org.objectweb.asm.tree.MethodNode;
+
+import com.sun.xml.internal.ws.org.objectweb.asm.Type;
 
 import me.themallard.bitmmo.api.Context;
 import me.themallard.bitmmo.api.hook.ClassHook;
@@ -204,6 +207,23 @@ public abstract class ClassAnalyser implements Opcodes {
 	public MethodHook asMethodHook(MethodNode m, String realName) {
 		return new MethodHook(foundHook).obfuscated(m.name).refactored(realName).var(Constants.REAL_OWNER, m.owner.name)
 				.var(Constants.DESC, m.desc).var(Constants.STATIC, Boolean.toString(Modifier.isStatic(m.access)));
+	}
+
+	public String getRefactoredName(String original) {
+		AbstractAnalysisProvider provider = Context.current();
+		Stream<ClassAnalyser> stream = provider.getAnalysers().stream();
+		stream = stream.filter(a -> a.foundHook.obfuscated().equals(original));
+		ClassAnalyser a = stream.findFirst().orElse(null);
+		return a != null ? a.foundHook.refactored() : null;
+	}
+
+	public String getRefactoredNameByType(String desc) {
+		String objectname = Type.getType(desc).toString();
+
+		if (objectname.length() < 3)
+			return null;
+
+		return getRefactoredName(objectname.substring(1, objectname.length() - 1));
 	}
 
 	public String getName() {
