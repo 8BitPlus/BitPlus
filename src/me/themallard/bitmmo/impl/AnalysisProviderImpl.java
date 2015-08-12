@@ -59,8 +59,8 @@ public class AnalysisProviderImpl extends AbstractAnalysisProvider {
 				new ReferFriendAnalyser(), new BuyGoldAnalyser(), new ShopAnalyser(), new SFXManagerAnalyser(),
 				new KeybindMenuAnalyser(), new LevelupPopupAnalyser(), new LeftMenuAnalyser(),
 				new BGMDownloaderAnalyser(), new TradeWindowAnalyser(), new BuildToolsAnalyser(),
-				new RectangleAnalyser(), new ChatWindowAnalyser(), new DirectionAnalyser(),
-				new InputHandlerAnalyser() });
+				new RectangleAnalyser(), new ChatWindowAnalyser(), new DirectionAnalyser(), new InputHandlerAnalyser(),
+				new AudioManagerAnalyser() });
 
 		return builder;
 	}
