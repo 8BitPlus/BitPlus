@@ -51,16 +51,15 @@ public class AnalysisProviderImpl extends AbstractAnalysisProvider {
 	protected Builder<ClassAnalyser> registerAnalysers() {
 		Builder<ClassAnalyser> builder = new Builder<ClassAnalyser>();
 
-		builder.addAll(new ClassAnalyser[] { new PlayerAnalyser(), new LaserAnalyser(), new DebugOverlayAnalyser(),
-				new MainMenuAnalyser(), new HUDAnalyser(), new OptionsAnalyser(), new AssetParserAnalyser(),
-				new AmazonPaymentHandlerAnalyser(), new BitcoinPaymentHandlerAnalyser(), new OptionsAnalyser(),
-				new GooglePaymentHandlerAnalyser(), new PickupAnalyser(), new SteamOverlayPaymentHandlerAnalyser(),
-				new HumblePaymentHandlerAnalyser(), new SteamWebPaymentHandlerAnalyser(), new QuestPanelAnalyser(),
-				new ReferFriendAnalyser(), new BuyGoldAnalyser(), new ShopAnalyser(), new SFXManagerAnalyser(),
-				new KeybindMenuAnalyser(), new LevelupPopupAnalyser(), new LeftMenuAnalyser(),
-				new BGMDownloaderAnalyser(), new TradeWindowAnalyser(), new BuildToolsAnalyser(),
-				new RectangleAnalyser(), new ChatWindowAnalyser(), new DirectionAnalyser(), new InputHandlerAnalyser(),
-				new AudioManagerAnalyser() });
+		builder.addAll(new ClassAnalyser[] { new PlayerAnalyser(), new DebugOverlayAnalyser(), new MainMenuAnalyser(),
+				new HUDAnalyser(), new OptionsAnalyser(), new AssetParserAnalyser(), new AmazonPaymentHandlerAnalyser(),
+				new BitcoinPaymentHandlerAnalyser(), new OptionsAnalyser(), new GooglePaymentHandlerAnalyser(),
+				new PickupAnalyser(), new SteamOverlayPaymentHandlerAnalyser(), new HumblePaymentHandlerAnalyser(),
+				new SteamWebPaymentHandlerAnalyser(), new QuestPanelAnalyser(), new ReferFriendAnalyser(),
+				new BuyGoldAnalyser(), new ShopAnalyser(), new SFXManagerAnalyser(), new KeybindMenuAnalyser(),
+				new LevelupPopupAnalyser(), new LeftMenuAnalyser(), new BGMDownloaderAnalyser(),
+				new TradeWindowAnalyser(), new BuildToolsAnalyser(), new RectangleAnalyser(), new ChatWindowAnalyser(),
+				new DirectionAnalyser(), new InputHandlerAnalyser(), new AudioManagerAnalyser() });
 
 		return builder;
 	}
