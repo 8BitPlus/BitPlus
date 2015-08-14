@@ -20,6 +20,7 @@ import java.util.List;
 
 import org.objectweb.asm.tree.ClassNode;
 import org.objectweb.asm.tree.FieldNode;
+import org.objectweb.asm.tree.MethodNode;
 
 import me.themallard.bitmmo.api.analysis.Builder;
 import me.themallard.bitmmo.api.analysis.ClassAnalyser;
@@ -28,8 +29,9 @@ import me.themallard.bitmmo.api.analysis.IMethodAnalyser;
 import me.themallard.bitmmo.api.analysis.SupportedHooks;
 import me.themallard.bitmmo.api.analysis.util.LdcContains;
 import me.themallard.bitmmo.api.hook.FieldHook;
+import me.themallard.bitmmo.api.hook.MethodHook;
 
-@SupportedHooks(fields = { "direction&LD;" }, methods = {})
+@SupportedHooks(fields = { "direction&LD;" }, methods = { "initResources&(II)Z" })
 public class PlayerAnalyser extends ClassAnalyser {
 	public PlayerAnalyser() {
 		super("Player");
@@ -66,8 +68,25 @@ public class PlayerAnalyser extends ClassAnalyser {
 		return new Builder<IFieldAnalyser>().add(new PlayerDirectionAnalyser());
 	}
 
+	public class InitMethodAnalyser implements IMethodAnalyser {
+		@Override
+		public List<MethodHook> find(ClassNode cn) {
+			List<MethodHook> list = new ArrayList<MethodHook>();
+
+			for (MethodNode mn : cn.methods) {
+				if (mn.name.equals("<init>"))
+					continue;
+
+				if (LdcContains.MethodContains(mn, "char-color-overlay.png"))
+					list.add(asMethodHook(mn, "initResources"));
+			}
+
+			return list;
+		}
+	}
+
 	@Override
 	protected Builder<IMethodAnalyser> registerMethodAnalysers() {
-		return null;
+		return new Builder<IMethodAnalyser>().add(new InitMethodAnalyser());
 	}
 }
