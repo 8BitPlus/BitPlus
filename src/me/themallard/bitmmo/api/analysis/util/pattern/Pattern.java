@@ -37,11 +37,29 @@ public class Pattern {
 					break;
 				}
 			}
-			
+
 			if (x)
 				return true;
 		}
 
 		return false;
+	}
+
+	// TODO: Code duplication
+	public int getOffset(InsnList list) {
+		for (int i = 0; i < list.size() - elements.size(); i++) {
+			boolean x = true;
+			for (int j = 0; j < elements.size(); j++) {
+				if (!elements.get(j).matches(list.get(i + j))) {
+					x = false;
+					break;
+				}
+			}
+
+			if (x)
+				return i;
+		}
+
+		return -1;
 	}
 }
