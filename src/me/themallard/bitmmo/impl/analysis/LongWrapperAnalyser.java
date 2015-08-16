@@ -19,6 +19,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.objectweb.asm.tree.ClassNode;
+import org.objectweb.asm.tree.FieldInsnNode;
+import org.objectweb.asm.tree.MethodInsnNode;
 import org.objectweb.asm.tree.MethodNode;
 
 import me.themallard.bitmmo.api.analysis.Builder;
@@ -26,6 +28,10 @@ import me.themallard.bitmmo.api.analysis.ClassAnalyser;
 import me.themallard.bitmmo.api.analysis.IFieldAnalyser;
 import me.themallard.bitmmo.api.analysis.IMethodAnalyser;
 import me.themallard.bitmmo.api.analysis.SupportedHooks;
+import me.themallard.bitmmo.api.analysis.util.pattern.Pattern;
+import me.themallard.bitmmo.api.analysis.util.pattern.PatternBuilder;
+import me.themallard.bitmmo.api.analysis.util.pattern.element.FieldElement;
+import me.themallard.bitmmo.api.analysis.util.pattern.element.MethodElement;
 import me.themallard.bitmmo.api.hook.FieldHook;
 import me.themallard.bitmmo.api.hook.MethodHook;
 
@@ -48,17 +54,13 @@ public class LongWrapperAnalyser extends ClassAnalyser {
 		// invokevirtual hashCode
 		// ireturn
 
-		int patternLength = 4;
+		// TODO: Why does this pattern not work with ireturn on the end?
 
-		for (int i = 0; i < hashCode.instructions.size() - patternLength; i++) {
-			if (hashCode.instructions.get(i + 1).opcode() == GETFIELD
-					&& hashCode.instructions.get(i + 2).opcode() == INVOKESTATIC
-					&& hashCode.instructions.get(i + 3).opcode() == INVOKEVIRTUAL
-					&& hashCode.instructions.get(i + 4).opcode() == IRETURN)
-				return true;
-		}
+		Pattern p = new PatternBuilder().add(new FieldElement(new FieldInsnNode(GETFIELD, null, null, null)),
+				new MethodElement(new MethodInsnNode(INVOKESTATIC, null, "valueOf", null, false)),
+				new MethodElement(new MethodInsnNode(INVOKEVIRTUAL, null, "hashCode", null, false))).build();
 
-		return false;
+		return p.contains(hashCode.instructions);
 	}
 
 	public class ValueFieldAnalyser implements IFieldAnalyser {

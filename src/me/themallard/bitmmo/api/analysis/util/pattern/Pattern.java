@@ -36,8 +36,6 @@ public class Pattern {
 					x = false;
 					break;
 				}
-				
-				System.out.println("pattern index " + j);
 			}
 			
 			if (x)
