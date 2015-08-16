@@ -29,23 +29,9 @@ public class Pattern {
 	}
 
 	public boolean contains(InsnList list) {
-		for (int i = 0; i < list.size() - elements.size(); i++) {
-			boolean x = true;
-			for (int j = 0; j < elements.size(); j++) {
-				if (!elements.get(j).matches(list.get(i + j))) {
-					x = false;
-					break;
-				}
-			}
-
-			if (x)
-				return true;
-		}
-
-		return false;
+		return getOffset(list) != -1;
 	}
 
-	// TODO: Code duplication
 	public int getOffset(InsnList list) {
 		for (int i = 0; i < list.size() - elements.size(); i++) {
 			boolean x = true;

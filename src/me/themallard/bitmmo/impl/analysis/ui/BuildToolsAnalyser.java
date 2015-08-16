@@ -68,8 +68,10 @@ public class BuildToolsAnalyser extends ClassAnalyser implements Opcodes {
 						new FieldElement(new FieldInsnNode(GETFIELD, null, null, null)), new InstructionElement(BIPUSH),
 						new AnyElement(), new FieldElement(new FieldInsnNode(PUTFIELD, null, null, null))).build();
 
-				if (p.contains(mn.instructions)) {
-					if (mn.instructions.get(p.getOffset(mn.instructions) + 3).opcode() == ISUB)
+				int offset = p.getOffset(mn.instructions);
+
+				if (offset != -1) {
+					if (mn.instructions.get(offset + 3).opcode() == ISUB)
 						list.add(asMethodHook(mn, "decrementLock"));
 					else
 						list.add(asMethodHook(mn, "incrementLock"));
