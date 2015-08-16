@@ -28,12 +28,20 @@ public class Pattern {
 		this.elements = elements;
 	}
 
-	public boolean matches(InsnList list) {
+	public boolean contains(InsnList list) {
 		for (int i = 0; i < list.size() - elements.size(); i++) {
+			boolean x = true;
 			for (int j = 0; j < elements.size(); j++) {
-				if (elements.get(j).matches(list.get(i + j)))
-					return true;
+				if (!elements.get(j).matches(list.get(i + j))) {
+					x = false;
+					break;
+				}
+				
+				System.out.println("pattern index " + j);
 			}
+			
+			if (x)
+				return true;
 		}
 
 		return false;
