@@ -13,10 +13,14 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>. */
 
-package me.themallard.bitmmo.api.util;
+package me.themallard.bitmmo.impl;
 
-public class RevisionHelper {
-	public static String getLatestRevision() {
+import me.themallard.bitmmo.api.util.IRevisionHelper;
+
+public class BitRevisionHelper implements IRevisionHelper {
+	@Override
+	public String getLatestRevision() {
+		// TODO: Grab this from the website
 		return "1232";
 	}
 }

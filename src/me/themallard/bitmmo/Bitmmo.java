@@ -18,19 +18,22 @@ package me.themallard.bitmmo;
 import me.themallard.bitmmo.api.Context;
 import me.themallard.bitmmo.api.Revision;
 import me.themallard.bitmmo.api.analysis.AbstractAnalysisProvider;
-import me.themallard.bitmmo.api.util.RevisionHelper;
+import me.themallard.bitmmo.api.util.IRevisionHelper;
 import me.themallard.bitmmo.impl.AnalysisProviderImpl;
+import me.themallard.bitmmo.impl.BitRevisionHelper;
 
 public class Bitmmo {
 	public static void main(String[] args) {
+		IRevisionHelper revisionHelper = new BitRevisionHelper();
+
 		System.out.println("Bit+ Copyright (c) 2015 maaatts\n"
 				+ "This program comes with ABSOLUTELY NO WARRANTY; for details check LICENSE.md.\n"
 				+ "This is free software, and you are welcome to redistribute it under certain conditions.\n");
 
-		System.out.println("Loading 8BitMMO [" + RevisionHelper.getLatestRevision() + "]...");
+		System.out.println("Loading 8BitMMO [" + revisionHelper.getLatestRevision() + "]...");
 
 		try {
-			Revision latest = Revision.create(RevisionHelper.getLatestRevision());
+			Revision latest = Revision.create(revisionHelper.getLatestRevision());
 
 			AbstractAnalysisProvider provider = new AnalysisProviderImpl(latest);
 			Context.bind(provider);
