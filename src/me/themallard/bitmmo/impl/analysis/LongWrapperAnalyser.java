@@ -19,7 +19,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.objectweb.asm.tree.ClassNode;
-import org.objectweb.asm.tree.FieldNode;
+import org.objectweb.asm.tree.FieldInsnNode;
+import org.objectweb.asm.tree.MethodInsnNode;
 import org.objectweb.asm.tree.MethodNode;
 
 import me.themallard.bitmmo.api.analysis.Builder;
@@ -27,37 +28,47 @@ import me.themallard.bitmmo.api.analysis.ClassAnalyser;
 import me.themallard.bitmmo.api.analysis.IFieldAnalyser;
 import me.themallard.bitmmo.api.analysis.IMethodAnalyser;
 import me.themallard.bitmmo.api.analysis.SupportedHooks;
-import me.themallard.bitmmo.api.analysis.util.LdcContains;
+import me.themallard.bitmmo.api.analysis.util.pattern.Pattern;
+import me.themallard.bitmmo.api.analysis.util.pattern.PatternBuilder;
+import me.themallard.bitmmo.api.analysis.util.pattern.element.FieldElement;
+import me.themallard.bitmmo.api.analysis.util.pattern.element.MethodElement;
 import me.themallard.bitmmo.api.hook.FieldHook;
 import me.themallard.bitmmo.api.hook.MethodHook;
 
-@SupportedHooks(fields = { "direction&LD;" }, methods = { "initResources&(II)Z" })
-public class PlayerAnalyser extends ClassAnalyser {
-	public PlayerAnalyser() {
-		super("Player");
+@SupportedHooks(fields = { "value&J" }, methods = { "get&()J" })
+public class LongWrapperAnalyser extends ClassAnalyser {
+	public LongWrapperAnalyser() {
+		super("LongWrapper");
 	}
-
-	// unique String "You realize you cannot breathe underwater. DEATH!"
 
 	@Override
 	protected boolean matches(ClassNode cn) {
-		return LdcContains.ClassContains(cn, "You realize you cannot breathe underwater. DEATH!");
+		MethodNode hashCode = cn.getMethodByName("hashCode");
+
+		if (hashCode == null)
+			return false;
+
+		// aload0
+		// getfield this.a
+		// invokestatic java.lang.Long valueOf
+		// invokevirtual hashCode
+		// ireturn
+
+		// TODO: Why does this pattern not work with ireturn on the end?
+
+		Pattern p = new PatternBuilder().add(new FieldElement(new FieldInsnNode(GETFIELD, null, null, null)),
+				new MethodElement(new MethodInsnNode(INVOKESTATIC, null, "valueOf", null, false)),
+				new MethodElement(new MethodInsnNode(INVOKEVIRTUAL, null, "hashCode", null, false))).build();
+
+		return p.contains(hashCode.instructions);
 	}
 
-	public class PlayerDirectionAnalyser implements IFieldAnalyser {
+	public class ValueFieldAnalyser implements IFieldAnalyser {
 		@Override
 		public List<FieldHook> find(ClassNode cn) {
 			List<FieldHook> list = new ArrayList<FieldHook>();
 
-			for (FieldNode fn : cn.fields) {
-				String refactored = getRefactoredNameByType(fn.desc);
-
-				if (refactored == null)
-					continue;
-
-				if (refactored.equals("Direction"))
-					list.add(asFieldHook(fn, "direction"));
-			}
+			list.add(asFieldHook(cn.fields.get(0), "value"));
 
 			return list;
 		}
@@ -65,20 +76,19 @@ public class PlayerAnalyser extends ClassAnalyser {
 
 	@Override
 	protected Builder<IFieldAnalyser> registerFieldAnalysers() {
-		return new Builder<IFieldAnalyser>().add(new PlayerDirectionAnalyser());
+		return new Builder<IFieldAnalyser>().add(new ValueFieldAnalyser());
 	}
 
-	public class InitMethodAnalyser implements IMethodAnalyser {
+	public class GetMethodAnalyser implements IMethodAnalyser {
 		@Override
 		public List<MethodHook> find(ClassNode cn) {
 			List<MethodHook> list = new ArrayList<MethodHook>();
 
 			for (MethodNode mn : cn.methods) {
-				if (mn.name.equals("<init>"))
+				if (mn.name.equals("hashCode") || mn.name.equals("equals") || mn.name.equals("<init>"))
 					continue;
 
-				if (LdcContains.MethodContains(mn, "char-color-overlay.png"))
-					list.add(asMethodHook(mn, "initResources"));
+				list.add(asMethodHook(mn, "get"));
 			}
 
 			return list;
@@ -87,6 +97,6 @@ public class PlayerAnalyser extends ClassAnalyser {
 
 	@Override
 	protected Builder<IMethodAnalyser> registerMethodAnalysers() {
-		return new Builder<IMethodAnalyser>().add(new InitMethodAnalyser());
+		return new Builder<IMethodAnalyser>().add(new GetMethodAnalyser());
 	}
 }

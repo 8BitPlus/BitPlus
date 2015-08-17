@@ -15,29 +15,28 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>. */
 
 package me.themallard.bitmmo.impl.analysis;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.objectweb.asm.tree.ClassNode;
-import org.objectweb.asm.tree.MethodNode;
 
 import me.themallard.bitmmo.api.analysis.Builder;
 import me.themallard.bitmmo.api.analysis.ClassAnalyser;
 import me.themallard.bitmmo.api.analysis.IFieldAnalyser;
 import me.themallard.bitmmo.api.analysis.IMethodAnalyser;
 import me.themallard.bitmmo.api.analysis.SupportedHooks;
-import me.themallard.bitmmo.api.analysis.util.LdcContains;
-import me.themallard.bitmmo.api.hook.MethodHook;
 
-@SupportedHooks(fields = {}, methods = { "update&(I)V" })
-public class DebugOverlayAnalyser extends ClassAnalyser {
-	public DebugOverlayAnalyser() {
-		super("DebugOverlay");
+@SupportedHooks(fields = {}, methods = {})
+public class InputHandlerAnalyser extends ClassAnalyser {
+
+	public InputHandlerAnalyser() {
+		super("InputHandler");
 	}
 
 	@Override
 	protected boolean matches(ClassNode cn) {
-		return LdcContains.ClassContains(cn, " / Ping: ");
+		return cn.interfaces.contains("java/awt/event/FocusListener")
+				&& cn.interfaces.contains("java/awt/event/KeyListener")
+				&& cn.interfaces.contains("java/awt/event/MouseListener")
+				&& cn.interfaces.contains("java/awt/event/MouseMotionListener")
+				&& cn.interfaces.contains("java/awt/event/MouseWheelListener");
 	}
 
 	@Override
@@ -45,22 +44,9 @@ public class DebugOverlayAnalyser extends ClassAnalyser {
 		return null;
 	}
 
-	public class UpdateMethodAnalyser implements IMethodAnalyser {
-		@Override
-		public List<MethodHook> find(ClassNode cn) {
-			List<MethodHook> list = new ArrayList<MethodHook>();
-
-			for (MethodNode mn : cn.methods) {
-				if (LdcContains.MethodContains(mn, " / Ping: "))
-					list.add(asMethodHook(mn, "update"));
-			}
-
-			return list;
-		}
-	}
-
 	@Override
 	protected Builder<IMethodAnalyser> registerMethodAnalysers() {
-		return new Builder<IMethodAnalyser>().add(new UpdateMethodAnalyser());
+		return null;
 	}
+
 }

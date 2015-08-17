@@ -19,7 +19,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.objectweb.asm.tree.ClassNode;
-import org.objectweb.asm.tree.FieldNode;
 import org.objectweb.asm.tree.MethodNode;
 
 import me.themallard.bitmmo.api.analysis.Builder;
@@ -28,57 +27,35 @@ import me.themallard.bitmmo.api.analysis.IFieldAnalyser;
 import me.themallard.bitmmo.api.analysis.IMethodAnalyser;
 import me.themallard.bitmmo.api.analysis.SupportedHooks;
 import me.themallard.bitmmo.api.analysis.util.LdcContains;
-import me.themallard.bitmmo.api.hook.FieldHook;
 import me.themallard.bitmmo.api.hook.MethodHook;
 
-@SupportedHooks(fields = { "direction&LD;" }, methods = { "initResources&(II)Z" })
-public class PlayerAnalyser extends ClassAnalyser {
-	public PlayerAnalyser() {
-		super("Player");
+@SupportedHooks(fields = {}, methods = { "load&(Ljava/lang/String;)LcR;" })
+public class AudioManagerAnalyser extends ClassAnalyser {
+	public AudioManagerAnalyser() {
+		super("AudioManager");
 	}
-
-	// unique String "You realize you cannot breathe underwater. DEATH!"
 
 	@Override
 	protected boolean matches(ClassNode cn) {
-		return LdcContains.ClassContains(cn, "You realize you cannot breathe underwater. DEATH!");
-	}
-
-	public class PlayerDirectionAnalyser implements IFieldAnalyser {
-		@Override
-		public List<FieldHook> find(ClassNode cn) {
-			List<FieldHook> list = new ArrayList<FieldHook>();
-
-			for (FieldNode fn : cn.fields) {
-				String refactored = getRefactoredNameByType(fn.desc);
-
-				if (refactored == null)
-					continue;
-
-				if (refactored.equals("Direction"))
-					list.add(asFieldHook(fn, "direction"));
-			}
-
-			return list;
-		}
+		return LdcContains.ClassContains(cn, "raw") && LdcContains.ClassContains(cn, ".au")
+				&& LdcContains.ClassContains(cn, ".wav") && LdcContains.ClassContains(cn, ".ogg")
+				&& LdcContains.ClassContains(cn, "pulpcore.sound.JOrbisAdapter");
 	}
 
 	@Override
 	protected Builder<IFieldAnalyser> registerFieldAnalysers() {
-		return new Builder<IFieldAnalyser>().add(new PlayerDirectionAnalyser());
+		return null;
 	}
 
-	public class InitMethodAnalyser implements IMethodAnalyser {
+	public class LoadMethodAnalyser implements IMethodAnalyser {
 		@Override
 		public List<MethodHook> find(ClassNode cn) {
 			List<MethodHook> list = new ArrayList<MethodHook>();
 
 			for (MethodNode mn : cn.methods) {
-				if (mn.name.equals("<init>"))
-					continue;
-
-				if (LdcContains.MethodContains(mn, "char-color-overlay.png"))
-					list.add(asMethodHook(mn, "initResources"));
+				if (LdcContains.MethodContains(mn, ".au") && LdcContains.MethodContains(mn, ".wav")
+						&& LdcContains.MethodContains(mn, ".ogg"))
+					list.add(asMethodHook(mn, "load"));
 			}
 
 			return list;
@@ -87,6 +64,6 @@ public class PlayerAnalyser extends ClassAnalyser {
 
 	@Override
 	protected Builder<IMethodAnalyser> registerMethodAnalysers() {
-		return new Builder<IMethodAnalyser>().add(new InitMethodAnalyser());
+		return new Builder<IMethodAnalyser>().add(new LoadMethodAnalyser());
 	}
 }

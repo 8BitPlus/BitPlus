@@ -25,7 +25,7 @@ public class Bitmmo {
 	public static void main(String[] args) {
 		System.out.println("Bit+ Copyright (c) 2015 maaatts\n"
 				+ "This program comes with ABSOLUTELY NO WARRANTY; for details check LICENSE.md.\n"
-				+ "Tis is free software, and you are welcome to redistribute it under certain conditions.\n");
+				+ "This is free software, and you are welcome to redistribute it under certain conditions.\n");
 
 		System.out.println("Loading 8BitMMO [" + RevisionHelper.getLatestRevision() + "]...");
 
