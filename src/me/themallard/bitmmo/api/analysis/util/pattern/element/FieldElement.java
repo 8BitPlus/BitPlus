@@ -33,6 +33,9 @@ public class FieldElement implements PatternElement {
 		if (insn.opcode() == ain.opcode() && insn.name == null && insn.owner == null && insn.desc == null)
 			return true;
 
+		if (insn.opcode() != ain.opcode())
+			return false;
+
 		FieldInsnNode fin = (FieldInsnNode) ain;
 
 		if (insn.name != null && !fin.name.equals(insn.name))

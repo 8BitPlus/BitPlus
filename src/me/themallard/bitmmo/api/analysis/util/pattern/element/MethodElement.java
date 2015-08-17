@@ -33,6 +33,9 @@ public class MethodElement implements PatternElement {
 		if (insn.opcode() == ain.opcode() && insn.name == null && insn.owner == null)
 			return true;
 
+		if (insn.opcode() != ain.opcode())
+			return false;
+
 		MethodInsnNode min = (MethodInsnNode) ain;
 
 		if (insn.name != null && !min.name.equals(insn.name))
