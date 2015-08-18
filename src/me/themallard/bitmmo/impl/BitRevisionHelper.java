@@ -21,6 +21,6 @@ public class BitRevisionHelper implements IRevisionHelper {
 	@Override
 	public String getLatestRevision() {
 		// TODO: Grab this from the website
-		return "1232";
+		return "1245";
 	}
 }
