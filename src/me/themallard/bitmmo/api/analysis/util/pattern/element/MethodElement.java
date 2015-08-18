@@ -18,9 +18,21 @@ package me.themallard.bitmmo.api.analysis.util.pattern.element;
 import org.objectweb.asm.tree.AbstractInsnNode;
 import org.objectweb.asm.tree.MethodInsnNode;
 
+/**
+ * Matches with a method instruction, provided it has the same parameters.
+ * 
+ * @author mallard
+ * @since 1.0
+ * @see me.themallard.bitmmo.api.analysis.util.pattern.element.PatternElement
+ */
 public class MethodElement implements PatternElement {
 	private final MethodInsnNode insn;
 
+	/**
+	 * Create a new method element
+	 * 
+	 * @param insn Method Node. Use null as wildcard parameter.
+	 */
 	public MethodElement(MethodInsnNode insn) {
 		this.insn = insn;
 	}

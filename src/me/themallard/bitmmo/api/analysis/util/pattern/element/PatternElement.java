@@ -17,6 +17,19 @@ package me.themallard.bitmmo.api.analysis.util.pattern.element;
 
 import org.objectweb.asm.tree.AbstractInsnNode;
 
+/**
+ * Element in an instruction pattern.
+ * 
+ * @author mallard
+ * @since 1.0
+ */
 public interface PatternElement {
+	/**
+	 * Check if an instruction matches a pattern element
+	 * 
+	 * @param ain Instruction to compare with
+	 * @return If the parameter matches the pattern element
+	 * @since 1.0
+	 */
 	public boolean matches(AbstractInsnNode ain);
 }

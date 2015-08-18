@@ -17,6 +17,13 @@ package me.themallard.bitmmo.api.analysis.util.pattern.element;
 
 import org.objectweb.asm.tree.AbstractInsnNode;
 
+/**
+ * Matches with any instruction, a "wildcard" element.
+ * 
+ * @author mallard
+ * @since 1.0
+ * @see me.themallard.bitmmo.api.analysis.util.pattern.element.PatternElement
+ */
 public class AnyElement implements PatternElement {
 	@Override
 	public boolean matches(AbstractInsnNode ain) {

@@ -17,9 +17,21 @@ package me.themallard.bitmmo.api.analysis.util.pattern.element;
 
 import org.objectweb.asm.tree.AbstractInsnNode;
 
+/**
+ * Matches with an instruction, provided the opcode is the same.
+ * 
+ * @author mallard
+ * @since 1.0
+ * @see me.themallard.bitmmo.api.analysis.util.pattern.element.PatternElement
+ */
 public class InstructionElement implements PatternElement {
 	private final int opcode;
 
+	/**
+	 * Create new instruction element
+	 * 
+	 * @param opcode Opcode to match with
+	 */
 	public InstructionElement(int opcode) {
 		this.opcode = opcode;
 	}

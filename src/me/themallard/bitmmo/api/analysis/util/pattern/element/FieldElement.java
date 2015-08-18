@@ -18,9 +18,21 @@ package me.themallard.bitmmo.api.analysis.util.pattern.element;
 import org.objectweb.asm.tree.AbstractInsnNode;
 import org.objectweb.asm.tree.FieldInsnNode;
 
+/**
+ * Matches with a field element, provided it has the right parameters.
+ * 
+ * @author mallard
+ * @since 1.0
+ * @see me.themallard.bitmmo.api.analysis.util.pattern.element.PatternElement
+ */
 public class FieldElement implements PatternElement {
 	private final FieldInsnNode insn;
 
+	/**
+	 * Create a new Field Element.
+	 * 
+	 * @param insn Field Node. Use null as a wildcard parameter.
+	 */
 	public FieldElement(FieldInsnNode insn) {
 		this.insn = insn;
 	}
