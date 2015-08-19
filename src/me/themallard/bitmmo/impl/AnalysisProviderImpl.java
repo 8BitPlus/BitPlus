@@ -19,6 +19,8 @@ import java.io.IOException;
 
 import me.themallard.bitmmo.api.Revision;
 import me.themallard.bitmmo.api.analysis.AbstractAnalysisProvider;
+import me.themallard.bitmmo.api.analysis.AnalysisProviderRegistry;
+import me.themallard.bitmmo.api.analysis.AnalysisProviderRegistry.RegistryEntry;
 import me.themallard.bitmmo.api.analysis.Builder;
 import me.themallard.bitmmo.api.analysis.ClassAnalyser;
 import me.themallard.bitmmo.impl.analysis.*;
@@ -43,6 +45,17 @@ import me.themallard.bitmmo.impl.analysis.ui.ShopAnalyser;
 import me.themallard.bitmmo.impl.analysis.ui.TradeWindowAnalyser;
 
 public class AnalysisProviderImpl extends AbstractAnalysisProvider {
+	private static class Creator extends AnalysisProviderRegistry.ProviderCreator {
+		@Override
+		public AbstractAnalysisProvider create(Revision rev) throws Exception {
+			return new AnalysisProviderImpl(rev);
+		}
+	}
+
+	public static void init() {
+		AnalysisProviderRegistry.register(new RegistryEntry(new Creator()).addFilter(new RevisionFilter(1)));
+	}
+
 	public AnalysisProviderImpl(Revision r) throws IOException {
 		super(r);
 	}

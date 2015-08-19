@@ -18,12 +18,16 @@ package me.themallard.bitmmo;
 import me.themallard.bitmmo.api.Context;
 import me.themallard.bitmmo.api.Revision;
 import me.themallard.bitmmo.api.analysis.AbstractAnalysisProvider;
+import me.themallard.bitmmo.api.analysis.AnalysisProviderRegistry;
 import me.themallard.bitmmo.api.util.IRevisionHelper;
-import me.themallard.bitmmo.impl.AnalysisProviderImpl;
 import me.themallard.bitmmo.impl.BitRevisionHelper;
+import me.themallard.bitmmo.impl.ProviderRegistry;
 
 public class Bitmmo {
 	public static void main(String[] args) {
+		// TODO: Replace this with something nice
+		ProviderRegistry.init();
+
 		IRevisionHelper revisionHelper = new BitRevisionHelper();
 
 		System.out.println("Bit+ Copyright (c) 2015 maaatts\n"
@@ -35,7 +39,7 @@ public class Bitmmo {
 		try {
 			Revision latest = Revision.create(revisionHelper.getLatestRevision());
 
-			AbstractAnalysisProvider provider = new AnalysisProviderImpl(latest);
+			AbstractAnalysisProvider provider = AnalysisProviderRegistry.get(latest).create(latest);
 			Context.bind(provider);
 			provider.run();
 		} catch (Exception e) {

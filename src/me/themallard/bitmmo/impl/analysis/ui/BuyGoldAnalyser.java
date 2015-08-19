@@ -27,12 +27,12 @@ import me.themallard.bitmmo.api.analysis.util.LdcContains;
 @SupportedHooks(fields = {}, methods = {})
 public class BuyGoldAnalyser extends ClassAnalyser {
 	public BuyGoldAnalyser() {
-		super("ui/QuestWindow");
+		super("ui/BuyGold");
 	}
 
 	@Override
 	protected boolean matches(ClassNode cn) {
-		return LdcContains.ClassContains(cn, "$(Refer-Title)");
+		return LdcContains.ClassContains(cn, "Buy Now - Only $9.99");
 	}
 
 	@Override
