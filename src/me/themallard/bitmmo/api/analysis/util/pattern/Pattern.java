@@ -21,17 +21,46 @@ import org.objectweb.asm.tree.InsnList;
 
 import me.themallard.bitmmo.api.analysis.util.pattern.element.PatternElement;
 
+/**
+ * A list of pattern elements used to search in an instruction list.
+ * 
+ * @see org.objectweb.asm.tree.InsnList
+ * @see me.themallard.bitmmo.api.analysis.util.pattern.element.PatternElement
+ * @author mallard
+ * @since 1.0
+ */
 public class Pattern {
 	final List<PatternElement> elements;
 
+	/**
+	 * Create a new pattern
+	 * 
+	 * @param elements List of pattern elements
+	 * @see me.themallard.bitmmo.api.analysis.util.pattern.PatternBuilder
+	 * @since 1.0
+	 */
 	public Pattern(List<PatternElement> elements) {
 		this.elements = elements;
 	}
 
+	/**
+	 * Check if a list contains this pattern.
+	 * 
+	 * @param list List to search
+	 * @return If the list contains this pattern
+	 * @since 1.0
+	 */
 	public boolean contains(InsnList list) {
 		return getOffset(list) != -1;
 	}
 
+	/**
+	 * Find the position of this pattern in an instruction list
+	 * 
+	 * @param list List to search
+	 * @return Offset, or -1 if not found
+	 * @since 1.0
+	 */
 	public int getOffset(InsnList list) {
 		for (int i = 0; i < list.size() - elements.size(); i++) {
 			boolean x = true;

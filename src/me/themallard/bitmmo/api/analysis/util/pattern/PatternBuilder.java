@@ -21,28 +21,66 @@ import java.util.List;
 
 import me.themallard.bitmmo.api.analysis.util.pattern.element.PatternElement;
 
+/**
+ * Easily create a pattern
+ * 
+ * @author mallard
+ * @since 1.0
+ * @see me.themallard.bitmmo.api.analysis.util.pattern.Pattern
+ */
 public class PatternBuilder {
 	private List<PatternElement> x;
 
+	/**
+	 * Create an empty pattern builder.
+	 * @since 1.0
+	 */
 	public PatternBuilder() {
 		x = new ArrayList<PatternElement>();
 	}
 
+	/**
+	 * Add a pattern element
+	 * 
+	 * @param e Pattern element to add
+	 * @return this, to chain multiple calls
+	 * @since 1.0
+	 */
 	public PatternBuilder add(PatternElement e) {
 		x.add(e);
 		return this;
 	}
 
+	/**
+	 * Add multiple pattern elements
+	 * 
+	 * @param e List of elements to add
+	 * @return this, to chain multiple calls
+	 * @since 1.0
+	 */
 	public PatternBuilder add(List<PatternElement> e) {
 		x.addAll(e);
 		return this;
 	}
 
+	/**
+	 * Add multiple pattern elements
+	 * 
+	 * @param e Array of pattern elements to add
+	 * @return this, to chain multiple calls
+	 * @since 1.0
+	 */
 	public PatternBuilder add(PatternElement... e) {
 		add(Arrays.asList(e));
 		return this;
 	}
 
+	/**
+	 * Generate a pattern
+	 * 
+	 * @return New pattern
+	 * @since 1.0
+	 */
 	public Pattern build() {
 		return new Pattern(x);
 	}
