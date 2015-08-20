@@ -13,7 +13,7 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>. */
 
-package me.themallard.bitmmo.impl;
+package me.themallard.bitmmo.impl.provider;
 
 import java.io.IOException;
 
@@ -23,6 +23,7 @@ import me.themallard.bitmmo.api.analysis.AnalysisProviderRegistry;
 import me.themallard.bitmmo.api.analysis.AnalysisProviderRegistry.RegistryEntry;
 import me.themallard.bitmmo.api.analysis.Builder;
 import me.themallard.bitmmo.api.analysis.ClassAnalyser;
+import me.themallard.bitmmo.impl.RevisionFilter;
 import me.themallard.bitmmo.impl.analysis.*;
 import me.themallard.bitmmo.impl.analysis.payment.AmazonPaymentHandlerAnalyser;
 import me.themallard.bitmmo.impl.analysis.payment.BitcoinPaymentHandlerAnalyser;
