@@ -29,7 +29,7 @@ import me.themallard.bitmmo.api.analysis.SupportedHooks;
 import me.themallard.bitmmo.api.analysis.util.LdcContains;
 import me.themallard.bitmmo.api.hook.MethodHook;
 
-@SupportedHooks(fields = {}, methods = { "update&(I)V" })
+@SupportedHooks(fields = {}, methods = { "update&(I)V", "init&()V" })
 public class DebugOverlayAnalyser extends ClassAnalyser {
 	public DebugOverlayAnalyser() {
 		super("DebugOverlay");
@@ -59,8 +59,22 @@ public class DebugOverlayAnalyser extends ClassAnalyser {
 		}
 	}
 
+	public class InitMethodAnalyser implements IMethodAnalyser {
+		@Override
+		public List<MethodHook> find(ClassNode cn) {
+			List<MethodHook> list = new ArrayList<MethodHook>();
+
+			for (MethodNode mn : cn.methods) {
+				if (LdcContains.MethodContains(mn, "Stats go here."))
+					list.add(asMethodHook(mn, "init"));
+			}
+
+			return list;
+		}
+	}
+
 	@Override
 	protected Builder<IMethodAnalyser> registerMethodAnalysers() {
-		return new Builder<IMethodAnalyser>().add(new UpdateMethodAnalyser());
+		return new Builder<IMethodAnalyser>().addAll(new UpdateMethodAnalyser(), new InitMethodAnalyser());
 	}
 }
