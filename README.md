@@ -1,6 +1,7 @@
 # Bit+
 
-//**TODO**: write this
+### Project Goals
+Wrapper for 8BitMMO to allow users to write their own scripts and extensions to the game.
 
 ### Credits
 * [@maaatts](https://github.com/maaatts)
