@@ -15,6 +15,12 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>. */
 
 package me.themallard.bitmmo.api.util;
 
+/**
+ * Filter objects
+ * 
+ * @author mallard
+ * @since 1.0
+ */
 public abstract interface Filter<T> {
 	public static final Filter<Object> ACCEPT_ALL = new Filter<Object>() {
 		@Override
@@ -23,10 +29,21 @@ public abstract interface Filter<T> {
 		}
 	};
 
+	/**
+	 * Accept all objects.
+	 * 
+	 * @return New filter that will accept everything.
+	 */
 	@SuppressWarnings("unchecked")
 	public static <T> Filter<T> acceptAll() {
 		return (Filter<T>) ACCEPT_ALL;
 	}
 
+	/**
+	 * Check if filter will allow an object.
+	 * 
+	 * @param t Object to check
+	 * @return If filter will allow
+	 */
 	public abstract boolean accept(T t);
 }
