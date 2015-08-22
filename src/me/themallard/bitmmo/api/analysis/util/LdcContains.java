@@ -21,7 +21,21 @@ import org.objectweb.asm.tree.InsnList;
 import org.objectweb.asm.tree.LdcInsnNode;
 import org.objectweb.asm.tree.MethodNode;
 
+/**
+ * Helper methods to see if items contain an Ldc with a specific string.
+ * 
+ * @author mallard
+ * @since 1.0
+ */
 public class LdcContains {
+	/**
+	 * Check if an instruction contains a string.
+	 * 
+	 * @param ain Instruction to check
+	 * @param s String to check
+	 * @return If the instruction contains the string
+	 * @since 1.0
+	 */
 	public static boolean InstructionContains(AbstractInsnNode ain, String s) {
 		if (!(ain instanceof LdcInsnNode))
 			return false;
@@ -31,6 +45,14 @@ public class LdcContains {
 		return ldc.cst.toString().contains(s);
 	}
 
+	/**
+	 * Check if an instruction list contains a string
+	 * 
+	 * @param il Instruction list to check
+	 * @param s String to check
+	 * @return If the instruction list contains the string
+	 * @since 1.0
+	 */
 	public static boolean ListContains(InsnList il, String s) {
 		for (AbstractInsnNode ain : il.toArray())
 			if (InstructionContains(ain, s))
@@ -39,10 +61,26 @@ public class LdcContains {
 		return false;
 	}
 
+	/**
+	 * Check if a method contains a string
+	 * 
+	 * @param mn Method to check
+	 * @param s String to check
+	 * @return If the method contains the string
+	 * @since 1.0
+	 */
 	public static boolean MethodContains(MethodNode mn, String s) {
 		return ListContains(mn.instructions, s);
 	}
 
+	/**
+	 * Check if a class contains a string
+	 * 
+	 * @param cn Class to check
+	 * @param s String to check
+	 * @return If the class contains the string
+	 * @since 1.0
+	 */
 	public static boolean ClassContains(ClassNode cn, String s) {
 		for (MethodNode mn : cn.methods)
 			if (MethodContains(mn, s))
