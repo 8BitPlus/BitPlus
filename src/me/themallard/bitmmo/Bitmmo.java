@@ -21,7 +21,7 @@ import me.themallard.bitmmo.api.analysis.AbstractAnalysisProvider;
 import me.themallard.bitmmo.api.analysis.AnalysisProviderRegistry;
 import me.themallard.bitmmo.api.util.IRevisionHelper;
 import me.themallard.bitmmo.impl.BitRevisionHelper;
-import me.themallard.bitmmo.impl.provider.ProviderRegistry;
+import me.themallard.bitmmo.impl.analysis.provider.ProviderRegistry;
 
 public class Bitmmo {
 	public static void main(String[] args) {
