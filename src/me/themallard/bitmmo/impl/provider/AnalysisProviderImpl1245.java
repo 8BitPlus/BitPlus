@@ -25,6 +25,7 @@ import me.themallard.bitmmo.api.analysis.Builder;
 import me.themallard.bitmmo.api.analysis.ClassAnalyser;
 import me.themallard.bitmmo.api.util.Filter;
 import me.themallard.bitmmo.impl.RevisionFilter;
+import me.themallard.bitmmo.impl.analysis.DirectionAnalyser;
 import me.themallard.bitmmo.impl.analysis.payment.GooglePaymentHandlerAnalyser;
 
 public class AnalysisProviderImpl1245 extends AnalysisProviderImpl {
@@ -51,7 +52,7 @@ public class AnalysisProviderImpl1245 extends AnalysisProviderImpl {
 		return super.registerAnalysers().remove(new Filter<ClassAnalyser>() {
 			@Override
 			public boolean accept(ClassAnalyser t) {
-				return t.getName().equals(new GooglePaymentHandlerAnalyser().getName());
+				return t.getName().equals(new GooglePaymentHandlerAnalyser().getName()) || t.getName().equals(new DirectionAnalyser().getName());
 			}
 		});
 	}
