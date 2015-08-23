@@ -29,13 +29,13 @@ import me.themallard.bitmmo.api.analysis.util.pattern.PatternBuilder;
 import me.themallard.bitmmo.api.analysis.util.pattern.element.*;
 
 @SupportedHooks(fields = {}, methods = {})
-public class DamageManagerAnalyser extends ClassAnalyser {
+public class LaserWeapon extends ClassAnalyser {
 	private static final Pattern damagePattern = new PatternBuilder().add(new InstructionElement(INVOKEVIRTUAL),
 			new LdcElement(new LdcInsnNode("TakeSelfDamage")), new InstructionElement(INVOKEVIRTUAL),
 			new InstructionElement(POP), new InstructionElement(INVOKESTATIC)).build();
 
-	public DamageManagerAnalyser() {
-		super("DamageManager");
+	public LaserWeapon() {
+		super("LaserWeapon");
 	}
 
 	@Override

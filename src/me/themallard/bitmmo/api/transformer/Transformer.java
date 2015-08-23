@@ -19,7 +19,12 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Stream;
 
+import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.tree.ClassNode;
+import org.objectweb.asm.tree.FieldNode;
+import org.objectweb.asm.tree.MethodNode;
+
+import com.sun.xml.internal.ws.org.objectweb.asm.Type;
 
 import me.themallard.bitmmo.api.Context;
 import me.themallard.bitmmo.api.analysis.AbstractAnalysisProvider;
@@ -47,19 +52,32 @@ public abstract class Transformer {
 	public void addFilter(Filter<ClassNode> filter) {
 		filters.add(filter);
 	}
-	
+
 	public abstract void run(ClassNode cn);
 
 	public String getName() {
 		return this.name;
 	}
-	
+
 	// utils
-	public String getRefactoredName(String original) {
+	protected final String getRefactoredName(String original) {
 		AbstractAnalysisProvider provider = Context.current();
 		Stream<ClassAnalyser> stream = provider.getAnalysers().stream();
 		stream = stream.filter(a -> a.getFoundHook().obfuscated().equals(original));
 		ClassAnalyser a = stream.findFirst().orElse(null);
 		return a != null ? a.getFoundHook().refactored() : null;
+	}
+
+	protected final void addInterface(ClassNode node, String iface) {
+		node.interfaces.add(iface);
+	}
+
+	protected final void addGetter(ClassNode node, FieldNode field) {
+		MethodNode mn = new MethodNode(node, Opcodes.ACC_PUBLIC, field.name, "()" + field.desc, null, null);
+		mn.visitVarInsn(Opcodes.ALOAD, 0);
+		mn.visitFieldInsn(Opcodes.GETFIELD, node.name, field.name, field.desc);
+		mn.visitInsn(Type.getType(field.desc).getOpcode(Opcodes.IRETURN));
+		mn.visitMaxs(0, 0);
+		node.methods.add(mn);
 	}
 }
