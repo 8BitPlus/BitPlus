@@ -66,7 +66,7 @@ public abstract class AbstractAnalysisProvider {
 		this.resourceList = revision.parseResources();
 	}
 
-	public void run() {
+	public Map<String, ClassNode> run() {
 		classTree = new ClassTree(contents.getClassContents());
 		classTree.output();
 
@@ -74,7 +74,11 @@ public abstract class AbstractAnalysisProvider {
 
 		analysers = registerAnalysers().asList();
 		analyse();
-
+		
+		return contents.getClassContents().namedMap();
+	}
+	
+	public void dump() {
 		HookMap hm = OutputLogger.output();
 
 		dumpJar(hm);

@@ -19,9 +19,11 @@ import me.themallard.bitmmo.api.Context;
 import me.themallard.bitmmo.api.Revision;
 import me.themallard.bitmmo.api.analysis.AbstractAnalysisProvider;
 import me.themallard.bitmmo.api.analysis.AnalysisProviderRegistry;
+import me.themallard.bitmmo.api.transformer.AbstractTransformerRegistry;
 import me.themallard.bitmmo.api.util.IRevisionHelper;
 import me.themallard.bitmmo.impl.BitRevisionHelper;
 import me.themallard.bitmmo.impl.analysis.provider.ProviderRegistry;
+import me.themallard.bitmmo.impl.transformer.TransformerRegistryImpl;
 
 public class Bitmmo {
 	public static void main(String[] args) {
@@ -39,9 +41,11 @@ public class Bitmmo {
 		try {
 			Revision latest = Revision.create(revisionHelper.getLatestRevision());
 
-			AbstractAnalysisProvider provider = AnalysisProviderRegistry.get(latest).create(latest);
-			Context.bind(provider);
-			provider.run();
+			AbstractAnalysisProvider analysis = AnalysisProviderRegistry.get(latest).create(latest);
+			Context.bind(analysis);
+			AbstractTransformerRegistry transformer = new TransformerRegistryImpl();
+			transformer.run(analysis.run());
+			analysis.dump();
 		} catch (Exception e) {
 			e.printStackTrace();
 			System.exit(-1);
