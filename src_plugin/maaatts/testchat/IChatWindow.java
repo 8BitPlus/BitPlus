@@ -15,15 +15,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>. */
 
 package maaatts.testchat;
 
-public class ChatInjector {
-	public static void onChatMessage(IChatWindow i, String x) {
-		System.out.println("send " + x);
-	}
-
-	public static void onReceiveMessage(IChatWindow i, String message) {
-		System.out.println("recv " + message);
-		
-		if (message.contains("!test"))
-			i.sendChatMessage("This is a chatbot test message.");
-	}
+public interface IChatWindow {
+	public void sendChatMessage(String param);
 }

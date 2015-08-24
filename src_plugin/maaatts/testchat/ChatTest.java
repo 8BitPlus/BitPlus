@@ -16,6 +16,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>. */
 package maaatts.testchat;
 
 import org.nullbool.api.util.ClassStructure;
+import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.tree.ClassNode;
 import org.objectweb.asm.tree.InsnList;
@@ -44,10 +45,18 @@ public class ChatTest extends SimplePlugin implements Opcodes {
 		});
 
 		registerDependency(ClassStructure.create(ChatInjector.class.getResourceAsStream("ChatInjector.class")));
+		registerDependency(ClassStructure.create(IChatWindow.class.getResourceAsStream("IChatWindow.class")));
 	}
 
 	@Override
 	public void run(ClassNode cn) {
+		hookSendMessage(cn);
+		hookRecieveMessage(cn);
+		createSendMessage(cn);
+		addInterface(cn, "maaatts/testchat/IChatWindow");
+	}
+
+	private void hookSendMessage(ClassNode cn) {
 		Pattern p = new PatternBuilder().add(new InstructionElement(INVOKESTATIC), new AnyElement(),
 				new LdcElement(new LdcInsnNode("Chat")), new InstructionElement(INVOKEVIRTUAL)).build();
 
@@ -55,17 +64,98 @@ public class ChatTest extends SimplePlugin implements Opcodes {
 			if (!p.contains(mn.instructions))
 				continue;
 
-			System.out.println("pattern found" + mn.name);
-
 			int offset = p.getOffset(mn.instructions) + 4;
 
 			InsnList inject = new InsnList();
+			inject.add(new VarInsnNode(ALOAD, 0));
 			inject.add(new VarInsnNode(ALOAD, 2));
 			inject.add(new MethodInsnNode(INVOKESTATIC, "maaatts/testchat/ChatInjector", "onChatMessage",
-					"(Ljava/lang/String;)V", false));
+					"(Lmaaatts/testchat/IChatWindow;Ljava/lang/String;)V", false));
 
 			mn.instructions.insert(mn.instructions.get(offset), inject);
 		}
 	}
 
+	private void hookRecieveMessage(ClassNode cn) {
+		Pattern p = new PatternBuilder().add(new InstructionElement(DUP), new InstructionElement(INVOKESPECIAL),
+				new LdcElement(new LdcInsnNode("\n"))).build();
+
+		for (MethodNode mn : cn.methods) {
+			if (!p.contains(mn.instructions))
+				continue;
+
+			int offset = p.getOffset(mn.instructions);
+
+			MethodInsnNode getMsgInsn = (MethodInsnNode) mn.instructions.get(offset + 5);
+
+			InsnList inject = new InsnList();
+			inject.add(new VarInsnNode(ALOAD, 0));
+			inject.add(new VarInsnNode(ALOAD, 1));
+			inject.add(new MethodInsnNode(INVOKEVIRTUAL, getMsgInsn.owner, getMsgInsn.name, "()Ljava/lang/String;",
+					false));
+			inject.add(new MethodInsnNode(INVOKESTATIC, "maaatts/testchat/ChatInjector", "onReceiveMessage",
+					"(Lmaaatts/testchat/IChatWindow;Ljava/lang/String;)V", false));
+
+			mn.instructions.insertBefore(mn.instructions.get(offset), inject);
+		}
+	}
+
+	// too lazy to deobfuscate all network/chat stuff, use info from method
+	// calls to create new send message function
+	private void createSendMessage(ClassNode cn) {
+		Pattern p = new PatternBuilder().add(new InstructionElement(INVOKESTATIC), new AnyElement(),
+				new LdcElement(new LdcInsnNode("Chat")), new InstructionElement(INVOKEVIRTUAL)).build();
+
+		MethodInsnNode newBuilder = null;
+		MethodInsnNode setChatText = null;
+		MethodInsnNode ebola1 = null;
+		MethodInsnNode ebola2 = null;
+		MethodInsnNode ebola3 = null;
+		MethodInsnNode ebola4 = null;
+		MethodInsnNode ebola5 = null;
+		MethodInsnNode ebola6 = null;
+		MethodInsnNode ebola7 = null;
+
+		for (MethodNode mn : cn.methods) {
+			if (!p.contains(mn.instructions))
+				continue;
+
+			int offset = p.getOffset(mn.instructions);
+
+			newBuilder = (MethodInsnNode) mn.instructions.get(offset - 9); // newbuilder
+			// then var insn of parameter, ldc or w/e
+			setChatText = (MethodInsnNode) mn.instructions.get(offset - 7); // setchattext
+			ebola1 = (MethodInsnNode) mn.instructions.get(offset - 6); // U a
+			ebola2 = (MethodInsnNode) mn.instructions.get(offset - 5); // U p
+			ebola3 = (MethodInsnNode) mn.instructions.get(offset - 4); // Player
+																		// r
+			ebola4 = (MethodInsnNode) mn.instructions.get(offset - 3); // setMapID
+			ebola5 = (MethodInsnNode) mn.instructions.get(offset - 2); // build
+			// store that crap
+			ebola6 = (MethodInsnNode) mn.instructions.get(offset); // i e
+			// load crap again
+			// LDC "Chat"
+			ebola7 = (MethodInsnNode) mn.instructions.get(offset + 3); // i a
+		}
+
+		{
+			MethodVisitor mv = cn.visitMethod(ACC_PUBLIC, "sendChatMessage", "(Ljava/lang/String;)V", null, null);
+			mv.visitMethodInsn(INVOKESTATIC, newBuilder.owner, newBuilder.name, newBuilder.desc, newBuilder.itf);
+			mv.visitVarInsn(ALOAD, 1);
+			mv.visitMethodInsn(INVOKEVIRTUAL, setChatText.owner, setChatText.name, setChatText.desc, setChatText.itf);
+			mv.visitMethodInsn(INVOKESTATIC, ebola1.owner, ebola1.name, ebola1.desc, ebola1.itf);
+			mv.visitMethodInsn(INVOKEVIRTUAL, ebola2.owner, ebola2.name, ebola2.desc, ebola2.itf);
+			mv.visitMethodInsn(INVOKEVIRTUAL, ebola3.owner, ebola3.name, ebola3.desc, ebola3.itf);
+			mv.visitMethodInsn(INVOKEVIRTUAL, ebola4.owner, ebola4.name, ebola4.desc, ebola4.itf);
+			mv.visitMethodInsn(INVOKEVIRTUAL, ebola5.owner, ebola5.name, ebola5.desc, ebola5.itf);
+			mv.visitVarInsn(ASTORE, 2);
+			mv.visitMethodInsn(INVOKESTATIC, ebola6.owner, ebola6.name, ebola6.desc, ebola6.itf);
+			mv.visitVarInsn(ALOAD, 2);
+			mv.visitLdcInsn("Chat");
+			mv.visitMethodInsn(INVOKEVIRTUAL, ebola7.owner, ebola7.name, ebola7.desc, ebola7.itf);
+			mv.visitInsn(RETURN);
+			mv.visitMaxs(2, 2);
+			mv.visitEnd();
+		}
+	}
 }
