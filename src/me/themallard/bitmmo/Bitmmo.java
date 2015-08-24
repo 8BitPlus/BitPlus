@@ -41,13 +41,14 @@ public class Bitmmo {
 
 		try {
 			Revision latest = Revision.create(revisionHelper.getLatestRevision());
-			
+
 			PluginLoader pl = new PluginLoader();
 
 			AbstractAnalysisProvider analysis = AnalysisProviderRegistry.get(latest).create(latest);
 			Context.bind(analysis);
 			AbstractTransformerRegistry transformer = new TransformerRegistryImpl();
 			pl.run(transformer.run(analysis.run()));
+			analysis.getClassNodes().putAll(pl.getDependencies());
 			analysis.dump();
 		} catch (Exception e) {
 			e.printStackTrace();

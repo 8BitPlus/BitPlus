@@ -13,26 +13,10 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>. */
 
-package me.themallard.bitmmo.impl.plugin;
+package maaatts.testchat;
 
-import org.nullbool.api.util.NodeTable;
-import org.objectweb.asm.tree.ClassNode;
-
-import me.themallard.bitmmo.api.transformer.Transformer;
-
-public abstract class SimplePlugin extends Transformer {
-	private NodeTable<ClassNode> deps;
-
-	public SimplePlugin(String name) {
-		super(name);
-		deps = new NodeTable<ClassNode>();
-	}
-
-	protected final void registerDependency(ClassNode cn) {
-		deps.put(cn);
-	}
-
-	public final NodeTable<ClassNode> getDependencies() {
-		return this.deps;
+public class ChatInjector {
+	public static void onChatMessage(String x) {
+		System.out.println(x);
 	}
 }

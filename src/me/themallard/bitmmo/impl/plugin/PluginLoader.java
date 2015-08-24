@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import org.nullbool.api.util.NodeTable;
 import org.objectweb.asm.tree.ClassNode;
 
 import eu.infomas.annotation.AnnotationDetector;
@@ -44,6 +45,16 @@ public class PluginLoader {
 					t.run(cn);
 			}
 		}
+	}
+
+	public NodeTable<ClassNode> getDependencies() {
+		NodeTable<ClassNode> ret = new NodeTable<ClassNode>();
+
+		for (SimplePlugin p : plugins) {
+			ret.putAll(p.getDependencies());
+		}
+
+		return ret;
 	}
 
 	private List<SimplePlugin> getPlugins() {

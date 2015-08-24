@@ -13,4 +13,8 @@ public class NodeTable<T extends ClassNode> extends HashMap<String, T> {
 			return super.get(((ClassNode) key).name);
 		return super.get(key);
 	}
+
+	public T put(T value) {
+		return super.put(value.name, value);
+	}
 }
