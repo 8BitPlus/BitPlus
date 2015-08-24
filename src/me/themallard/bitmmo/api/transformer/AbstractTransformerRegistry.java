@@ -32,13 +32,15 @@ public abstract class AbstractTransformerRegistry {
 		transformers.addAll(registerTransformers().asList());
 	}
 
-	public void run(Map<String, ClassNode> classNodes) {
+	public Map<String, ClassNode> run(Map<String, ClassNode> classNodes) {
 		for (Transformer t : transformers) {
 			for (ClassNode cn : classNodes.values()) {
 				if (t.accept(cn))
 					t.run(cn);
 			}
 		}
+		
+		return classNodes;
 	}
 
 	protected abstract Builder<Transformer> registerTransformers();

@@ -23,6 +23,7 @@ import me.themallard.bitmmo.api.transformer.AbstractTransformerRegistry;
 import me.themallard.bitmmo.api.util.IRevisionHelper;
 import me.themallard.bitmmo.impl.BitRevisionHelper;
 import me.themallard.bitmmo.impl.analysis.provider.ProviderRegistry;
+import me.themallard.bitmmo.impl.plugin.PluginLoader;
 import me.themallard.bitmmo.impl.transformer.TransformerRegistryImpl;
 
 public class Bitmmo {
@@ -40,11 +41,13 @@ public class Bitmmo {
 
 		try {
 			Revision latest = Revision.create(revisionHelper.getLatestRevision());
+			
+			PluginLoader pl = new PluginLoader();
 
 			AbstractAnalysisProvider analysis = AnalysisProviderRegistry.get(latest).create(latest);
 			Context.bind(analysis);
 			AbstractTransformerRegistry transformer = new TransformerRegistryImpl();
-			transformer.run(analysis.run());
+			pl.run(transformer.run(analysis.run()));
 			analysis.dump();
 		} catch (Exception e) {
 			e.printStackTrace();
