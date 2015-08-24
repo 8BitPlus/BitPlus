@@ -5,7 +5,7 @@ Wrapper for 8BitMMO to allow users to write their own scripts and extensions to 
 
 ### Build Guide
 1. Clone the source tree into an Eclipse workspace
-2. [Download the latest 8BitMMO jar](https://themallard.me/bitmmo/cleans/) and save it as
+2. [Download the latest 8BitMMO jar](http://datastore.themallard.me/bitmmo/) and save it as
 `resources/HTMudWeb_latest.jar`. Edit `me.themallard.bitmmo.impl.BitRevisionHelper` and
 make sure that `getLatestRevision` returns the right number.
 3. Run `Bitmmo.class`.
