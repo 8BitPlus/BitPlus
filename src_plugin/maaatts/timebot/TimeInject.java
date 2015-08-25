@@ -13,17 +13,29 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>. */
 
-package maaatts.testchat;
+package maaatts.timebot;
 
-public class ChatInjector {
-	public static void onChatMessage(IChatWindow i, String x) {
-		System.out.println("send " + x);
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
+import maaatts.chathook.ChatHookManager;
+import maaatts.chathook.IChatCallback;
+import maaatts.chathook.IChatWindow;
+
+public class TimeInject implements IChatCallback {
+	public TimeInject() {
+		ChatHookManager.registerCallback(this);
 	}
 
-	public static void onReceiveMessage(IChatWindow i, String message) {
+	@Override
+	public void onChatMessage(IChatWindow i, String x) {
+	}
+
+	@Override
+	public void onReceiveMessage(IChatWindow i, String message) {
 		System.out.println("recv " + message);
-		
-		if (message.contains("!test"))
-			i.sendChatMessage("This is a chatbot test message.");
+
+		if (message.contains("!time"))
+			i.sendChatMessage("The time is " + new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()) + ".");
 	}
 }

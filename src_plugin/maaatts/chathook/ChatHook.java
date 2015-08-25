@@ -13,7 +13,7 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>. */
 
-package maaatts.testchat;
+package maaatts.chathook;
 
 import org.nullbool.api.util.ClassStructure;
 import org.objectweb.asm.MethodVisitor;
@@ -33,10 +33,10 @@ import me.themallard.bitmmo.impl.plugin.Plugin;
 import me.themallard.bitmmo.impl.plugin.SimplePlugin;
 
 @Plugin
-public class ChatTest extends SimplePlugin implements Opcodes {
+public class ChatHook extends SimplePlugin implements Opcodes {
 
-	public ChatTest() {
-		super("ChatTest");
+	public ChatHook() {
+		super("ChatHook");
 		addFilter(new Filter<ClassNode>() {
 			@Override
 			public boolean accept(ClassNode cn) {
@@ -44,8 +44,9 @@ public class ChatTest extends SimplePlugin implements Opcodes {
 			}
 		});
 
-		registerDependency(ClassStructure.create(ChatInjector.class.getResourceAsStream("ChatInjector.class")));
+		registerDependency(ClassStructure.create(ChatHookManager.class.getResourceAsStream("ChatHookManager.class")));
 		registerDependency(ClassStructure.create(IChatWindow.class.getResourceAsStream("IChatWindow.class")));
+		registerDependency(ClassStructure.create(IChatCallback.class.getResourceAsStream("IChatCallback.class")));
 	}
 
 	@Override
@@ -53,7 +54,7 @@ public class ChatTest extends SimplePlugin implements Opcodes {
 		hookSendMessage(cn);
 		hookRecieveMessage(cn);
 		createSendMessage(cn);
-		addInterface(cn, "maaatts/testchat/IChatWindow");
+		addInterface(cn, "maaatts/chathook/IChatWindow");
 	}
 
 	private void hookSendMessage(ClassNode cn) {
@@ -69,8 +70,8 @@ public class ChatTest extends SimplePlugin implements Opcodes {
 			InsnList inject = new InsnList();
 			inject.add(new VarInsnNode(ALOAD, 0));
 			inject.add(new VarInsnNode(ALOAD, 2));
-			inject.add(new MethodInsnNode(INVOKESTATIC, "maaatts/testchat/ChatInjector", "onChatMessage",
-					"(Lmaaatts/testchat/IChatWindow;Ljava/lang/String;)V", false));
+			inject.add(new MethodInsnNode(INVOKESTATIC, "maaatts/chathook/ChatHookManager", "onChatMessage",
+					"(Lmaaatts/chathook/IChatWindow;Ljava/lang/String;)V", false));
 
 			mn.instructions.insert(mn.instructions.get(offset), inject);
 		}
@@ -93,8 +94,8 @@ public class ChatTest extends SimplePlugin implements Opcodes {
 			inject.add(new VarInsnNode(ALOAD, 1));
 			inject.add(new MethodInsnNode(INVOKEVIRTUAL, getMsgInsn.owner, getMsgInsn.name, "()Ljava/lang/String;",
 					false));
-			inject.add(new MethodInsnNode(INVOKESTATIC, "maaatts/testchat/ChatInjector", "onReceiveMessage",
-					"(Lmaaatts/testchat/IChatWindow;Ljava/lang/String;)V", false));
+			inject.add(new MethodInsnNode(INVOKESTATIC, "maaatts/chathook/ChatHookManager", "onReceiveMessage",
+					"(Lmaaatts/chathook/IChatWindow;Ljava/lang/String;)V", false));
 
 			mn.instructions.insertBefore(mn.instructions.get(offset), inject);
 		}
