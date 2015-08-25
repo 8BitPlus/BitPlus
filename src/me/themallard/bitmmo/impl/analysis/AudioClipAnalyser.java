@@ -30,9 +30,9 @@ import me.themallard.bitmmo.api.analysis.util.LdcContains;
 import me.themallard.bitmmo.api.hook.MethodHook;
 
 @SupportedHooks(fields = {}, methods = { "load&(Ljava/lang/String;)LcR;" })
-public class AudioManagerAnalyser extends ClassAnalyser {
-	public AudioManagerAnalyser() {
-		super("AudioManager");
+public class AudioClipAnalyser extends ClassAnalyser {
+	public AudioClipAnalyser() {
+		super("AudioClip");
 	}
 
 	@Override
