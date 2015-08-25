@@ -40,6 +40,9 @@ public abstract class Transformer {
 		this.filters = new HashSet<Filter<ClassNode>>();
 	}
 
+	public void preRun(ClassNode cn) {
+	}
+
 	public boolean accept(ClassNode cn) {
 		for (Filter<ClassNode> f : filters) {
 			if (!f.accept(cn))
@@ -61,7 +64,7 @@ public abstract class Transformer {
 
 	// utils
 	protected final String getRefactoredName(String original) {
-		AbstractAnalysisProvider provider = Context.current();		
+		AbstractAnalysisProvider provider = Context.current();
 		Stream<ClassAnalyser> stream = provider.getAnalysers().stream();
 		stream = stream.filter(a -> a.getFoundHook().obfuscated().equals(original));
 		ClassAnalyser a = stream.findFirst().orElse(null);

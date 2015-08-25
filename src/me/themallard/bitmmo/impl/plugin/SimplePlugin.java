@@ -15,24 +15,61 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>. */
 
 package me.themallard.bitmmo.impl.plugin;
 
-import org.nullbool.api.util.NodeTable;
-import org.objectweb.asm.tree.ClassNode;
+import java.util.HashSet;
+import java.util.Set;
 
+import org.nullbool.api.util.NodeTable;
+import org.objectweb.asm.Opcodes;
+import org.objectweb.asm.tree.ClassNode;
+import org.objectweb.asm.tree.InsnList;
+import org.objectweb.asm.tree.MethodInsnNode;
+import org.objectweb.asm.tree.MethodNode;
+import org.objectweb.asm.tree.TypeInsnNode;
+
+import me.themallard.bitmmo.api.analysis.util.LdcContains;
 import me.themallard.bitmmo.api.transformer.Transformer;
 
 public abstract class SimplePlugin extends Transformer {
 	private NodeTable<ClassNode> deps;
+	private Set<String> instancesCreate;
 
 	public SimplePlugin(String name) {
 		super(name);
 		deps = new NodeTable<ClassNode>();
+		instancesCreate = new HashSet<String>();
 	}
 
 	protected final void registerDependency(ClassNode cn) {
 		deps.put(cn);
 	}
 
+	protected final void registerInstanceCreation(String clazz) {
+		instancesCreate.add(clazz);
+	}
+
 	public final NodeTable<ClassNode> getDependencies() {
 		return this.deps;
+	}
+
+	@Override
+	public void preRun(ClassNode cn) {
+		super.preRun(cn);
+		createInstances(cn);
+	}
+
+	private void createInstances(ClassNode cn) {
+		for (MethodNode mn : cn.methods) {
+			if (!LdcContains.MethodContains(mn, "vSprint"))
+				continue;
+
+			for (String clazz : instancesCreate) {
+				InsnList inject = new InsnList();
+
+				inject.add(new TypeInsnNode(Opcodes.NEW, clazz));
+				inject.add(new MethodInsnNode(Opcodes.INVOKESPECIAL, clazz, "<init>", "()V", false));
+
+				mn.instructions.insertBefore(mn.instructions.get(0), inject);
+			}
+		}
 	}
 }

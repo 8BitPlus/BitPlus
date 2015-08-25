@@ -16,15 +16,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>. */
 package maaatts.timebot;
 
 import org.nullbool.api.util.ClassStructure;
-import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.tree.ClassNode;
-import org.objectweb.asm.tree.InsnList;
-import org.objectweb.asm.tree.MethodInsnNode;
-import org.objectweb.asm.tree.MethodNode;
-import org.objectweb.asm.tree.TypeInsnNode;
 
-import me.themallard.bitmmo.api.analysis.util.LdcContains;
-import me.themallard.bitmmo.api.util.Filter;
 import me.themallard.bitmmo.impl.plugin.Plugin;
 import me.themallard.bitmmo.impl.plugin.SimplePlugin;
 
@@ -35,27 +28,10 @@ public class TimeBot extends SimplePlugin {
 	public TimeBot() {
 		super("TimeBot");
 		registerDependency(ClassStructure.create(TimeInject.class.getResourceAsStream("TimeInject.class")));
-
-		addFilter(new Filter<ClassNode>() {
-			@Override
-			public boolean accept(ClassNode cn) {
-				return getRefactoredName(cn.name) == "HTMud/MainMenu";
-			}
-		});
+		registerInstanceCreation("maaatts/timebot/TimeInject");
 	}
 
 	@Override
 	public void run(ClassNode cn) {
-		for (MethodNode mn : cn.methods) {
-			if (!LdcContains.MethodContains(mn, "vSprint"))
-				continue;
-
-			InsnList inject = new InsnList();
-
-			inject.add(new TypeInsnNode(Opcodes.NEW, "maaatts/timebot/TimeInject"));
-			inject.add(new MethodInsnNode(Opcodes.INVOKESPECIAL, "maaatts/timebot/TimeInject", "<init>", "()V", false));
-
-			mn.instructions.insertBefore(mn.instructions.get(0), inject);
-		}
 	}
 }

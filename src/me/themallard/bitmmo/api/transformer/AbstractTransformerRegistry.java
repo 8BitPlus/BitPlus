@@ -35,11 +35,12 @@ public abstract class AbstractTransformerRegistry {
 	public Map<String, ClassNode> run(Map<String, ClassNode> classNodes) {
 		for (Transformer t : transformers) {
 			for (ClassNode cn : classNodes.values()) {
+				t.preRun(cn);
 				if (t.accept(cn))
 					t.run(cn);
 			}
 		}
-		
+
 		return classNodes;
 	}
 

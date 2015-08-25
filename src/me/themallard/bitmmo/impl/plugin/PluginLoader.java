@@ -41,6 +41,7 @@ public class PluginLoader {
 	public void run(Map<String, ClassNode> classNodes) {
 		for (Transformer t : plugins) {
 			for (ClassNode cn : classNodes.values()) {
+				t.preRun(cn);
 				if (t.accept(cn))
 					t.run(cn);
 			}
