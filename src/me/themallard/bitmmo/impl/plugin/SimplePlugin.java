@@ -59,7 +59,7 @@ public abstract class SimplePlugin extends Transformer {
 
 	private void createInstances(ClassNode cn) {
 		for (MethodNode mn : cn.methods) {
-			if (!LdcContains.MethodContains(mn, "vSprint"))
+			if (!LdcContains.MethodContains(mn, "PulpCore-Destroyer"))
 				continue;
 
 			for (String clazz : instancesCreate) {
