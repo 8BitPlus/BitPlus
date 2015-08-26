@@ -13,9 +13,23 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>. */
 
-package maaatts.chathook;
+package maaatts.addchat;
 
-public interface IChatWindow {
-	public void sendChatMessage(String param);
-	public void addChatMessage(String param);
+import org.nullbool.api.util.ClassStructure;
+import org.objectweb.asm.tree.ClassNode;
+
+import me.themallard.bitmmo.impl.plugin.Plugin;
+import me.themallard.bitmmo.impl.plugin.SimplePlugin;
+
+@Plugin
+public class AddChatTest extends SimplePlugin {
+	public AddChatTest() {
+		super("AddChatTest");
+		registerInstanceCreation("maaatts/addchat/AddChatInject");
+		registerDependency(ClassStructure.create(AddChatInject.class.getResourceAsStream("AddChatInject.class")));
+	}
+
+	@Override
+	public void run(ClassNode cn) {
+	}
 }

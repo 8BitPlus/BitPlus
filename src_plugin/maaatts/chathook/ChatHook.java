@@ -54,6 +54,7 @@ public class ChatHook extends SimplePlugin implements Opcodes {
 		hookSendMessage(cn);
 		hookRecieveMessage(cn);
 		createSendMessage(cn);
+		createAddMessage(cn);
 		addInterface(cn, "maaatts/chathook/IChatWindow");
 	}
 
@@ -156,6 +157,32 @@ public class ChatHook extends SimplePlugin implements Opcodes {
 			mv.visitMethodInsn(INVOKEVIRTUAL, ebola7.owner, ebola7.name, ebola7.desc, ebola7.itf);
 			mv.visitInsn(RETURN);
 			mv.visitMaxs(2, 2);
+			mv.visitEnd();
+		}
+	}
+
+	private void createAddMessage(ClassNode cn) {
+		Pattern p = new PatternBuilder().add(new InstructionElement(ALOAD), new LdcElement(new LdcInsnNode("")),
+				new InstructionElement(ALOAD), new InstructionElement(INVOKEVIRTUAL)).build();
+
+		MethodInsnNode ebola1 = null;
+
+		for (MethodNode mn : cn.methods) {
+			if (!p.contains(mn.instructions))
+				continue;
+
+			int offset = p.getOffset(mn.instructions);
+
+			ebola1 = (MethodInsnNode) mn.instructions.get(offset + 3);
+		}
+
+		{
+			MethodVisitor mv = cn.visitMethod(ACC_PUBLIC, "addChatMessage", "(Ljava/lang/String;)V", null, null);
+			mv.visitVarInsn(ALOAD, 0);
+			mv.visitLdcInsn("");
+			mv.visitVarInsn(ALOAD, 1);
+			mv.visitMethodInsn(INVOKEVIRTUAL, ebola1.owner, ebola1.name, ebola1.desc, ebola1.itf);
+			mv.visitInsn(RETURN);
 			mv.visitEnd();
 		}
 	}

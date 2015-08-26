@@ -13,9 +13,25 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>. */
 
-package maaatts.chathook;
+package maaatts.addchat;
 
-public interface IChatWindow {
-	public void sendChatMessage(String param);
-	public void addChatMessage(String param);
+import maaatts.chathook.ChatHookManager;
+import maaatts.chathook.IChatCallback;
+import maaatts.chathook.IChatWindow;
+
+public class AddChatInject implements IChatCallback {
+	public AddChatInject() {
+		ChatHookManager.registerCallback(this);
+	}
+
+	@Override
+	public void onChatMessage(IChatWindow i, String x) {
+		if (x.startsWith("/docrap")) {
+			i.addChatMessage("very gud");
+		}
+	}
+
+	@Override
+	public void onReceiveMessage(IChatWindow i, String message) {
+	}
 }
