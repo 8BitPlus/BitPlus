@@ -13,10 +13,18 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>. */
 
-package me.themallard.bitmmo.impl.plugin.chathook;
+package me.themallard.bitmmo.impl.plugin.gamecontext;
 
-public interface IChatCallback {
-	public void onChatMessage(String x);
+import me.themallard.bitmmo.impl.plugin.chathook.IChatWindow;
 
-	public void onReceiveMessage(String message);
+public class GameContext {
+	private static IChatWindow ChatWindow;
+
+	public static IChatWindow getChatWindow() {
+		return ChatWindow;
+	}
+
+	public static void setChatWindow(IChatWindow chatWindow) {
+		ChatWindow = chatWindow;
+	}
 }

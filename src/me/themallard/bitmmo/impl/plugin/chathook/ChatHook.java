@@ -69,10 +69,9 @@ public class ChatHook extends SimplePlugin implements Opcodes {
 			int offset = p.getOffset(mn.instructions) + 4;
 
 			InsnList inject = new InsnList();
-			inject.add(new VarInsnNode(ALOAD, 0));
 			inject.add(new VarInsnNode(ALOAD, 2));
 			inject.add(new MethodInsnNode(INVOKESTATIC, "me/themallard/bitmmo/impl/plugin/chathook/ChatHookManager",
-					"onChatMessage", "(Lme/themallard/bitmmo/impl/plugin/chathook/IChatWindow;Ljava/lang/String;)V",
+					"onChatMessage", "(Ljava/lang/String;)V",
 					false));
 
 			mn.instructions.insert(mn.instructions.get(offset), inject);
@@ -92,12 +91,11 @@ public class ChatHook extends SimplePlugin implements Opcodes {
 			MethodInsnNode getMsgInsn = (MethodInsnNode) mn.instructions.get(offset + 5);
 
 			InsnList inject = new InsnList();
-			inject.add(new VarInsnNode(ALOAD, 0));
 			inject.add(new VarInsnNode(ALOAD, 1));
 			inject.add(new MethodInsnNode(INVOKEVIRTUAL, getMsgInsn.owner, getMsgInsn.name, "()Ljava/lang/String;",
 					false));
 			inject.add(new MethodInsnNode(INVOKESTATIC, "me/themallard/bitmmo/impl/plugin/chathook/ChatHookManager",
-					"onReceiveMessage", "(Lme/themallard/bitmmo/impl/plugin/chathook/IChatWindow;Ljava/lang/String;)V",
+					"onReceiveMessage", "(Ljava/lang/String;)V",
 					false));
 
 			mn.instructions.insertBefore(mn.instructions.get(offset), inject);

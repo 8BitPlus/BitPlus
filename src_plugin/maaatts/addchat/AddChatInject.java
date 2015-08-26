@@ -17,7 +17,7 @@ package maaatts.addchat;
 
 import me.themallard.bitmmo.impl.plugin.chathook.ChatHookManager;
 import me.themallard.bitmmo.impl.plugin.chathook.IChatCallback;
-import me.themallard.bitmmo.impl.plugin.chathook.IChatWindow;
+import me.themallard.bitmmo.impl.plugin.gamecontext.GameContext;
 
 public class AddChatInject implements IChatCallback {
 	public AddChatInject() {
@@ -25,13 +25,13 @@ public class AddChatInject implements IChatCallback {
 	}
 
 	@Override
-	public void onChatMessage(IChatWindow i, String x) {
+	public void onChatMessage(String x) {
 		if (x.startsWith("/docrap")) {
-			i.addChatMessage("very gud");
+			GameContext.getChatWindow().addChatMessage("very gud");
 		}
 	}
 
 	@Override
-	public void onReceiveMessage(IChatWindow i, String message) {
+	public void onReceiveMessage(String message) {
 	}
 }

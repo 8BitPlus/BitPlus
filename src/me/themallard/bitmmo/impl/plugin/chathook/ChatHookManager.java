@@ -30,13 +30,13 @@ public class ChatHookManager {
 			callbacks.remove(callback);
 	}
 	
-	public static void onChatMessage(IChatWindow i, String x) {
+	public static void onChatMessage(String x) {
 		for (IChatCallback c : callbacks)
-			c.onChatMessage(i, x);
+			c.onChatMessage( x);
 	}
 	
-	public static void onReceiveMessage(IChatWindow i, String x) {
+	public static void onReceiveMessage(String x) {
 		for (IChatCallback c : callbacks)
-			c.onReceiveMessage(i, x);
+			c.onReceiveMessage(x);
 	}
 }

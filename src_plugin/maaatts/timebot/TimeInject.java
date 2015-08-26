@@ -20,7 +20,7 @@ import java.util.Date;
 
 import me.themallard.bitmmo.impl.plugin.chathook.ChatHookManager;
 import me.themallard.bitmmo.impl.plugin.chathook.IChatCallback;
-import me.themallard.bitmmo.impl.plugin.chathook.IChatWindow;
+import me.themallard.bitmmo.impl.plugin.gamecontext.GameContext;
 
 public class TimeInject implements IChatCallback {
 	public TimeInject() {
@@ -28,12 +28,13 @@ public class TimeInject implements IChatCallback {
 	}
 
 	@Override
-	public void onChatMessage(IChatWindow i, String x) {
+	public void onChatMessage(String x) {
 	}
 
 	@Override
-	public void onReceiveMessage(IChatWindow i, String message) {
+	public void onReceiveMessage(String message) {
 		if (message.contains("!time"))
-			i.sendChatMessage("The time is " + new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()) + ".");
+			GameContext.getChatWindow().sendChatMessage(
+					"The time is " + new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()) + ".");
 	}
 }
