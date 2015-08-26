@@ -13,10 +13,10 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>. */
 
-package maaatts.chathook;
+package me.themallard.bitmmo.impl.plugin.chathook;
 
-public interface IChatCallback {
-	public void onChatMessage(IChatWindow i, String x);
+public interface IChatWindow {
+	public void sendChatMessage(String param);
 
-	public void onReceiveMessage(IChatWindow i, String message);
+	public void addChatMessage(String param);
 }

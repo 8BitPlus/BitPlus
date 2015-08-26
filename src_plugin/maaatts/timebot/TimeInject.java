@@ -18,9 +18,9 @@ package maaatts.timebot;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import maaatts.chathook.ChatHookManager;
-import maaatts.chathook.IChatCallback;
-import maaatts.chathook.IChatWindow;
+import me.themallard.bitmmo.impl.plugin.chathook.ChatHookManager;
+import me.themallard.bitmmo.impl.plugin.chathook.IChatCallback;
+import me.themallard.bitmmo.impl.plugin.chathook.IChatWindow;
 
 public class TimeInject implements IChatCallback {
 	public TimeInject() {
@@ -33,8 +33,6 @@ public class TimeInject implements IChatCallback {
 
 	@Override
 	public void onReceiveMessage(IChatWindow i, String message) {
-		System.out.println("recv " + message);
-
 		if (message.contains("!time"))
 			i.sendChatMessage("The time is " + new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()) + ".");
 	}

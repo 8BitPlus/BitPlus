@@ -13,7 +13,7 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>. */
 
-package maaatts.chathook;
+package me.themallard.bitmmo.impl.plugin.chathook;
 
 import org.nullbool.api.util.ClassStructure;
 import org.objectweb.asm.MethodVisitor;
@@ -55,7 +55,7 @@ public class ChatHook extends SimplePlugin implements Opcodes {
 		hookRecieveMessage(cn);
 		createSendMessage(cn);
 		createAddMessage(cn);
-		addInterface(cn, "maaatts/chathook/IChatWindow");
+		addInterface(cn, "me/themallard/bitmmo/impl/plugin/chathook/IChatWindow");
 	}
 
 	private void hookSendMessage(ClassNode cn) {
@@ -71,8 +71,9 @@ public class ChatHook extends SimplePlugin implements Opcodes {
 			InsnList inject = new InsnList();
 			inject.add(new VarInsnNode(ALOAD, 0));
 			inject.add(new VarInsnNode(ALOAD, 2));
-			inject.add(new MethodInsnNode(INVOKESTATIC, "maaatts/chathook/ChatHookManager", "onChatMessage",
-					"(Lmaaatts/chathook/IChatWindow;Ljava/lang/String;)V", false));
+			inject.add(new MethodInsnNode(INVOKESTATIC, "me/themallard/bitmmo/impl/plugin/chathook/ChatHookManager",
+					"onChatMessage", "(Lme/themallard/bitmmo/impl/plugin/chathook/IChatWindow;Ljava/lang/String;)V",
+					false));
 
 			mn.instructions.insert(mn.instructions.get(offset), inject);
 		}
@@ -95,8 +96,9 @@ public class ChatHook extends SimplePlugin implements Opcodes {
 			inject.add(new VarInsnNode(ALOAD, 1));
 			inject.add(new MethodInsnNode(INVOKEVIRTUAL, getMsgInsn.owner, getMsgInsn.name, "()Ljava/lang/String;",
 					false));
-			inject.add(new MethodInsnNode(INVOKESTATIC, "maaatts/chathook/ChatHookManager", "onReceiveMessage",
-					"(Lmaaatts/chathook/IChatWindow;Ljava/lang/String;)V", false));
+			inject.add(new MethodInsnNode(INVOKESTATIC, "me/themallard/bitmmo/impl/plugin/chathook/ChatHookManager",
+					"onReceiveMessage", "(Lme/themallard/bitmmo/impl/plugin/chathook/IChatWindow;Ljava/lang/String;)V",
+					false));
 
 			mn.instructions.insertBefore(mn.instructions.get(offset), inject);
 		}

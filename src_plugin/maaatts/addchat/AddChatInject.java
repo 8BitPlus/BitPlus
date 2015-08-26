@@ -15,9 +15,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>. */
 
 package maaatts.addchat;
 
-import maaatts.chathook.ChatHookManager;
-import maaatts.chathook.IChatCallback;
-import maaatts.chathook.IChatWindow;
+import me.themallard.bitmmo.impl.plugin.chathook.ChatHookManager;
+import me.themallard.bitmmo.impl.plugin.chathook.IChatCallback;
+import me.themallard.bitmmo.impl.plugin.chathook.IChatWindow;
 
 public class AddChatInject implements IChatCallback {
 	public AddChatInject() {
