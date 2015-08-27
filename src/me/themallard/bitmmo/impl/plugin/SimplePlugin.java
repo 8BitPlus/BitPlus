@@ -18,6 +18,7 @@ package me.themallard.bitmmo.impl.plugin;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.nullbool.api.util.ClassStructure;
 import org.nullbool.api.util.NodeTable;
 import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.tree.ClassNode;
@@ -41,6 +42,11 @@ public abstract class SimplePlugin extends Transformer {
 
 	protected final void registerDependency(ClassNode cn) {
 		deps.put(cn);
+	}
+
+	protected final void registerDependency(Class<?> clazz) {
+		registerDependency(
+				ClassStructure.create(clazz.getResourceAsStream(clazz.getSimpleName() + ".class")));
 	}
 
 	protected final void registerInstanceCreation(String clazz) {

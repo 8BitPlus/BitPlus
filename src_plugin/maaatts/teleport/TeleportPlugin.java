@@ -13,21 +13,19 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>. */
 
-package maaatts.positiontest;
+package maaatts.teleport;
 
-import org.nullbool.api.util.ClassStructure;
 import org.objectweb.asm.tree.ClassNode;
 
 import me.themallard.bitmmo.impl.plugin.Plugin;
 import me.themallard.bitmmo.impl.plugin.SimplePlugin;
 
 @Plugin
-public class PositionTestPlugin extends SimplePlugin {
-	public PositionTestPlugin() {
-		super("PositionTest");
-		registerInstanceCreation("maaatts/positiontest/PositionTestInject");
-		registerDependency(
-				ClassStructure.create(PositionTestInject.class.getResourceAsStream("PositionTestInject.class")));
+public class TeleportPlugin extends SimplePlugin {
+	public TeleportPlugin() {
+		super("Teleport");
+		registerDependency(TeleportInject.class);
+		registerInstanceCreation("maaatts/teleport/TeleportInject");
 	}
 
 	@Override
