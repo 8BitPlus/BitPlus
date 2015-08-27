@@ -41,6 +41,24 @@ public class TeleportInject implements IChatCallback {
 			}
 			return;
 		}
+
+		if (message.startsWith("/goto")) {
+			String subst = message.substring("/goto ".length());
+			try {
+				int[] pos = parsePosition(subst);
+				GameContext.getPlayer().getPosition().setX(pos[0]);
+				GameContext.getPlayer().getPosition().setY(pos[1]);
+				GameContext.getPlayer().getPosition().setZ(pos[2]);
+			} catch (Exception e) {
+				GameContext.getChatWindow().addChatMessage("Invalid command usage!\nTry /goto x y z");
+				return;
+			}
+			return;
+		}
+
+		if (message.startsWith("/xyz")) {
+			GameContext.getChatWindow().addChatMessage(GameContext.getPlayer().getPosition().toString());
+		}
 	}
 
 	@Override
