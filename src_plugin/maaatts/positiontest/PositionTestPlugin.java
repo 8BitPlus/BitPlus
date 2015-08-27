@@ -13,10 +13,24 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>. */
 
-package me.themallard.bitmmo.impl.plugin.playerhook;
+package maaatts.positiontest;
 
-import me.themallard.bitmmo.impl.plugin.position.IPosition;
+import org.nullbool.api.util.ClassStructure;
+import org.objectweb.asm.tree.ClassNode;
 
-public interface IPlayer {
-	public IPosition getPosition();
+import me.themallard.bitmmo.impl.plugin.Plugin;
+import me.themallard.bitmmo.impl.plugin.SimplePlugin;
+
+@Plugin
+public class PositionTestPlugin extends SimplePlugin {
+	public PositionTestPlugin() {
+		super("PositionTest");
+		registerInstanceCreation("maaatts/positiontest/PositionTestInject");
+		registerDependency(
+				ClassStructure.create(PositionTestInject.class.getResourceAsStream("PositionTestInject.class")));
+	}
+
+	@Override
+	public void run(ClassNode cn) {
+	}
 }

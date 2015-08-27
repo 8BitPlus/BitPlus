@@ -19,10 +19,10 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Stream;
 
+import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.tree.ClassNode;
 import org.objectweb.asm.tree.FieldNode;
-import org.objectweb.asm.tree.MethodNode;
 
 import com.sun.xml.internal.ws.org.objectweb.asm.Type;
 
@@ -71,16 +71,35 @@ public abstract class Transformer {
 		return a != null ? a.getFoundHook().refactored() : null;
 	}
 
+	public String getRefactoredNameByType(String desc) {
+		String objectname = Type.getType(desc).toString();
+
+		if (objectname.length() < 3)
+			return null;
+
+		return getRefactoredName(objectname.substring(1, objectname.length() - 1));
+	}
+
 	protected final void addInterface(ClassNode node, String iface) {
 		node.interfaces.add(iface);
 	}
 
-	protected final void addGetter(ClassNode node, FieldNode field) {
-		MethodNode mn = new MethodNode(node, Opcodes.ACC_PUBLIC, field.name, "()" + field.desc, null, null);
-		mn.visitVarInsn(Opcodes.ALOAD, 0);
-		mn.visitFieldInsn(Opcodes.GETFIELD, node.name, field.name, field.desc);
-		mn.visitInsn(Type.getType(field.desc).getOpcode(Opcodes.IRETURN));
-		mn.visitMaxs(0, 0);
-		node.methods.add(mn);
+	protected final void createGetter(ClassNode cn, FieldNode fn, String name) {
+		MethodVisitor mv = cn.visitMethod(Opcodes.ACC_PUBLIC, name, "()" + fn.desc, null, null);
+		mv.visitVarInsn(Opcodes.ALOAD, 0);
+		mv.visitFieldInsn(Opcodes.GETFIELD, cn.name, fn.name, fn.desc);
+		mv.visitInsn(Type.getType(fn.desc).getOpcode(Opcodes.IRETURN));
+		mv.visitMaxs(0, 0);
+		mv.visitEnd();
+	}
+
+	protected final void createSetter(ClassNode cn, FieldNode fn, String name) {
+		MethodVisitor mv = cn.visitMethod(Opcodes.ACC_PUBLIC, name, "(" + fn.desc + ")V", null, null);
+		mv.visitVarInsn(Opcodes.ALOAD, 0);
+		mv.visitVarInsn(Type.getType(fn.desc).getOpcode(Opcodes.ILOAD), 1);
+		mv.visitFieldInsn(Opcodes.PUTFIELD, cn.name, fn.name, fn.desc);
+		mv.visitInsn(Opcodes.RETURN);
+		mv.visitMaxs(0, 0);
+		mv.visitEnd();
 	}
 }

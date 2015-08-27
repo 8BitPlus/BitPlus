@@ -13,41 +13,43 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>. */
 
-package me.themallard.bitmmo.impl.plugin.playerhook;
+package me.themallard.bitmmo.impl.plugin.position;
 
 import org.nullbool.api.util.ClassStructure;
-import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.tree.ClassNode;
-
-import com.sun.xml.internal.ws.org.objectweb.asm.Type;
 
 import me.themallard.bitmmo.api.util.Filter;
 import me.themallard.bitmmo.impl.plugin.Plugin;
 import me.themallard.bitmmo.impl.plugin.SimplePlugin;
 
 @Plugin
-public class PlayerPlugin extends SimplePlugin implements Opcodes {
-	public PlayerPlugin() {
-		super("PlayerHook");
+public class PositionPlugin extends SimplePlugin implements Opcodes {
+	public PositionPlugin() {
+		super("Position");
 		addFilter(new Filter<ClassNode>() {
 			@Override
 			public boolean accept(ClassNode cn) {
-				return getRefactoredName(cn.name) == "Player";
+				return getRefactoredName(cn.name) == "Position";
 			}
 		});
 
-		registerDependency(ClassStructure.create(IPlayer.class.getResourceAsStream("IPlayer.class")));
+		registerDependency(ClassStructure.create(IPosition.class.getResourceAsStream("IPosition.class")));
 	}
 
 	@Override
 	public void run(ClassNode cn) {
-		MethodVisitor mv = cn.visitMethod(Opcodes.ACC_PUBLIC, "getPosition",
-				"()" + "Lme/themallard/bitmmo/impl/plugin/position/IPosition;", null, null);
-		mv.visitVarInsn(Opcodes.ALOAD, 0);
-		mv.visitFieldInsn(Opcodes.GETFIELD, "Entity", "position", "LPosition;");
-		mv.visitInsn(Type.getType("Lme/themallard/bitmmo/impl/plugin/position/IPosition;").getOpcode(Opcodes.IRETURN));
-		mv.visitMaxs(0, 0);
-		mv.visitEnd();
+		addInterface(cn, "me/themallard/bitmmo/impl/plugin/position/IPosition");
+		createGetter(cn, cn.fields.get(0), "getX");
+		createGetter(cn, cn.fields.get(1), "getY");
+		createGetter(cn, cn.fields.get(2), "getZ");
+		createGetter(cn, cn.fields.get(3), "getRX");
+		createGetter(cn, cn.fields.get(4), "getRY");
+		
+		createSetter(cn, cn.fields.get(0), "setX");
+		createSetter(cn, cn.fields.get(1), "setY");
+		createSetter(cn, cn.fields.get(2), "setZ");
+		createSetter(cn, cn.fields.get(3), "setRX");
+		createSetter(cn, cn.fields.get(4), "setRY");
 	}
 }

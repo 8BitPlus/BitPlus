@@ -74,7 +74,8 @@ public class AnalysisProviderImpl extends AbstractAnalysisProvider {
 				new LevelupPopupAnalyser(), new LeftMenuAnalyser(), new BGMDownloaderAnalyser(),
 				new TradeWindowAnalyser(), new BuildToolsAnalyser(), new RectangleAnalyser(), new ChatWindowAnalyser(),
 				new DirectionAnalyser(), new InputHandlerAnalyser(), new AudioClipAnalyser(),
-				new LongWrapperAnalyser(), new FontRendererAnalyser(), new LaserWeapon(), new PositionAnalyser() });
+				new LongWrapperAnalyser(), new FontRendererAnalyser(), new LaserWeapon(), new PositionAnalyser(),
+				new EntityAnalyser()});
 
 		return builder;
 	}
