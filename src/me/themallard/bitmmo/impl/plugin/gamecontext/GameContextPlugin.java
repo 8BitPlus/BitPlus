@@ -23,6 +23,7 @@ import org.objectweb.asm.tree.MethodInsnNode;
 import org.objectweb.asm.tree.MethodNode;
 import org.objectweb.asm.tree.VarInsnNode;
 
+import me.themallard.bitmmo.api.analysis.util.LdcContains;
 import me.themallard.bitmmo.api.util.Filter;
 import me.themallard.bitmmo.impl.plugin.Plugin;
 import me.themallard.bitmmo.impl.plugin.SimplePlugin;
@@ -36,7 +37,7 @@ public class GameContextPlugin extends SimplePlugin implements Opcodes {
 		addFilter(new Filter<ClassNode>() {
 			@Override
 			public boolean accept(ClassNode cn) {
-				return getRefactoredName(cn.name) == "ui/ChatWindow";
+				return getRefactoredName(cn.name) == "ui/ChatWindow" || getRefactoredName(cn.name) == "Player";
 			}
 		});
 	}
@@ -47,7 +48,27 @@ public class GameContextPlugin extends SimplePlugin implements Opcodes {
 		case "ui/ChatWindow":
 			doChatWindow(cn);
 			break;
+		case "Player":
+			doPlayer(cn);
+			break;
 		default:
+			break;
+		}
+	}
+
+	private void doPlayer(ClassNode cn) {
+		addInterface(cn, "me/themallard/bitmmo/impl/plugin/playerhook/IPlayer");
+
+		for (MethodNode mn : cn.methods) {
+			if (!mn.name.equals("<init>"))
+				continue;
+
+			if (!LdcContains.MethodContains(mn, "char-color-overlay.png"))
+				continue;
+
+			mn.instructions.insert(mn.instructions.get(mn.instructions.size() - 2),
+					createContextCall(mn, "setPlayer", "me/themallard/bitmmo/impl/plugin/playerhook/IPlayer"));
+
 			break;
 		}
 	}

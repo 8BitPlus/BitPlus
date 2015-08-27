@@ -13,28 +13,8 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>. */
 
-package me.themallard.bitmmo.impl.plugin.gamecontext;
+package me.themallard.bitmmo.impl.plugin.playerhook;
 
-import me.themallard.bitmmo.impl.plugin.chathook.IChatWindow;
-import me.themallard.bitmmo.impl.plugin.playerhook.IPlayer;
+public interface IPlayer {
 
-public class GameContext {
-	private static IChatWindow ChatWindow;
-	private static IPlayer Player;
-
-	public static IChatWindow getChatWindow() {
-		return ChatWindow;
-	}
-
-	public static void setChatWindow(IChatWindow chatWindow) {
-		ChatWindow = chatWindow;
-	}
-
-	public static IPlayer getPlayer() {
-		return Player;
-	}
-
-	public static void setPlayer(IPlayer player) {
-		Player = player;
-	}
 }
