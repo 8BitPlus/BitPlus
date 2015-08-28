@@ -23,7 +23,7 @@
 	- Manages everything for your plugin
 * Injected files
 	- Is injected by Main plugin file
-	- Contains callbacks/things that actually interract with the
+	- Contains callbacks/things that actually interact with the
 	  game whilst it runs.
 
 ### How do I write a plugin?
