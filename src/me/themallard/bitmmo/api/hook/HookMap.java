@@ -13,14 +13,10 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>. */
 
-package me.themallard.bitmmo.api;
+package me.themallard.bitmmo.api.hook;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import me.themallard.bitmmo.api.hook.ClassHook;
-import me.themallard.bitmmo.api.hook.FieldHook;
-import me.themallard.bitmmo.api.hook.MethodHook;
 
 public class HookMap {
 

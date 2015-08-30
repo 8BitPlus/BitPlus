@@ -36,10 +36,10 @@ import org.topdank.byteengineer.commons.data.LocateableJarContents;
 import org.topdank.byteio.out.CompleteJarDumper;
 
 import me.themallard.bitmmo.api.Context;
-import me.themallard.bitmmo.api.HookMap;
 import me.themallard.bitmmo.api.Revision;
 import me.themallard.bitmmo.api.hook.ClassHook;
 import me.themallard.bitmmo.api.hook.FieldHook;
+import me.themallard.bitmmo.api.hook.HookMap;
 import me.themallard.bitmmo.api.hook.MethodHook;
 import me.themallard.bitmmo.api.obfuscation.refactor.BytecodeRefactorer;
 import me.themallard.bitmmo.api.obfuscation.refactor.ClassTree;

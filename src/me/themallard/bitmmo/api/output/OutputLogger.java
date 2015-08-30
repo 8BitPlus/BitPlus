@@ -25,11 +25,11 @@ import org.nullbool.pi.core.hook.api.DynamicDesc;
 import org.objectweb.asm.tree.ClassNode;
 
 import me.themallard.bitmmo.api.Context;
-import me.themallard.bitmmo.api.HookMap;
 import me.themallard.bitmmo.api.analysis.AbstractAnalysisProvider;
 import me.themallard.bitmmo.api.analysis.ClassAnalyser;
 import me.themallard.bitmmo.api.hook.ClassHook;
 import me.themallard.bitmmo.api.hook.FieldHook;
+import me.themallard.bitmmo.api.hook.HookMap;
 import me.themallard.bitmmo.api.hook.MethodHook;
 import me.themallard.bitmmo.api.hook.ObfuscatedData;
 
