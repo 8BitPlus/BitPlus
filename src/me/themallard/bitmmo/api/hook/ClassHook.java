@@ -18,8 +18,6 @@ package me.themallard.bitmmo.api.hook;
 import java.util.ArrayList;
 import java.util.List;
 
-import me.themallard.bitmmo.api.InterfaceMapping;
-
 public class ClassHook extends ObfuscatedData {
 	private final List<InterfaceMapping> interfaces = new ArrayList<InterfaceMapping>();
 	private final List<FieldHook> fields = new ArrayList<FieldHook>();

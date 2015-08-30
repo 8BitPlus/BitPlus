@@ -13,9 +13,7 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>. */
 
-package me.themallard.bitmmo.api;
-
-import me.themallard.bitmmo.api.hook.ClassHook;
+package me.themallard.bitmmo.api.hook;
 
 public class InterfaceMapping {
 	private ClassHook owner;
