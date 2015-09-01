@@ -47,7 +47,7 @@ public class Bitmmo {
 		String revision = null;
 
 		for (int i = 0; i < args.length; i++) {
-			if (args[i] == "-r") {
+			if (args[i].equals("-r")) {
 				revision = args[i + 1];
 			}
 		}
@@ -91,6 +91,8 @@ public class Bitmmo {
 			pl.run(transformer.run(analysis.run()));
 			analysis.getClassNodes().putAll(pl.getDependencies());
 			analysis.dump();
+			Thread.sleep(50);
+			Files.copy(Revision.getFile(revision).toPath(), new File("./gamepack.jar").toPath(), StandardCopyOption.REPLACE_EXISTING);
 		} catch (Exception e) {
 			e.printStackTrace();
 			System.exit(-1);
