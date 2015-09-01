@@ -15,12 +15,32 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>. */
 
 package me.themallard.bitmmo.impl;
 
+import java.net.URL;
+import java.util.Scanner;
+
 import me.themallard.bitmmo.api.util.IRevisionHelper;
 
 public class BitRevisionHelper implements IRevisionHelper {
 	@Override
 	public String getLatestRevision() {
 		// TODO: Grab this from the website
-		return "1245";
+		try {
+			@SuppressWarnings("resource")
+			Scanner scanner = new Scanner(new URL(String.format("%s/latest.txt", getUploadSite())).openStream(), "UTF-8")
+					.useDelimiter("\\A");
+			String s = scanner.nextLine();
+			scanner.close();
+			return s;
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.exit(-1);
+		}
+
+		return null;
+	}
+
+	@Override
+	public String getUploadSite() {
+		return "http://datastore.themallard.me/bitmmo";
 	}
 }

@@ -15,6 +15,11 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>. */
 
 package me.themallard.bitmmo;
 
+import java.io.File;
+import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
+
 import me.themallard.bitmmo.api.Context;
 import me.themallard.bitmmo.api.Revision;
 import me.themallard.bitmmo.api.analysis.AbstractAnalysisProvider;
@@ -28,20 +33,52 @@ import me.themallard.bitmmo.impl.transformer.TransformerRegistryImpl;
 
 public class Bitmmo {
 	public static void main(String[] args) {
-		// TODO: Replace this with something nice
-		ProviderRegistry.init();
-
-		IRevisionHelper revisionHelper = new BitRevisionHelper();
-
 		System.out.println("Bit+ Copyright (c) 2015 maaatts\n"
 				+ "This program comes with ABSOLUTELY NO WARRANTY; for details check LICENSE.md.\n"
 				+ "This is free software, and you are welcome to redistribute it under certain conditions.\n");
 
-		System.out.println("Loading 8BitMMO [" + revisionHelper.getLatestRevision() + "]...");
+		// TODO: Replace this with something nice
+		ProviderRegistry.init();
+
+		String revision = null;
+
+		for (int i = 0; i < args.length; i++) {
+			if (args[i] == "-r") {
+				revision = args[i + 1];
+			}
+		}
+		
+		{
+			new File("./resources/jars/").mkdirs();
+		}
+
+		IRevisionHelper helper = new BitRevisionHelper();
+
+		if (revision == null) {
+			revision = helper.getLatestRevision();
+		}
+
+		if (!Revision.getFile(revision).exists()) {
+			System.out.printf("Could not locate revision %s on your disk, attempting to fetch from upload site...\n",
+					revision);
+
+			try {
+				URL web = new URL(String.format("%s/HTMudWeb_%s.jar", helper.getUploadSite(), revision));
+				Revision.getFile(revision).createNewFile();
+				Files.copy(web.openStream(), Revision.getFile(revision).toPath(), StandardCopyOption.REPLACE_EXISTING);
+				Thread.sleep(1000);
+			} catch (Exception e) {
+				System.err.println("Failed to download latest revision.\nYou could try downloading it yourself.");
+				e.printStackTrace();
+				System.exit(1);
+			}
+		}
+
+		Revision latest = Revision.create(revision);
+
+		System.out.println("Loading 8BitMMO [" + revision + "]...");
 
 		try {
-			Revision latest = Revision.create(revisionHelper.getLatestRevision());
-
 			PluginLoader pl = new PluginLoader();
 
 			AbstractAnalysisProvider analysis = AnalysisProviderRegistry.get(latest).create(latest);

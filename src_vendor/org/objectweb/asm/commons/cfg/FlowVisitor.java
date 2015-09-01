@@ -1,5 +1,5 @@
 //TODO: fix
-//package org.objectweb.asm.commons.cfg;
+package org.objectweb.asm.commons.cfg;
 //
 //import static org.objectweb.asm.Opcodes.ARETURN;
 //import static org.objectweb.asm.Opcodes.ATHROW;
@@ -229,3 +229,6 @@
 //        }
 //    }
 //}
+
+public class FlowVisitor {
+}

@@ -17,7 +17,6 @@ package me.themallard.bitmmo.api;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.URISyntaxException;
 import java.util.Map;
 import java.util.jar.JarFile;
 
@@ -47,14 +46,14 @@ public class Revision {
 	public Map<String, ClassNode> parse() throws IOException {
 		if (parser == null)
 			parser = new JarParser(new JarFile(file));
-		
+
 		return parser.getParsedClasses();
 	}
-	
+
 	public OutputResourceList parseResources() throws IOException {
 		if (parser == null)
 			parser = new JarParser(new JarFile(file));
-		
+
 		return parser.getParsedResources();
 	}
 
@@ -89,8 +88,11 @@ public class Revision {
 		return true;
 	}
 
-	public static Revision create(String revision) throws URISyntaxException {
-		return new Revision(revision,
-				new File(Revision.class.getResource("/jars/HTMudWeb_" + revision + ".jar").toURI()));
+	public static File getFile(String revision) {
+		return new File(String.format("./resources/jars/HTMudWeb_%s.jar", revision));
+	}
+
+	public static Revision create(String revision) {
+		return new Revision(revision, getFile(revision));
 	}
 }

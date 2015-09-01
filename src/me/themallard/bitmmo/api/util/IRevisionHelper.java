@@ -17,4 +17,5 @@ package me.themallard.bitmmo.api.util;
 
 public interface IRevisionHelper {
 	public String getLatestRevision();
+	public String getUploadSite();
 }
