@@ -1,5 +1,9 @@
 # Bit+ Plugin Creation Guide
 
+### Note
+This guide assumes that you have already set up your workspace.
+You can look at the `WORKSPACE_SETUP.md` file to learn how to do that.
+
 ### What are plugins?
 * Plugins can run at creation time, or at run time.
 	- You probably want both
@@ -122,7 +126,7 @@ We will write a simple plugin that responds to "!ping" with "PONG" in the chat.
 			registerDependency(ClassStructure.create(PingInject.class.getResourceAsStream("PingInject.class")));
 			registerInstanceCreation("maaatts/timebot/PingInject");
 		}
-		
+
 		```
 5. Run Bit+
 	- If there are no errors, you win! ^^probably
