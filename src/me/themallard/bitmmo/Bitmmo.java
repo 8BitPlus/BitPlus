@@ -32,10 +32,14 @@ import me.themallard.bitmmo.impl.plugin.PluginLoader;
 import me.themallard.bitmmo.impl.transformer.TransformerRegistryImpl;
 
 public class Bitmmo {
+	public static final String VERSION = "1.0.0";
+
 	public static void main(String[] args) {
-		System.out.println("Bit+ Copyright (c) 2015 maaatts\n"
-				+ "This program comes with ABSOLUTELY NO WARRANTY; for details check LICENSE.md.\n"
-				+ "This is free software, and you are welcome to redistribute it under certain conditions.\n");
+		System.out.printf(
+				"Bit+ %s Copyright (c) 2015 maaatts\n"
+						+ "This program comes with ABSOLUTELY NO WARRANTY; for details check LICENSE.md.\n"
+						+ "This is free software, and you are welcome to redistribute it under certain conditions.\n",
+				VERSION);
 
 		// TODO: Replace this with something nice
 		ProviderRegistry.init();
@@ -47,7 +51,7 @@ public class Bitmmo {
 				revision = args[i + 1];
 			}
 		}
-		
+
 		{
 			new File("./resources/jars/").mkdirs();
 		}
