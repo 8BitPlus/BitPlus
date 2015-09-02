@@ -19,6 +19,8 @@ import java.io.File;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
+import java.util.ArrayList;
+import java.util.List;
 
 import me.themallard.bitmmo.api.Context;
 import me.themallard.bitmmo.api.Revision;
@@ -32,8 +34,9 @@ import me.themallard.bitmmo.impl.plugin.PluginLoader;
 import me.themallard.bitmmo.impl.transformer.TransformerRegistryImpl;
 
 public class Bitmmo {
-	public static final String VERSION = "1.1.2";
+	public static final String VERSION = "1.2.0-dev";
 	public static boolean copygamepack = true;
+	public static final List<String> PLUGIN_BLACKLIST = new ArrayList<String>();
 
 	public static void main(String[] args) {
 		System.out.printf(
@@ -54,6 +57,17 @@ public class Bitmmo {
 
 			if (args[i].equals("--nocopy")) {
 				copygamepack = false;
+			}
+
+			if (args[i].equals("-b")) {
+				PLUGIN_BLACKLIST.add(args[i + 1]);
+			}
+
+			if (args[i].equals("--help")) {
+				System.out.println("-r <revision> = Select a different game version");
+				System.out.println("--nocopy      = Don't create gamepack.jar");
+				System.out.println("-b <plugin>   = Blacklist a plugin");
+				System.exit(0);
 			}
 		}
 

@@ -25,6 +25,7 @@ import org.objectweb.asm.tree.ClassNode;
 import eu.infomas.annotation.AnnotationDetector;
 import eu.infomas.annotation.Cursor;
 import eu.infomas.annotation.ReporterFunction;
+import me.themallard.bitmmo.Bitmmo;
 import me.themallard.bitmmo.api.transformer.Transformer;
 
 public class PluginLoader {
@@ -73,7 +74,10 @@ public class PluginLoader {
 			List<SimplePlugin> list = new ArrayList<SimplePlugin>();
 
 			for (Class<?> clazz : types) {
-				list.add((SimplePlugin) clazz.newInstance());
+				SimplePlugin sp = (SimplePlugin) clazz.newInstance();
+
+				if (!Bitmmo.PLUGIN_BLACKLIST.contains(sp.getName()))
+					list.add(sp);
 			}
 
 			return list;
