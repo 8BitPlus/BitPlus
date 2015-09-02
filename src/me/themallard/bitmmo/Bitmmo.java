@@ -32,7 +32,7 @@ import me.themallard.bitmmo.impl.plugin.PluginLoader;
 import me.themallard.bitmmo.impl.transformer.TransformerRegistryImpl;
 
 public class Bitmmo {
-	public static final String VERSION = "1.1.1";
+	public static final String VERSION = "1.1.2";
 
 	public static void main(String[] args) {
 		System.out.printf(
@@ -70,9 +70,9 @@ public class Bitmmo {
 				URL web = new URL(String.format("%s/HTMudWeb_%s.jar", helper.getUploadSite(), revision));
 				Revision.getFile(revision).createNewFile();
 				Files.copy(web.openStream(), Revision.getFile(revision).toPath(), StandardCopyOption.REPLACE_EXISTING);
-				Thread.sleep(1000);
+				Thread.sleep(100);
 			} catch (Exception e) {
-				System.err.println("Failed to download latest revision.\nYou could try downloading it yourself.");
+				System.err.println("Failed to download revision.\nYou could try downloading it yourself.");
 				e.printStackTrace();
 				System.exit(1);
 			}
@@ -92,7 +92,8 @@ public class Bitmmo {
 			analysis.getClassNodes().putAll(pl.getDependencies());
 			analysis.dump();
 			Thread.sleep(50);
-			Files.copy(Revision.getFile(revision).toPath(), new File("./gamepack.jar").toPath(), StandardCopyOption.REPLACE_EXISTING);
+			Files.copy(new File(String.format("./out/%s/refactor_%s.jar", revision, revision)).toPath(),
+					new File("./gamepack.jar").toPath(), StandardCopyOption.REPLACE_EXISTING);
 		} catch (Exception e) {
 			e.printStackTrace();
 			System.exit(-1);
