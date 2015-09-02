@@ -33,6 +33,7 @@ import me.themallard.bitmmo.impl.transformer.TransformerRegistryImpl;
 
 public class Bitmmo {
 	public static final String VERSION = "1.1.2";
+	public static boolean copygamepack = true;
 
 	public static void main(String[] args) {
 		System.out.printf(
@@ -49,6 +50,10 @@ public class Bitmmo {
 		for (int i = 0; i < args.length; i++) {
 			if (args[i].equals("-r")) {
 				revision = args[i + 1];
+			}
+
+			if (args[i].equals("--nocopy")) {
+				copygamepack = false;
 			}
 		}
 
@@ -91,9 +96,12 @@ public class Bitmmo {
 			pl.run(transformer.run(analysis.run()));
 			analysis.getClassNodes().putAll(pl.getDependencies());
 			analysis.dump();
-			Thread.sleep(50);
-			Files.copy(new File(String.format("./out/%s/refactor_%s.jar", revision, revision)).toPath(),
-					new File("./gamepack.jar").toPath(), StandardCopyOption.REPLACE_EXISTING);
+
+			if (copygamepack) {
+				Thread.sleep(50);
+				Files.copy(new File(String.format("./out/%s/refactor_%s.jar", revision, revision)).toPath(),
+						new File("./gamepack.jar").toPath(), StandardCopyOption.REPLACE_EXISTING);
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 			System.exit(-1);
