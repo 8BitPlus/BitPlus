@@ -21,6 +21,7 @@ import java.util.List;
 import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.tree.ClassNode;
 import org.objectweb.asm.tree.FieldInsnNode;
+import org.objectweb.asm.tree.LdcInsnNode;
 import org.objectweb.asm.tree.MethodNode;
 
 import me.themallard.bitmmo.api.analysis.Builder;
@@ -28,12 +29,12 @@ import me.themallard.bitmmo.api.analysis.ClassAnalyser;
 import me.themallard.bitmmo.api.analysis.IFieldAnalyser;
 import me.themallard.bitmmo.api.analysis.IMethodAnalyser;
 import me.themallard.bitmmo.api.analysis.SupportedHooks;
-import me.themallard.bitmmo.api.analysis.util.LdcContains;
 import me.themallard.bitmmo.api.analysis.util.pattern.Pattern;
 import me.themallard.bitmmo.api.analysis.util.pattern.PatternBuilder;
 import me.themallard.bitmmo.api.analysis.util.pattern.element.AnyElement;
 import me.themallard.bitmmo.api.analysis.util.pattern.element.FieldElement;
 import me.themallard.bitmmo.api.analysis.util.pattern.element.InstructionElement;
+import me.themallard.bitmmo.api.analysis.util.pattern.element.LdcElement;
 import me.themallard.bitmmo.api.hook.MethodHook;
 
 @SupportedHooks(fields = {}, methods = { "decrementLock&()V", "incrementLock&()V" })
@@ -45,7 +46,7 @@ public class BuildToolsAnalyser extends ClassAnalyser implements Opcodes {
 
 	@Override
 	protected boolean matches(ClassNode cn) {
-		return LdcContains.ClassContains(cn, "Z Axis Lock:");
+		return new PatternBuilder().add(new LdcElement(new LdcInsnNode("Z Axis Lock:"))).build().contains(cn);
 	}
 
 	public class AxisLockModifierAnalyser implements IMethodAnalyser {
