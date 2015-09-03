@@ -15,16 +15,20 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>. */
 
 package me.themallard.bitmmo.impl.plugin;
 
-import org.objectweb.asm.tree.AbstractInsnNode;
 import org.objectweb.asm.tree.ClassNode;
 import org.objectweb.asm.tree.LdcInsnNode;
 import org.objectweb.asm.tree.MethodNode;
 
-import me.themallard.bitmmo.api.analysis.util.LdcContains;
+import me.themallard.bitmmo.api.analysis.util.pattern.Pattern;
+import me.themallard.bitmmo.api.analysis.util.pattern.PatternBuilder;
+import me.themallard.bitmmo.api.analysis.util.pattern.element.LdcElement;
 import me.themallard.bitmmo.api.util.Filter;
 
 @Plugin
 public class StartMessagePlugin extends SimplePlugin {
+	private static final Pattern WELCOME = new PatternBuilder()
+			.add(new LdcElement(new LdcInsnNode("Welcome to 8BitMMO"), true)).build();
+
 	public StartMessagePlugin() {
 		super("StartMessage");
 		addFilter(new Filter<ClassNode>() {
@@ -38,14 +42,13 @@ public class StartMessagePlugin extends SimplePlugin {
 	@Override
 	public void run(ClassNode cn) {
 		MethodNode mn = cn.getMethodByName("<init>");
+
+		int offset = WELCOME.getOffset(mn.instructions);
 		
-		for (AbstractInsnNode ain : mn.instructions.toArray()) {
-			if (LdcContains.InstructionContains(ain, "Welcome to 8BitMMO")) {
-				LdcInsnNode ldc = (LdcInsnNode) ain;
-				ldc.cst = ldc.cst.toString() + "\nRunning Bit+ Development Build";
-				
-				break;
-			}
-		}
+		if (offset == -1)
+			return;
+		
+		LdcInsnNode ldc = (LdcInsnNode) mn.instructions.get(offset);
+		ldc.cst = ldc.cst.toString() + "\nRunning Bit+ Development Build";
 	}
 }

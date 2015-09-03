@@ -20,9 +20,15 @@ import org.objectweb.asm.tree.LdcInsnNode;
 
 public class LdcElement implements PatternElement {
 	private final LdcInsnNode insn;
+	private final boolean contains;
 
 	public LdcElement(LdcInsnNode insn) {
+		this(insn, false);
+	}
+
+	public LdcElement(LdcInsnNode insn, boolean contains) {
 		this.insn = insn;
+		this.contains = false;
 	}
 
 	@Override
@@ -38,8 +44,13 @@ public class LdcElement implements PatternElement {
 
 		LdcInsnNode min = (LdcInsnNode) ain;
 
-		if (insn.cst != null && !min.cst.equals(insn.cst))
-			return false;
+		if (!contains) {
+			if (insn.cst != null && !min.cst.equals(insn.cst))
+				return false;
+		} else {
+			if (insn.cst != null && !min.cst.toString().contains(insn.cst.toString()))
+				return false;
+		}
 
 		return true;
 	}
