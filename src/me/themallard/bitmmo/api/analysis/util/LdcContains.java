@@ -21,6 +21,11 @@ import org.objectweb.asm.tree.InsnList;
 import org.objectweb.asm.tree.LdcInsnNode;
 import org.objectweb.asm.tree.MethodNode;
 
+/**
+ * @author mallard
+ * @deprecated Use the new Pattern scanner with LdcElement
+ */
+@Deprecated
 public class LdcContains {
 	public static boolean InstructionContains(AbstractInsnNode ain, String s) {
 		if (!(ain instanceof LdcInsnNode))
