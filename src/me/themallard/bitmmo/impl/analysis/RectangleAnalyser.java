@@ -20,6 +20,7 @@ import java.util.List;
 
 import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.tree.ClassNode;
+import org.objectweb.asm.tree.LdcInsnNode;
 import org.objectweb.asm.tree.MethodNode;
 
 import me.themallard.bitmmo.api.analysis.Builder;
@@ -27,7 +28,8 @@ import me.themallard.bitmmo.api.analysis.ClassAnalyser;
 import me.themallard.bitmmo.api.analysis.IFieldAnalyser;
 import me.themallard.bitmmo.api.analysis.IMethodAnalyser;
 import me.themallard.bitmmo.api.analysis.SupportedHooks;
-import me.themallard.bitmmo.api.analysis.util.LdcContains;
+import me.themallard.bitmmo.api.analysis.util.pattern.PatternBuilder;
+import me.themallard.bitmmo.api.analysis.util.pattern.element.LdcElement;
 import me.themallard.bitmmo.api.hook.FieldHook;
 import me.themallard.bitmmo.api.hook.MethodHook;
 
@@ -39,7 +41,7 @@ public class RectangleAnalyser extends ClassAnalyser implements Opcodes {
 
 	@Override
 	protected boolean matches(ClassNode cn) {
-		return LdcContains.ClassContains(cn, "Rectangle: ");
+		return new PatternBuilder().add(new LdcElement(new LdcInsnNode("Rectangle: "))).build().contains(cn);
 	}
 
 	public class XYWHAnalyser implements IFieldAnalyser {

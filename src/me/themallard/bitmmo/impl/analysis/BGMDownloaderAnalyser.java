@@ -21,6 +21,7 @@ import java.util.List;
 import org.objectweb.asm.tree.ClassNode;
 import org.objectweb.asm.tree.FieldInsnNode;
 import org.objectweb.asm.tree.FieldNode;
+import org.objectweb.asm.tree.LdcInsnNode;
 import org.objectweb.asm.tree.MethodNode;
 
 import me.themallard.bitmmo.api.analysis.Builder;
@@ -28,12 +29,12 @@ import me.themallard.bitmmo.api.analysis.ClassAnalyser;
 import me.themallard.bitmmo.api.analysis.IFieldAnalyser;
 import me.themallard.bitmmo.api.analysis.IMethodAnalyser;
 import me.themallard.bitmmo.api.analysis.SupportedHooks;
-import me.themallard.bitmmo.api.analysis.util.LdcContains;
 import me.themallard.bitmmo.api.analysis.util.pattern.Pattern;
 import me.themallard.bitmmo.api.analysis.util.pattern.PatternBuilder;
 import me.themallard.bitmmo.api.analysis.util.pattern.element.AnyElement;
 import me.themallard.bitmmo.api.analysis.util.pattern.element.FieldElement;
 import me.themallard.bitmmo.api.analysis.util.pattern.element.InstructionElement;
+import me.themallard.bitmmo.api.analysis.util.pattern.element.LdcElement;
 import me.themallard.bitmmo.api.hook.FieldHook;
 import me.themallard.bitmmo.api.hook.MethodHook;
 
@@ -45,7 +46,7 @@ public class BGMDownloaderAnalyser extends ClassAnalyser {
 
 	@Override
 	protected boolean matches(ClassNode cn) {
-		return LdcContains.ClassContains(cn, "BGM Music Download: Complete!");
+		return new PatternBuilder().add(new LdcElement(new LdcInsnNode("BGM Music Download: Complete!"))).build().contains(cn);
 	}
 
 	public class InstanceAnalyser implements IFieldAnalyser {
