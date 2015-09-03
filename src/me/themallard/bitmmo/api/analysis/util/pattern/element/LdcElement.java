@@ -28,7 +28,7 @@ public class LdcElement implements PatternElement {
 
 	public LdcElement(LdcInsnNode insn, boolean contains) {
 		this.insn = insn;
-		this.contains = false;
+		this.contains = contains;
 	}
 
 	@Override
