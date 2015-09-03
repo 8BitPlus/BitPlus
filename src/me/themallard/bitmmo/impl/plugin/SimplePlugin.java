@@ -23,11 +23,13 @@ import org.nullbool.api.util.NodeTable;
 import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.tree.ClassNode;
 import org.objectweb.asm.tree.InsnList;
+import org.objectweb.asm.tree.LdcInsnNode;
 import org.objectweb.asm.tree.MethodInsnNode;
 import org.objectweb.asm.tree.MethodNode;
 import org.objectweb.asm.tree.TypeInsnNode;
 
-import me.themallard.bitmmo.api.analysis.util.LdcContains;
+import me.themallard.bitmmo.api.analysis.util.pattern.PatternBuilder;
+import me.themallard.bitmmo.api.analysis.util.pattern.element.LdcElement;
 import me.themallard.bitmmo.api.transformer.Transformer;
 
 public abstract class SimplePlugin extends Transformer {
@@ -45,8 +47,7 @@ public abstract class SimplePlugin extends Transformer {
 	}
 
 	protected final void registerDependency(Class<?> clazz) {
-		registerDependency(
-				ClassStructure.create(clazz.getResourceAsStream(clazz.getSimpleName() + ".class")));
+		registerDependency(ClassStructure.create(clazz.getResourceAsStream(clazz.getSimpleName() + ".class")));
 	}
 
 	protected final void registerInstanceCreation(String clazz) {
@@ -64,8 +65,9 @@ public abstract class SimplePlugin extends Transformer {
 	}
 
 	private void createInstances(ClassNode cn) {
-		for (MethodNode mn : cn.methods) {
-			if (!LdcContains.MethodContains(mn, "PulpCore-Destroyer"))
+		for (MethodNode mn : cn.methods) {	
+			if (!new PatternBuilder().add(new LdcElement(new LdcInsnNode("PulpCore-Destroyer"))).build()
+					.contains(mn.instructions))
 				continue;
 
 			for (String clazz : instancesCreate) {

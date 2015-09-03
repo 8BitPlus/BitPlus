@@ -16,6 +16,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>. */
 package me.themallard.bitmmo.impl.analysis;
 
 import org.objectweb.asm.tree.ClassNode;
+import org.objectweb.asm.tree.LdcInsnNode;
 import org.objectweb.asm.tree.MethodNode;
 
 import me.themallard.bitmmo.api.analysis.Builder;
@@ -23,7 +24,8 @@ import me.themallard.bitmmo.api.analysis.ClassAnalyser;
 import me.themallard.bitmmo.api.analysis.IFieldAnalyser;
 import me.themallard.bitmmo.api.analysis.IMethodAnalyser;
 import me.themallard.bitmmo.api.analysis.SupportedHooks;
-import me.themallard.bitmmo.api.analysis.util.LdcContains;
+import me.themallard.bitmmo.api.analysis.util.pattern.PatternBuilder;
+import me.themallard.bitmmo.api.analysis.util.pattern.element.LdcElement;
 
 @SupportedHooks(fields = {}, methods = {})
 public class DirectionAnalyser extends ClassAnalyser {
@@ -40,8 +42,7 @@ public class DirectionAnalyser extends ClassAnalyser {
 			if (!mn.name.equals("<clinit>"))
 				continue;
 
-			return LdcContains.MethodContains(mn, "NORTH") && LdcContains.MethodContains(mn, "EAST")
-					&& LdcContains.MethodContains(mn, "SOUTH") && LdcContains.MethodContains(mn, "WEST");
+			return new PatternBuilder().add(new LdcElement(new LdcInsnNode("NORTH"))).build().contains(mn.instructions);
 		}
 
 		return false;

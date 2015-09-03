@@ -16,13 +16,15 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>. */
 package me.themallard.bitmmo.impl.analysis.ui;
 
 import org.objectweb.asm.tree.ClassNode;
+import org.objectweb.asm.tree.LdcInsnNode;
 
 import me.themallard.bitmmo.api.analysis.Builder;
 import me.themallard.bitmmo.api.analysis.ClassAnalyser;
 import me.themallard.bitmmo.api.analysis.IFieldAnalyser;
 import me.themallard.bitmmo.api.analysis.IMethodAnalyser;
 import me.themallard.bitmmo.api.analysis.SupportedHooks;
-import me.themallard.bitmmo.api.analysis.util.LdcContains;
+import me.themallard.bitmmo.api.analysis.util.pattern.PatternBuilder;
+import me.themallard.bitmmo.api.analysis.util.pattern.element.LdcElement;
 
 @SupportedHooks(fields = {}, methods = {})
 public class KeybindMenuAnalyser extends ClassAnalyser {
@@ -32,7 +34,9 @@ public class KeybindMenuAnalyser extends ClassAnalyser {
 
 	@Override
 	protected boolean matches(ClassNode cn) {
-		return LdcContains.ClassContains(cn, "Press any key to set the action,\nor Delete to clear");
+		return new PatternBuilder()
+				.add(new LdcElement(new LdcInsnNode("Press any key to set the action,\nor Delete to clear"))).build()
+				.contains(cn);
 	}
 
 	@Override

@@ -17,7 +17,9 @@ package me.themallard.bitmmo.api.analysis.util.pattern;
 
 import java.util.List;
 
+import org.objectweb.asm.tree.ClassNode;
 import org.objectweb.asm.tree.InsnList;
+import org.objectweb.asm.tree.MethodNode;
 
 import me.themallard.bitmmo.api.analysis.util.pattern.element.PatternElement;
 
@@ -26,6 +28,14 @@ public class Pattern {
 
 	public Pattern(List<PatternElement> elements) {
 		this.elements = elements;
+	}
+
+	public boolean contains(ClassNode cn) {
+		for (MethodNode mn : cn.methods)
+			if (contains(mn.instructions))
+				return true;
+
+		return false;
 	}
 
 	public boolean contains(InsnList list) {

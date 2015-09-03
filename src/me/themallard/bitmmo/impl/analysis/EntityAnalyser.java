@@ -20,13 +20,15 @@ import java.util.List;
 
 import org.objectweb.asm.tree.ClassNode;
 import org.objectweb.asm.tree.FieldNode;
+import org.objectweb.asm.tree.LdcInsnNode;
 
 import me.themallard.bitmmo.api.analysis.Builder;
 import me.themallard.bitmmo.api.analysis.ClassAnalyser;
 import me.themallard.bitmmo.api.analysis.IFieldAnalyser;
 import me.themallard.bitmmo.api.analysis.IMethodAnalyser;
 import me.themallard.bitmmo.api.analysis.SupportedHooks;
-import me.themallard.bitmmo.api.analysis.util.LdcContains;
+import me.themallard.bitmmo.api.analysis.util.pattern.PatternBuilder;
+import me.themallard.bitmmo.api.analysis.util.pattern.element.LdcElement;
 import me.themallard.bitmmo.api.hook.FieldHook;
 
 @SupportedHooks(fields = { "position&Lbm;" }, methods = {})
@@ -37,7 +39,8 @@ public class EntityAnalyser extends ClassAnalyser {
 
 	@Override
 	protected boolean matches(ClassNode cn) {
-		return LdcContains.ClassContains(cn, "Odd, while moving an entity ");
+		return new PatternBuilder().add(new LdcElement(new LdcInsnNode("Odd, while moving an entity "))).build()
+				.contains(cn);
 	}
 
 	public class PositionAnalyser implements IFieldAnalyser {

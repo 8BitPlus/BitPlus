@@ -16,6 +16,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>. */
 package me.themallard.bitmmo.impl.analysis.ui;
 
 import org.objectweb.asm.tree.ClassNode;
+import org.objectweb.asm.tree.LdcInsnNode;
 import org.objectweb.asm.tree.MethodNode;
 
 import me.themallard.bitmmo.api.analysis.Builder;
@@ -23,7 +24,8 @@ import me.themallard.bitmmo.api.analysis.ClassAnalyser;
 import me.themallard.bitmmo.api.analysis.IFieldAnalyser;
 import me.themallard.bitmmo.api.analysis.IMethodAnalyser;
 import me.themallard.bitmmo.api.analysis.SupportedHooks;
-import me.themallard.bitmmo.api.analysis.util.LdcContains;
+import me.themallard.bitmmo.api.analysis.util.pattern.PatternBuilder;
+import me.themallard.bitmmo.api.analysis.util.pattern.element.LdcElement;
 
 @SupportedHooks(fields = {}, methods = {})
 public class OptionsAnalyser extends ClassAnalyser {
@@ -34,7 +36,10 @@ public class OptionsAnalyser extends ClassAnalyser {
 	@Override
 	protected boolean matches(ClassNode cn) {
 		for (MethodNode mn : cn.methods) {
-			if (LdcContains.MethodContains(mn, "closebutton.png") & LdcContains.MethodContains(mn, "$(UI-MenuOptions)"))
+			if (new PatternBuilder().add(new LdcElement(new LdcInsnNode("closebutton.png"))).build()
+					.contains(mn.instructions)
+					&& new PatternBuilder().add(new LdcElement(new LdcInsnNode("$(UI-MenuOptions)"))).build()
+							.contains(mn.instructions))
 				return true;
 		}
 

@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.objectweb.asm.tree.ClassNode;
+import org.objectweb.asm.tree.LdcInsnNode;
 import org.objectweb.asm.tree.MethodNode;
 
 import me.themallard.bitmmo.api.analysis.Builder;
@@ -26,11 +27,16 @@ import me.themallard.bitmmo.api.analysis.ClassAnalyser;
 import me.themallard.bitmmo.api.analysis.IFieldAnalyser;
 import me.themallard.bitmmo.api.analysis.IMethodAnalyser;
 import me.themallard.bitmmo.api.analysis.SupportedHooks;
-import me.themallard.bitmmo.api.analysis.util.LdcContains;
+import me.themallard.bitmmo.api.analysis.util.pattern.Pattern;
+import me.themallard.bitmmo.api.analysis.util.pattern.PatternBuilder;
+import me.themallard.bitmmo.api.analysis.util.pattern.element.LdcElement;
 import me.themallard.bitmmo.api.hook.MethodHook;
 
 @SupportedHooks(fields = {}, methods = { "init&()V" })
 public class MainMenuAnalyser extends ClassAnalyser {
+	private static final Pattern TEXT = new PatternBuilder()
+			.add(new LdcElement(new LdcInsnNode("   ___  _ ___ _  _ _  _ ____"))).build();
+
 	public MainMenuAnalyser() {
 		// the main menu must go in the HTMud package because this is where
 		// Pulpcore looks for it
@@ -39,7 +45,7 @@ public class MainMenuAnalyser extends ClassAnalyser {
 
 	@Override
 	protected boolean matches(ClassNode cn) {
-		return LdcContains.ClassContains(cn, "   ___  _ ___ _  _ _  _ ____");
+		return TEXT.contains(cn);
 	}
 
 	@Override
@@ -53,7 +59,7 @@ public class MainMenuAnalyser extends ClassAnalyser {
 			List<MethodHook> list = new ArrayList<MethodHook>();
 
 			for (MethodNode mn : cn.methods) {
-				if (LdcContains.MethodContains(mn, "   ___  _ ___ _  _ _  _ ____"))
+				if (TEXT.contains(mn.instructions))
 					list.add(asMethodHook(mn, "init"));
 			}
 

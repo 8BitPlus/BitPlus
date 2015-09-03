@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.objectweb.asm.tree.ClassNode;
+import org.objectweb.asm.tree.LdcInsnNode;
 import org.objectweb.asm.tree.MethodNode;
 
 import me.themallard.bitmmo.api.analysis.Builder;
@@ -26,7 +27,8 @@ import me.themallard.bitmmo.api.analysis.ClassAnalyser;
 import me.themallard.bitmmo.api.analysis.IFieldAnalyser;
 import me.themallard.bitmmo.api.analysis.IMethodAnalyser;
 import me.themallard.bitmmo.api.analysis.SupportedHooks;
-import me.themallard.bitmmo.api.analysis.util.LdcContains;
+import me.themallard.bitmmo.api.analysis.util.pattern.PatternBuilder;
+import me.themallard.bitmmo.api.analysis.util.pattern.element.LdcElement;
 import me.themallard.bitmmo.api.hook.MethodHook;
 
 @SupportedHooks(fields = {}, methods = { "initResources&(II)Z" })
@@ -39,7 +41,9 @@ public class PlayerAnalyser extends ClassAnalyser {
 
 	@Override
 	protected boolean matches(ClassNode cn) {
-		return LdcContains.ClassContains(cn, "You realize you cannot breathe underwater. DEATH!");
+		return new PatternBuilder()
+				.add(new LdcElement(new LdcInsnNode("You realize you cannot breathe underwater. DEATH!"))).build()
+				.contains(cn);
 	}
 
 	@Override
@@ -56,7 +60,8 @@ public class PlayerAnalyser extends ClassAnalyser {
 				if (mn.name.equals("<init>"))
 					continue;
 
-				if (LdcContains.MethodContains(mn, "char-color-overlay.png"))
+				if (new PatternBuilder().add(new LdcElement(new LdcInsnNode("char-color-overlay.png"))).build()
+						.contains(mn.instructions))
 					list.add(asMethodHook(mn, "initResources"));
 			}
 

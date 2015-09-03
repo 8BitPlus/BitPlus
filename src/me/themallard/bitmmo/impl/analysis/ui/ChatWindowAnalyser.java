@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.objectweb.asm.tree.ClassNode;
+import org.objectweb.asm.tree.LdcInsnNode;
 import org.objectweb.asm.tree.MethodNode;
 
 import me.themallard.bitmmo.api.analysis.Builder;
@@ -26,7 +27,8 @@ import me.themallard.bitmmo.api.analysis.ClassAnalyser;
 import me.themallard.bitmmo.api.analysis.IFieldAnalyser;
 import me.themallard.bitmmo.api.analysis.IMethodAnalyser;
 import me.themallard.bitmmo.api.analysis.SupportedHooks;
-import me.themallard.bitmmo.api.analysis.util.LdcContains;
+import me.themallard.bitmmo.api.analysis.util.pattern.PatternBuilder;
+import me.themallard.bitmmo.api.analysis.util.pattern.element.LdcElement;
 import me.themallard.bitmmo.api.hook.MethodHook;
 
 @SupportedHooks(fields = {}, methods = { "addChatMessage&(Le;)V" })
@@ -37,7 +39,7 @@ public class ChatWindowAnalyser extends ClassAnalyser {
 
 	@Override
 	protected boolean matches(ClassNode cn) {
-		return LdcContains.ClassContains(cn, "$(UI-EnterToChat");
+		return new PatternBuilder().add(new LdcElement(new LdcInsnNode("$(UI-EnterToChat)"))).build().contains(cn);
 	}
 
 	@Override
@@ -51,8 +53,11 @@ public class ChatWindowAnalyser extends ClassAnalyser {
 			List<MethodHook> list = new ArrayList<MethodHook>();
 
 			for (MethodNode mn : cn.methods) {
-				if (LdcContains.MethodContains(mn, "\n") && LdcContains.MethodContains(mn, "\n<")
-						&& LdcContains.MethodContains(mn, "> "))
+				if (new PatternBuilder().add(new LdcElement(new LdcInsnNode("\n"))).build().contains(mn.instructions)
+						&& new PatternBuilder().add(new LdcElement(new LdcInsnNode("\n<"))).build()
+								.contains(mn.instructions)
+						&& new PatternBuilder().add(new LdcElement(new LdcInsnNode("> "))).build()
+								.contains(mn.instructions))
 					list.add(asMethodHook(mn, "addChatMessage"));
 			}
 

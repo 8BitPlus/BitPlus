@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.objectweb.asm.tree.ClassNode;
+import org.objectweb.asm.tree.LdcInsnNode;
 import org.objectweb.asm.tree.MethodNode;
 
 import me.themallard.bitmmo.api.analysis.Builder;
@@ -26,20 +27,22 @@ import me.themallard.bitmmo.api.analysis.ClassAnalyser;
 import me.themallard.bitmmo.api.analysis.IFieldAnalyser;
 import me.themallard.bitmmo.api.analysis.IMethodAnalyser;
 import me.themallard.bitmmo.api.analysis.SupportedHooks;
-import me.themallard.bitmmo.api.analysis.util.LdcContains;
+import me.themallard.bitmmo.api.analysis.util.pattern.Pattern;
+import me.themallard.bitmmo.api.analysis.util.pattern.PatternBuilder;
+import me.themallard.bitmmo.api.analysis.util.pattern.element.LdcElement;
 import me.themallard.bitmmo.api.hook.MethodHook;
 
 @SupportedHooks(fields = {}, methods = { "load&(Ljava/lang/String;)LcR;" })
 public class AudioClipAnalyser extends ClassAnalyser {
+	private static final Pattern LOADMETHOD = new PatternBuilder().add(new LdcElement(new LdcInsnNode(".au"))).build();
+
 	public AudioClipAnalyser() {
 		super("AudioClip");
 	}
 
 	@Override
 	protected boolean matches(ClassNode cn) {
-		return LdcContains.ClassContains(cn, "raw") && LdcContains.ClassContains(cn, ".au")
-				&& LdcContains.ClassContains(cn, ".wav") && LdcContains.ClassContains(cn, ".ogg")
-				&& LdcContains.ClassContains(cn, "pulpcore.sound.JOrbisAdapter");
+		return LOADMETHOD.contains(cn);
 	}
 
 	@Override
@@ -53,8 +56,7 @@ public class AudioClipAnalyser extends ClassAnalyser {
 			List<MethodHook> list = new ArrayList<MethodHook>();
 
 			for (MethodNode mn : cn.methods) {
-				if (LdcContains.MethodContains(mn, ".au") && LdcContains.MethodContains(mn, ".wav")
-						&& LdcContains.MethodContains(mn, ".ogg"))
+				if (LOADMETHOD.contains(mn.instructions))
 					list.add(asMethodHook(mn, "load"));
 			}
 

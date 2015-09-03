@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.objectweb.asm.tree.ClassNode;
+import org.objectweb.asm.tree.LdcInsnNode;
 import org.objectweb.asm.tree.MethodNode;
 
 import me.themallard.bitmmo.api.analysis.Builder;
@@ -26,18 +27,23 @@ import me.themallard.bitmmo.api.analysis.ClassAnalyser;
 import me.themallard.bitmmo.api.analysis.IFieldAnalyser;
 import me.themallard.bitmmo.api.analysis.IMethodAnalyser;
 import me.themallard.bitmmo.api.analysis.SupportedHooks;
-import me.themallard.bitmmo.api.analysis.util.LdcContains;
+import me.themallard.bitmmo.api.analysis.util.pattern.Pattern;
+import me.themallard.bitmmo.api.analysis.util.pattern.PatternBuilder;
+import me.themallard.bitmmo.api.analysis.util.pattern.element.LdcElement;
 import me.themallard.bitmmo.api.hook.MethodHook;
 
 @SupportedHooks(fields = {}, methods = { "update&(I)V", "init&()V" })
 public class DebugOverlayAnalyser extends ClassAnalyser {
+	private static final Pattern PATTERN = new PatternBuilder().add(new LdcElement(new LdcInsnNode(" / Ping: ")))
+			.build();
+
 	public DebugOverlayAnalyser() {
 		super("DebugOverlay");
 	}
 
 	@Override
 	protected boolean matches(ClassNode cn) {
-		return LdcContains.ClassContains(cn, " / Ping: ");
+		return PATTERN.contains(cn);
 	}
 
 	@Override
@@ -51,7 +57,7 @@ public class DebugOverlayAnalyser extends ClassAnalyser {
 			List<MethodHook> list = new ArrayList<MethodHook>();
 
 			for (MethodNode mn : cn.methods) {
-				if (LdcContains.MethodContains(mn, " / Ping: "))
+				if (PATTERN.contains(mn.instructions))
 					list.add(asMethodHook(mn, "update"));
 			}
 
@@ -63,9 +69,10 @@ public class DebugOverlayAnalyser extends ClassAnalyser {
 		@Override
 		public List<MethodHook> find(ClassNode cn) {
 			List<MethodHook> list = new ArrayList<MethodHook>();
+			final Pattern p = new PatternBuilder().add(new LdcElement(new LdcInsnNode("Stats go here."))).build();
 
 			for (MethodNode mn : cn.methods) {
-				if (LdcContains.MethodContains(mn, "Stats go here."))
+				if (p.contains(mn.instructions))
 					list.add(asMethodHook(mn, "init"));
 			}
 

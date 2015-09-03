@@ -19,11 +19,13 @@ import org.nullbool.api.util.ClassStructure;
 import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.tree.ClassNode;
 import org.objectweb.asm.tree.InsnList;
+import org.objectweb.asm.tree.LdcInsnNode;
 import org.objectweb.asm.tree.MethodInsnNode;
 import org.objectweb.asm.tree.MethodNode;
 import org.objectweb.asm.tree.VarInsnNode;
 
-import me.themallard.bitmmo.api.analysis.util.LdcContains;
+import me.themallard.bitmmo.api.analysis.util.pattern.PatternBuilder;
+import me.themallard.bitmmo.api.analysis.util.pattern.element.LdcElement;
 import me.themallard.bitmmo.api.util.Filter;
 import me.themallard.bitmmo.impl.plugin.Plugin;
 import me.themallard.bitmmo.impl.plugin.SimplePlugin;
@@ -63,7 +65,8 @@ public class GameContextPlugin extends SimplePlugin implements Opcodes {
 			if (!mn.name.equals("<init>"))
 				continue;
 
-			if (!LdcContains.MethodContains(mn, "char-color-overlay.png"))
+			if (!new PatternBuilder().add(new LdcElement(new LdcInsnNode("char-color-overlay.png"))).build()
+					.contains(mn.instructions))
 				continue;
 
 			mn.instructions.insert(mn.instructions.get(mn.instructions.size() - 2),

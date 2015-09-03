@@ -19,11 +19,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.objectweb.asm.tree.ClassNode;
+import org.objectweb.asm.tree.LdcInsnNode;
 import org.objectweb.asm.tree.MethodNode;
 
 import me.themallard.bitmmo.api.analysis.Builder;
 import me.themallard.bitmmo.api.analysis.IMethodAnalyser;
-import me.themallard.bitmmo.api.analysis.util.LdcContains;
+import me.themallard.bitmmo.api.analysis.util.pattern.PatternBuilder;
+import me.themallard.bitmmo.api.analysis.util.pattern.element.LdcElement;
 import me.themallard.bitmmo.api.hook.MethodHook;
 
 public class SteamOverlayPaymentHandlerAnalyser extends AbstractPaymentHandlerAnalyser {
@@ -40,7 +42,9 @@ public class SteamOverlayPaymentHandlerAnalyser extends AbstractPaymentHandlerAn
 			List<MethodHook> list = new ArrayList<MethodHook>();
 
 			for (MethodNode mn : cn.methods) {
-				if (LdcContains.MethodContains(mn, "Response from kicking off steam purchase url:")) {
+				if (new PatternBuilder()
+						.add(new LdcElement(new LdcInsnNode("Response from kicking off steam purchase url:"))).build()
+						.contains(cn)) {
 					list.add(asMethodHook(mn, "openWebpage"));
 					break;
 				}
