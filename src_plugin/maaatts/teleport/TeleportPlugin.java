@@ -25,6 +25,7 @@ public class TeleportPlugin extends SimplePlugin {
 	public TeleportPlugin() {
 		super("Teleport");
 		registerDependency(TeleportInject.class);
+		registerDependency(Waypoint.class);
 		registerInstanceCreation("maaatts/teleport/TeleportInject");
 	}
 

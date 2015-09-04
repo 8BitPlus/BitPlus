@@ -13,36 +13,34 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>. */
 
-package me.themallard.bitmmo.impl.plugin.position;
+package maaatts.teleport;
 
-public interface IPosition {
-	public double getX();
+import me.themallard.bitmmo.impl.plugin.position.IPosition;
 
-	public double getY();
+public class Waypoint {
+	public final String name;
+	public final IPosition loc;
 
-	public double getZ();
-
-	public int getRX();
-
-	public int getRY();
-
-	public void setX(double n);
-
-	public void setY(double n);
-
-	public void setZ(double n);
-
-	public void setRX(int n);
-
-	public void setRY(int n);
-	
-	public default void set(IPosition pos) {
-		setX(pos.getX());
-		setY(pos.getY());
-		setZ(pos.getZ());
-		setRX(pos.getRX());
-		setRY(pos.getRY());
+	public Waypoint(String name, IPosition loc) {
+		this.name = name;
+		this.loc = loc;
 	}
 
-	public String toString();
+	@Override
+	public int hashCode() {
+		return name.hashCode();
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (!(obj instanceof Waypoint))
+			return false;
+
+		Waypoint other = (Waypoint) obj;
+
+		if (!other.name.equals(this.name))
+			return false;
+
+		return other.loc.getX() == loc.getX() && other.loc.getY() == loc.getY() && other.loc.getZ() == loc.getZ();
+	}
 }

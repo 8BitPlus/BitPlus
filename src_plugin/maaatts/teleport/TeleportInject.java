@@ -15,14 +15,20 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>. */
 
 package maaatts.teleport;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import me.themallard.bitmmo.impl.plugin.chathook.ChatHookManager;
 import me.themallard.bitmmo.impl.plugin.chathook.IChatCallback;
 import me.themallard.bitmmo.impl.plugin.gamecontext.GameContext;
 import me.themallard.bitmmo.impl.plugin.position.IPosition;
 
 public class TeleportInject implements IChatCallback {
+	private Set<Waypoint> waypoints;
+
 	public TeleportInject() {
 		ChatHookManager.registerCallback(this);
+		waypoints = new HashSet<Waypoint>();
 	}
 
 	@Override
@@ -56,8 +62,45 @@ public class TeleportInject implements IChatCallback {
 			return;
 		}
 
+		if (message.startsWith("/addwaypoint")) {
+			if (message.length() < "/addwaypoint  ".length()) {
+				GameContext.getChatWindow().addChatMessage("Invalid command usage!\nTry /addwaypoint name");
+				return;
+			}
+
+			String name = message.substring("/addwaypoint ".length());
+			IPosition pos = GameContext.getPlayer().getPosition();
+			waypoints.add(new Waypoint(name, pos));
+			GameContext.getChatWindow().addChatMessage("Successfully created waypoint " + name);
+			return;
+		}
+
+		if (message.startsWith("/waypoints")) {
+			waypoints.forEach(waypoint -> GameContext.getChatWindow().addChatMessage("Waypoint " + waypoint.name));
+			return;
+		}
+
+		if (message.startsWith("/waypoint")) {
+			if (message.length() < "/waypoint  ".length()) {
+				GameContext.getChatWindow().addChatMessage("Invalid command usage!\nTry /waypoint name");
+				return;
+			}
+
+			String name = message.substring("/waypoint ".length());
+			Waypoint w = waypoints.stream().filter(waypoint -> waypoint.name.equals(name)).findFirst().get();
+
+			if (w == null) {
+				GameContext.getChatWindow().addChatMessage("Invalid waypoint!");
+				return;
+			}
+
+			GameContext.getPlayer().getPosition().set(w.loc);
+			return;
+		}
+
 		if (message.startsWith("/xyz")) {
 			GameContext.getChatWindow().addChatMessage(GameContext.getPlayer().getPosition().toString());
+			return;
 		}
 	}
 
@@ -81,4 +124,5 @@ public class TeleportInject implements IChatCallback {
 
 		return ret;
 	}
+
 }
