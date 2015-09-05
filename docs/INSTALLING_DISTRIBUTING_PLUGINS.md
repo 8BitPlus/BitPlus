@@ -2,6 +2,7 @@
 ### Installing a Plugin
 **Only install plugins from people that you trust. A plugin could
 contain code that steals your password or infects your computer with malware.**
+
 1. After you download the plugin, you should receive an archive (zip, rar etc)
 containing class files.
 2. Open `Bit+.jar` with an archive viewer, like WinRAR or 7zip
@@ -10,6 +11,7 @@ containing class files.
 ### Distributing Plugins
 <sup>(this tutorial assumes that you are using the Eclipse IDE. if you're not,
 go figure this out for yourself or ask for help).</sup>
+
 1. Navigate to your project in a file manager<br>
 ![Windows Explorer](http://i.imgur.com/EbNCEE8.png)
 2. Enter the `bin` directory
