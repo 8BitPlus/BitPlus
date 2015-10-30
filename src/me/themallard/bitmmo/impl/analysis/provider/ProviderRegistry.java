@@ -19,5 +19,6 @@ public class ProviderRegistry {
 	public static void init() {
 		AnalysisProviderImpl.init();
 		AnalysisProviderImpl1245.init();
+		AnalysisProviderImpl1250.init();
 	}
 }

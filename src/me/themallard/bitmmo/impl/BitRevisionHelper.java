@@ -41,6 +41,6 @@ public class BitRevisionHelper implements IRevisionHelper {
 
 	@Override
 	public String getUploadSite() {
-		return "http://datastore.themallard.me/bitmmo";
+		return "http://amazon.themallard.me/htmud";
 	}
 }
