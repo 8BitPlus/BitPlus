@@ -34,7 +34,7 @@ import me.themallard.bitmmo.impl.plugin.PluginLoader;
 import me.themallard.bitmmo.impl.transformer.TransformerRegistryImpl;
 
 public class Bitmmo {
-	public static final String VERSION = "1.2.0-dev";
+	public static final String VERSION = "1.2.0";
 	public static boolean copygamepack = true;
 	public static final List<String> PLUGIN_BLACKLIST = new ArrayList<String>();
 
