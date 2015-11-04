@@ -113,7 +113,7 @@ public class Bitmmo {
 
 			if (copygamepack) {
 				Thread.sleep(50);
-				Files.copy(new File(String.format("./out/%s/refactor_%s.jar", revision, revision)).toPath(),
+				Files.copy(new File(String.format("./out/refactor_%s.jar", revision, revision)).toPath(),
 						new File("./gamepack.jar").toPath(), StandardCopyOption.REPLACE_EXISTING);
 			}
 		} catch (Exception e) {

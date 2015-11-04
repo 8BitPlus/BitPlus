@@ -245,7 +245,7 @@ public abstract class AbstractAnalysisProvider {
 
 		CompleteJarDumper dumper = new CompleteJarDumper(contents);
 		String name = getRevision().getName();
-		File file = new File("out/" + name + "/refactor_" + name + ".jar");
+		File file = new File("out/" + "refactor_" + name + ".jar");
 		if (file.exists())
 			file.delete();
 		file.mkdirs();
