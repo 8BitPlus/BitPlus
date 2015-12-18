@@ -18,6 +18,7 @@ package me.themallard.bitmmo.impl.plugin.gamecontext;
 import me.themallard.bitmmo.impl.plugin.chathook.IChatWindow;
 import me.themallard.bitmmo.impl.plugin.playerhook.IPlayer;
 
+//TODO: Deprecate this in favor of the game's GodObject.
 public class GameContext {
 	private static IChatWindow ChatWindow;
 	private static IPlayer Player;
