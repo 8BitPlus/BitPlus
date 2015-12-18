@@ -42,15 +42,15 @@ public abstract class SimplePlugin extends Transformer {
 		instancesCreate = new HashSet<String>();
 	}
 
-	protected final void registerDependency(ClassNode cn) {
+	public final void registerDependency(ClassNode cn) {
 		deps.put(cn);
 	}
 
-	protected final void registerDependency(Class<?> clazz) {
+	public final void registerDependency(Class<?> clazz) {
 		registerDependency(ClassStructure.create(clazz.getResourceAsStream(clazz.getSimpleName() + ".class")));
 	}
 
-	protected final void registerInstanceCreation(String clazz) {
+	public final void registerInstanceCreation(String clazz) {
 		instancesCreate.add(clazz);
 	}
 
