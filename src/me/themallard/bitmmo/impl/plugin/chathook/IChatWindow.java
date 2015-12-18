@@ -19,4 +19,6 @@ public interface IChatWindow {
 	public void sendChatMessage(String param);
 
 	public void addChatMessage(String param);
+
+	public boolean isVisible();
 }

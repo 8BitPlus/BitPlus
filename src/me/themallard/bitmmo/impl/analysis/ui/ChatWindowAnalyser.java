@@ -31,7 +31,7 @@ import me.themallard.bitmmo.api.analysis.util.pattern.PatternBuilder;
 import me.themallard.bitmmo.api.analysis.util.pattern.element.LdcElement;
 import me.themallard.bitmmo.api.hook.MethodHook;
 
-@SupportedHooks(fields = {}, methods = { "addChatMessage&(Le;)V" })
+@SupportedHooks(fields = {}, methods = { "addChatMessage&(Le;)V", "isVisible&()Z" })
 public class ChatWindowAnalyser extends ClassAnalyser {
 	public ChatWindowAnalyser() {
 		super("ui/ChatWindow");
@@ -65,8 +65,22 @@ public class ChatWindowAnalyser extends ClassAnalyser {
 		}
 	}
 
+	public class IsVisibleAnalyser implements IMethodAnalyser {
+		@Override
+		public List<MethodHook> find(ClassNode cn) {
+			List<MethodHook> list = new ArrayList<MethodHook>();
+			for (MethodNode mn : cn.methods) {
+				if (mn.desc.equals("()Z")) {
+					list.add(asMethodHook(mn, "isVisible"));
+					break;
+				}
+			}
+			return list;
+		}
+	}
+
 	@Override
 	protected Builder<IMethodAnalyser> registerMethodAnalysers() {
-		return new Builder<IMethodAnalyser>().add(new AddChatMessageAnalyser());
+		return new Builder<IMethodAnalyser>().add(new AddChatMessageAnalyser()).add(new IsVisibleAnalyser());
 	}
 }

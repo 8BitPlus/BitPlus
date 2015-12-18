@@ -55,6 +55,7 @@ public class ChatHook extends SimplePlugin implements Opcodes {
 		hookRecieveMessage(cn);
 		createSendMessage(cn);
 		createAddMessage(cn);
+		createIsVisible(cn);
 		addInterface(cn, "me/themallard/bitmmo/impl/plugin/chathook/IChatWindow");
 	}
 
@@ -71,8 +72,7 @@ public class ChatHook extends SimplePlugin implements Opcodes {
 			InsnList inject = new InsnList();
 			inject.add(new VarInsnNode(ALOAD, 2));
 			inject.add(new MethodInsnNode(INVOKESTATIC, "me/themallard/bitmmo/impl/plugin/chathook/ChatHookManager",
-					"onChatMessage", "(Ljava/lang/String;)V",
-					false));
+					"onChatMessage", "(Ljava/lang/String;)V", false));
 
 			mn.instructions.insert(mn.instructions.get(offset), inject);
 		}
@@ -95,8 +95,7 @@ public class ChatHook extends SimplePlugin implements Opcodes {
 			inject.add(new MethodInsnNode(INVOKEVIRTUAL, getMsgInsn.owner, getMsgInsn.name, "()Ljava/lang/String;",
 					false));
 			inject.add(new MethodInsnNode(INVOKESTATIC, "me/themallard/bitmmo/impl/plugin/chathook/ChatHookManager",
-					"onReceiveMessage", "(Ljava/lang/String;)V",
-					false));
+					"onReceiveMessage", "(Ljava/lang/String;)V", false));
 
 			mn.instructions.insertBefore(mn.instructions.get(offset), inject);
 		}
@@ -185,5 +184,22 @@ public class ChatHook extends SimplePlugin implements Opcodes {
 			mv.visitInsn(RETURN);
 			mv.visitEnd();
 		}
+	}
+
+	public void createIsVisible(ClassNode cn) {
+		// again too lazy to make actual work
+		// steal it from original code and hope that it works ;)
+		InsnList method = null;
+
+		for (MethodNode mn : cn.methods) {
+			if (mn.desc.equals("()Z")) {
+				method = mn.instructions;
+				break;
+			}
+		}
+
+		MethodVisitor mv = cn.visitMethod(ACC_PUBLIC, "isVisible", "()Z", null, null);
+		method.accept(mv);
+		mv.visitEnd();
 	}
 }
