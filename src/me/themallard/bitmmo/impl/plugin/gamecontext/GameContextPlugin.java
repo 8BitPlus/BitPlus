@@ -39,7 +39,8 @@ public class GameContextPlugin extends SimplePlugin implements Opcodes {
 		addFilter(new Filter<ClassNode>() {
 			@Override
 			public boolean accept(ClassNode cn) {
-				return getRefactoredName(cn.name) == "ui/ChatWindow" || getRefactoredName(cn.name) == "Player";
+				return getRefactoredName(cn.name) == "ui/ChatWindow" || getRefactoredName(cn.name) == "Player" ||
+						cn.name.equals("HTMud/InputActionTracker");
 			}
 		});
 	}
@@ -53,9 +54,17 @@ public class GameContextPlugin extends SimplePlugin implements Opcodes {
 		case "Player":
 			doPlayer(cn);
 			break;
+		case "HTMud/InputActionTracker":
+			doInputTracker(cn);
 		default:
 			break;
 		}
+	}
+	
+	private void doInputTracker(ClassNode cn) {
+		MethodNode mn = cn.getMethodByName("<init>");
+		mn.instructions.insert(mn.instructions.get(mn.instructions.size() - 2),
+				createContextCall(mn, "setInputActionTracker", "me/themallard/bitmmo/impl/plugin/inputactiontracker/IInputActionTracker"));
 	}
 
 	private void doPlayer(ClassNode cn) {

@@ -16,12 +16,14 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>. */
 package me.themallard.bitmmo.impl.plugin.gamecontext;
 
 import me.themallard.bitmmo.impl.plugin.chathook.IChatWindow;
+import me.themallard.bitmmo.impl.plugin.inputactiontracker.IInputActionTracker;
 import me.themallard.bitmmo.impl.plugin.playerhook.IPlayer;
 
 //TODO: Deprecate this in favor of the game's GodObject.
 public class GameContext {
 	private static IChatWindow ChatWindow;
 	private static IPlayer Player;
+	private static IInputActionTracker InputActionTracker;
 
 	public static IChatWindow getChatWindow() {
 		return ChatWindow;
@@ -37,5 +39,13 @@ public class GameContext {
 
 	public static void setPlayer(IPlayer player) {
 		Player = player;
+	}
+
+	public static IInputActionTracker getInputActionTracker() {
+		return InputActionTracker;
+	}
+
+	public static void setInputActionTracker(IInputActionTracker inputActionTracker) {
+		InputActionTracker = inputActionTracker;
 	}
 }
