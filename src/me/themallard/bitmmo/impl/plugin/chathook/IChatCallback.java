@@ -16,7 +16,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>. */
 package me.themallard.bitmmo.impl.plugin.chathook;
 
 public interface IChatCallback {
-	public void onChatMessage(String x);
+	public boolean onChatMessage(String x);
 
 	public void onReceiveMessage(String message);
 }

@@ -28,7 +28,8 @@ public class TimeInject implements IChatCallback {
 	}
 
 	@Override
-	public void onChatMessage(String x) {
+	public boolean onChatMessage(String x) {
+		return false;
 	}
 
 	@Override

@@ -20,6 +20,7 @@ import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.tree.ClassNode;
 import org.objectweb.asm.tree.InsnList;
+import org.objectweb.asm.tree.JumpInsnNode;
 import org.objectweb.asm.tree.LdcInsnNode;
 import org.objectweb.asm.tree.MethodInsnNode;
 import org.objectweb.asm.tree.MethodNode;
@@ -27,7 +28,9 @@ import org.objectweb.asm.tree.VarInsnNode;
 
 import me.themallard.bitmmo.api.analysis.util.pattern.Pattern;
 import me.themallard.bitmmo.api.analysis.util.pattern.PatternBuilder;
-import me.themallard.bitmmo.api.analysis.util.pattern.element.*;
+import me.themallard.bitmmo.api.analysis.util.pattern.element.AnyElement;
+import me.themallard.bitmmo.api.analysis.util.pattern.element.InstructionElement;
+import me.themallard.bitmmo.api.analysis.util.pattern.element.LdcElement;
 import me.themallard.bitmmo.api.util.Filter;
 import me.themallard.bitmmo.impl.plugin.Plugin;
 import me.themallard.bitmmo.impl.plugin.SimplePlugin;
@@ -51,30 +54,37 @@ public class ChatHook extends SimplePlugin implements Opcodes {
 
 	@Override
 	public void run(ClassNode cn) {
-		hookSendMessage(cn);
-		hookRecieveMessage(cn);
 		createSendMessage(cn);
 		createAddMessage(cn);
 		createIsVisible(cn);
+		hookSendMessage(cn);
+		hookRecieveMessage(cn);
 		addInterface(cn, "me/themallard/bitmmo/impl/plugin/chathook/IChatWindow");
 	}
 
 	private void hookSendMessage(ClassNode cn) {
-		Pattern p = new PatternBuilder().add(new InstructionElement(INVOKESTATIC), new AnyElement(),
-				new LdcElement(new LdcInsnNode("Chat")), new InstructionElement(INVOKEVIRTUAL)).build();
+		Pattern p = new PatternBuilder()
+				.add(new InstructionElement(INVOKESTATIC), new AnyElement(), new LdcElement(new LdcInsnNode("Chat")),
+						new InstructionElement(INVOKEVIRTUAL), new InstructionElement(POP))
+				.build();
 
 		for (MethodNode mn : cn.methods) {
 			if (!p.contains(mn.instructions))
 				continue;
 
-			int offset = p.getOffset(mn.instructions) + 4;
+			int offset = p.getOffset(mn.instructions) - 9;
+
+			// steal
+			JumpInsnNode jin = (JumpInsnNode) mn.instructions.get(offset - 1);
 
 			InsnList inject = new InsnList();
 			inject.add(new VarInsnNode(ALOAD, 2));
 			inject.add(new MethodInsnNode(INVOKESTATIC, "me/themallard/bitmmo/impl/plugin/chathook/ChatHookManager",
-					"onChatMessage", "(Ljava/lang/String;)V", false));
+					"onChatMessage", "(Ljava/lang/String;)Z", false));
+			inject.add(new JumpInsnNode(IFNE, jin.label));
+//			inject.add(new InsnNode(POP));
 
-			mn.instructions.insert(mn.instructions.get(offset), inject);
+			mn.instructions.insertBefore(mn.instructions.get(offset), inject);
 		}
 	}
 

@@ -32,7 +32,7 @@ public class TeleportInject implements IChatCallback {
 	}
 
 	@Override
-	public void onChatMessage(String message) {
+	public boolean onChatMessage(String message) {
 		if (message.startsWith("/blink")) {
 			String subst = message.substring("/blink ".length());
 			try {
@@ -43,9 +43,8 @@ public class TeleportInject implements IChatCallback {
 				GameContext.getPlayer().getPosition().setZ(orig.getZ() + pos[2]);
 			} catch (Exception e) {
 				GameContext.getChatWindow().addChatMessage("Invalid command usage!\nTry /blink x y z");
-				return;
 			}
-			return;
+			return true;
 		}
 
 		if (message.startsWith("/goto")) {
@@ -57,33 +56,32 @@ public class TeleportInject implements IChatCallback {
 				GameContext.getPlayer().getPosition().setZ(pos[2]);
 			} catch (Exception e) {
 				GameContext.getChatWindow().addChatMessage("Invalid command usage!\nTry /goto x y z");
-				return;
 			}
-			return;
+			return true;
 		}
 
 		if (message.startsWith("/addwaypoint")) {
 			if (message.length() < "/addwaypoint  ".length()) {
 				GameContext.getChatWindow().addChatMessage("Invalid command usage!\nTry /addwaypoint name");
-				return;
+				return true;
 			}
 
 			String name = message.substring("/addwaypoint ".length());
 			IPosition pos = GameContext.getPlayer().getPosition();
 			waypoints.add(new Waypoint(name, pos));
 			GameContext.getChatWindow().addChatMessage("Successfully created waypoint " + name);
-			return;
+			return true;
 		}
 
 		if (message.startsWith("/waypoints")) {
 			waypoints.forEach(waypoint -> GameContext.getChatWindow().addChatMessage("Waypoint " + waypoint.name));
-			return;
+			return true;
 		}
 
 		if (message.startsWith("/waypoint")) {
 			if (message.length() < "/waypoint  ".length()) {
 				GameContext.getChatWindow().addChatMessage("Invalid command usage!\nTry /waypoint name");
-				return;
+				return true;
 			}
 
 			String name = message.substring("/waypoint ".length());
@@ -91,24 +89,26 @@ public class TeleportInject implements IChatCallback {
 
 			if (w == null) {
 				GameContext.getChatWindow().addChatMessage("Invalid waypoint!");
-				return;
+				return true;
 			}
 
 			GameContext.getPlayer().getPosition().set(w.loc);
-			return;
+			return true;
 		}
 
 		if (message.startsWith("/xyz")) {
 			GameContext.getChatWindow().addChatMessage(GameContext.getPlayer().getPosition().toString());
-			return;
+			return true;
 		}
+		
+		return false;
 	}
 
 	@Override
 	public void onReceiveMessage(String message) {
 	}
 
-	private int[] parsePosition(String pos) throws Exception {
+	private static int[] parsePosition(String pos) throws Exception {
 		String[] split = pos.split(" ");
 		if (split.length != 3)
 			throw new Exception();
