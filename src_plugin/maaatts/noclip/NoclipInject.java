@@ -38,6 +38,12 @@ public class NoclipInject implements IChatCallback, ITickCallback {
 	public boolean onChatMessage(String message) {
 		if (message.equals("/nc")) {
 			nc = !nc;
+			StringBuilder sb = new StringBuilder();
+			sb.append("[Bit+] ");
+			sb.append(nc ? "Enabled" : "Disabled");
+			sb.append(' ');
+			sb.append("noclip.");
+			GameContext.getChatWindow().addChatMessage(sb.toString());
 			return true;
 		}
 
@@ -54,20 +60,23 @@ public class NoclipInject implements IChatCallback, ITickCallback {
 		IPlayer player = GameContext.getPlayer();
 		IChatWindow chatWindow = GameContext.getChatWindow();
 
+		int noclipSpeed = 4;
+		// int noclipSpeed = 15;
+
 		if (nc && tracker != null && player != null && !chatWindow.isVisible()) {
 			IPosition orig = player.getPosition();
 
 			if (tracker.isKeyDown(InputActionTracker$ActionType.MOVE_NORTH))
-				player.getPosition().setY(orig.getY() - 4);
+				player.getPosition().setY(orig.getY() - noclipSpeed);
 
 			if (tracker.isKeyDown(InputActionTracker$ActionType.MOVE_SOUTH))
-				player.getPosition().setY(orig.getY() + 4);
+				player.getPosition().setY(orig.getY() + noclipSpeed);
 
 			if (tracker.isKeyDown(InputActionTracker$ActionType.MOVE_EAST))
-				player.getPosition().setX(orig.getX() + 4);
+				player.getPosition().setX(orig.getX() + noclipSpeed);
 
 			if (tracker.isKeyDown(InputActionTracker$ActionType.MOVE_WEST))
-				player.getPosition().setX(orig.getX() - 4);
+				player.getPosition().setX(orig.getX() - noclipSpeed);
 		}
 	}
 }
