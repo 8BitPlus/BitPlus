@@ -1394,6 +1394,7 @@ final class Frame {
      */
     private static boolean merge(final ClassWriter cw, int t,
             final int[] types, final int index) {
+        if (!((index >= 0) && (index < types.length))) return false;
         int u = types[index];
         if (u == t) {
             // if the types are equal, merge(u,t)=u, so there is no change
