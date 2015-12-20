@@ -35,7 +35,7 @@ public class NoclipInject implements IChatCallback, ITickCallback {
 	public NoclipInject() {
 		ChatHookManager.registerCallback(this);
 		TickHookManager.registerCallback(this);
-		HelpManager.addHelp("Noclip", "Noclip. /nc to enable");
+		HelpManager.addHelp("Noclip", "Noclip. /nc to enable and /ncspeed speed to change the speed");
 	}
 
 	@Override
@@ -48,6 +48,17 @@ public class NoclipInject implements IChatCallback, ITickCallback {
 			sb.append(' ');
 			sb.append("noclip.");
 			GameContext.getChatWindow().addChatMessage(sb.toString());
+			return true;
+		}
+		
+		if(message.startsWith("/ncspeed")) {
+			String substring = message.substring("/ncspeed ".length());
+			try {
+				ncSpeed = Integer.parseInt(substring);
+				GameContext.getChatWindow().addChatMessage("Changed noclip speed to " + ncSpeed);
+			} catch(NumberFormatException e) {
+				GameContext.getChatWindow().addChatMessage("Invalid command usage!\nTry /ncspeed speed");
+			}
 			return true;
 		}
 
