@@ -25,13 +25,17 @@ import me.themallard.bitmmo.impl.plugin.playerhook.IPlayer;
 import me.themallard.bitmmo.impl.plugin.position.IPosition;
 import me.themallard.bitmmo.impl.plugin.tickhook.ITickCallback;
 import me.themallard.bitmmo.impl.plugin.tickhook.TickHookManager;
+import ojman101.help.HelpManager;
 
 public class NoclipInject implements IChatCallback, ITickCallback {
+	
 	private boolean nc = false;
+	private int ncSpeed = 4;
 
 	public NoclipInject() {
 		ChatHookManager.registerCallback(this);
 		TickHookManager.registerCallback(this);
+		HelpManager.addHelp("Noclip", "Noclip. /nc to enable and /ncspeed speed to change the speed");
 	}
 
 	@Override
@@ -44,6 +48,13 @@ public class NoclipInject implements IChatCallback, ITickCallback {
 			sb.append(' ');
 			sb.append("noclip.");
 			GameContext.getChatWindow().addChatMessage(sb.toString());
+			return true;
+		}
+		
+		if(message.startsWith("/ncspeed")) {
+			String substring = message.substring("/ncspeed ".length());
+			ncSpeed = Integer.parseInt(substring);
+			GameContext.getChatWindow().addChatMessage("Changed noclip speed to " + ncSpeed);
 			return true;
 		}
 
@@ -60,23 +71,20 @@ public class NoclipInject implements IChatCallback, ITickCallback {
 		IPlayer player = GameContext.getPlayer();
 		IChatWindow chatWindow = GameContext.getChatWindow();
 
-		int noclipSpeed = 4;
-		// int noclipSpeed = 15;
-
 		if (nc && tracker != null && player != null && !chatWindow.isVisible()) {
 			IPosition orig = player.getPosition();
 
 			if (tracker.isKeyDown(InputActionTracker$ActionType.MOVE_NORTH))
-				player.getPosition().setY(orig.getY() - noclipSpeed);
+				player.getPosition().setY(orig.getY() - ncSpeed);
 
 			if (tracker.isKeyDown(InputActionTracker$ActionType.MOVE_SOUTH))
-				player.getPosition().setY(orig.getY() + noclipSpeed);
+				player.getPosition().setY(orig.getY() + ncSpeed);
 
 			if (tracker.isKeyDown(InputActionTracker$ActionType.MOVE_EAST))
-				player.getPosition().setX(orig.getX() + noclipSpeed);
+				player.getPosition().setX(orig.getX() + ncSpeed);
 
 			if (tracker.isKeyDown(InputActionTracker$ActionType.MOVE_WEST))
-				player.getPosition().setX(orig.getX() - noclipSpeed);
+				player.getPosition().setX(orig.getX() - ncSpeed);
 		}
 	}
 }

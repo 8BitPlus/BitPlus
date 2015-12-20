@@ -23,6 +23,7 @@ import me.themallard.bitmmo.impl.plugin.chathook.IChatCallback;
 import me.themallard.bitmmo.impl.plugin.gamecontext.GameContext;
 
 public class TimeInject implements IChatCallback {
+	
 	public TimeInject() {
 		ChatHookManager.registerCallback(this);
 	}
