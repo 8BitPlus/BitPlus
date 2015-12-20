@@ -22,12 +22,14 @@ import me.themallard.bitmmo.impl.plugin.chathook.ChatHookManager;
 import me.themallard.bitmmo.impl.plugin.chathook.IChatCallback;
 import me.themallard.bitmmo.impl.plugin.gamecontext.GameContext;
 import me.themallard.bitmmo.impl.plugin.position.IPosition;
+import ojman101.help.HelpManager;
 
 public class TeleportInject implements IChatCallback {
 	private Set<Waypoint> waypoints;
 
 	public TeleportInject() {
 		ChatHookManager.registerCallback(this);
+		HelpManager.addHelp("Teleport", "Teleports you. /blink x y z, /goto x y z, /addwaypoint name, /waypoints, /waypoint name, /xyz");
 		waypoints = new HashSet<Waypoint>();
 	}
 

@@ -18,12 +18,14 @@ package maaatts.leet;
 import me.themallard.bitmmo.impl.plugin.chathook.ChatHookManager;
 import me.themallard.bitmmo.impl.plugin.chathook.IChatCallback;
 import me.themallard.bitmmo.impl.plugin.gamecontext.GameContext;
+import ojman101.help.HelpManager;
 
 public class LeetInject implements IChatCallback {
 	private boolean leet = false;
 
 	public LeetInject() {
 		ChatHookManager.registerCallback(this);
+		HelpManager.addHelp("Leet", "Makes you speak like an idiot. /leet");
 	}
 
 	@Override
