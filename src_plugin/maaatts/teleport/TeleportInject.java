@@ -22,12 +22,14 @@ import me.themallard.bitmmo.impl.plugin.chathook.ChatHookManager;
 import me.themallard.bitmmo.impl.plugin.chathook.IChatCallback;
 import me.themallard.bitmmo.impl.plugin.gamecontext.GameContext;
 import me.themallard.bitmmo.impl.plugin.position.IPosition;
+import ojman101.help.HelpManager;
 
 public class TeleportInject implements IChatCallback {
 	private Set<Waypoint> waypoints;
 
 	public TeleportInject() {
 		ChatHookManager.registerCallback(this);
+		HelpManager.addHelp("Teleport", "Teleports you. /blink x y z, /goto x y z, /addwaypoint name, /waypoints, /waypoint name, /xyz");
 		waypoints = new HashSet<Waypoint>();
 	}
 
@@ -42,7 +44,7 @@ public class TeleportInject implements IChatCallback {
 				GameContext.getPlayer().getPosition().setY(orig.getY() + pos[1]);
 				GameContext.getPlayer().getPosition().setZ(orig.getZ() + pos[2]);
 			} catch (Exception e) {
-				GameContext.getChatWindow().addChatMessage("Invalid command usage!\nTry /blink x y z");
+				GameContext.getChatWindow().addChatMessage("[Bit+] Invalid command usage!\nTry /blink x y z");
 			}
 			return true;
 		}
@@ -55,21 +57,21 @@ public class TeleportInject implements IChatCallback {
 				GameContext.getPlayer().getPosition().setY(pos[1]);
 				GameContext.getPlayer().getPosition().setZ(pos[2]);
 			} catch (Exception e) {
-				GameContext.getChatWindow().addChatMessage("Invalid command usage!\nTry /goto x y z");
+				GameContext.getChatWindow().addChatMessage("[Bit+] Invalid command usage!\nTry /goto x y z");
 			}
 			return true;
 		}
 
 		if (message.startsWith("/addwaypoint")) {
 			if (message.length() < "/addwaypoint  ".length()) {
-				GameContext.getChatWindow().addChatMessage("Invalid command usage!\nTry /addwaypoint name");
+				GameContext.getChatWindow().addChatMessage("[Bit+] Invalid command usage!\nTry /addwaypoint name");
 				return true;
 			}
 
 			String name = message.substring("/addwaypoint ".length());
 			IPosition pos = GameContext.getPlayer().getPosition();
 			waypoints.add(new Waypoint(name, pos));
-			GameContext.getChatWindow().addChatMessage("Successfully created waypoint " + name);
+			GameContext.getChatWindow().addChatMessage("[Bit+] Successfully created waypoint " + name);
 			return true;
 		}
 
@@ -80,7 +82,7 @@ public class TeleportInject implements IChatCallback {
 
 		if (message.startsWith("/waypoint")) {
 			if (message.length() < "/waypoint  ".length()) {
-				GameContext.getChatWindow().addChatMessage("Invalid command usage!\nTry /waypoint name");
+				GameContext.getChatWindow().addChatMessage("[Bit+] Invalid command usage!\nTry /waypoint name");
 				return true;
 			}
 
@@ -88,7 +90,7 @@ public class TeleportInject implements IChatCallback {
 			Waypoint w = waypoints.stream().filter(waypoint -> waypoint.name.equals(name)).findFirst().get();
 
 			if (w == null) {
-				GameContext.getChatWindow().addChatMessage("Invalid waypoint!");
+				GameContext.getChatWindow().addChatMessage("[Bit+] Invalid waypoint!");
 				return true;
 			}
 
@@ -97,7 +99,7 @@ public class TeleportInject implements IChatCallback {
 		}
 
 		if (message.startsWith("/xyz")) {
-			GameContext.getChatWindow().addChatMessage(GameContext.getPlayer().getPosition().toString());
+			GameContext.getChatWindow().addChatMessage("[Bit+] " + GameContext.getPlayer().getPosition().toString());
 			return true;
 		}
 		
