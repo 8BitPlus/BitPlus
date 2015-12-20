@@ -55,9 +55,9 @@ public class NoclipInject implements IChatCallback, ITickCallback {
 			String substring = message.substring("/ncspeed ".length());
 			try {
 				ncSpeed = Integer.parseInt(substring);
-				GameContext.getChatWindow().addChatMessage("Changed noclip speed to " + ncSpeed);
+				GameContext.getChatWindow().addChatMessage("[Bit+] Changed noclip speed to " + ncSpeed);
 			} catch(NumberFormatException e) {
-				GameContext.getChatWindow().addChatMessage("Invalid command usage!\nTry /ncspeed speed");
+				GameContext.getChatWindow().addChatMessage("[Bit+] Invalid command usage!\nTry /ncspeed speed");
 			}
 			return true;
 		}

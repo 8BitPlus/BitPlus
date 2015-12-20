@@ -18,7 +18,10 @@ public class NospeakInject implements IChatCallback {
 	public boolean onChatMessage(String message) {
 		if(message.startsWith("/nospeak")) {
 			nospeak = !nospeak;
-			GameContext.getChatWindow().addChatMessage("[BitPlus] Nospeak toggled");
+			StringBuilder sb = new StringBuilder();
+			sb.append("[Bit+] Nospeak");
+			sb.append(nospeak ? "Enabled" : "Disabled");
+			GameContext.getChatWindow().addChatMessage(sb.toString());
 			return true;
 		}
 		return nospeak;

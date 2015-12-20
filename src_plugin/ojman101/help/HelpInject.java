@@ -16,13 +16,13 @@ public class HelpInject implements IChatCallback {
 		if(message.equalsIgnoreCase("/bitHelp")) {
 			for(String key : HelpManager.getHelps().keySet()) {
 				String value = HelpManager.getHelpDescriptionFor(key);
-				GameContext.getChatWindow().addChatMessage(key + " - " + value);
+				GameContext.getChatWindow().addChatMessage("[Bit+] " + key + " - " + value);
 			}
 			return true;
 		}
 		if(message.startsWith("/bitHelp")) {
 			String substring = message.substring("/bitHelp ".length());
-			GameContext.getChatWindow().addChatMessage(HelpManager.getHelpDescriptionFor(substring));
+			GameContext.getChatWindow().addChatMessage("[Bit+] " + HelpManager.getHelpDescriptionFor(substring));
 			return true;
 		}
 		return false;
