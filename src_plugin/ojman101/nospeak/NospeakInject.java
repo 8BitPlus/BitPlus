@@ -6,21 +6,23 @@ import me.themallard.bitmmo.impl.plugin.gamecontext.GameContext;
 import ojman101.help.HelpManager;
 
 public class NospeakInject implements IChatCallback {
-	
+
 	private boolean nospeak;
-	
+
 	public NospeakInject() {
 		ChatHookManager.registerCallback(this);
-		HelpManager.addHelp("Nospeak", "Stops you from speaking in the chat. /nospeak");
+		HelpManager.addHelp("nospeak", "Toggle nospeak.");
 	}
 
 	@Override
 	public boolean onChatMessage(String message) {
-		if(message.startsWith("/nospeak")) {
+		if (message.startsWith("/nospeak")) {
 			nospeak = !nospeak;
 			StringBuilder sb = new StringBuilder();
-			sb.append("[Bit+] Nospeak");
+			sb.append("[Bit+] ");
 			sb.append(nospeak ? "Enabled" : "Disabled");
+			sb.append(' ');
+			sb.append("nospeak.");
 			GameContext.getChatWindow().addChatMessage(sb.toString());
 			return true;
 		}

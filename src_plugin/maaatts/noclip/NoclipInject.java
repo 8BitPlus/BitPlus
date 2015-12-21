@@ -35,7 +35,8 @@ public class NoclipInject implements IChatCallback, ITickCallback {
 	public NoclipInject() {
 		ChatHookManager.registerCallback(this);
 		TickHookManager.registerCallback(this);
-		HelpManager.addHelp("Noclip", "Noclip. /nc to enable and /ncspeed speed to change the speed");
+		HelpManager.addHelp("nc", "Enable noclip.");
+		HelpManager.addHelp("ncspeed", "<speed> | Set noclip speed.");
 	}
 
 	@Override

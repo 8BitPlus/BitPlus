@@ -25,7 +25,7 @@ public class LeetInject implements IChatCallback {
 
 	public LeetInject() {
 		ChatHookManager.registerCallback(this);
-		HelpManager.addHelp("Leet", "Makes you speak like an idiot. /leet");
+		HelpManager.addHelp("leet", "Toggle l33t speak mode.");
 	}
 
 	@Override

@@ -13,7 +13,9 @@ public class WalkspeedInject implements IChatCallback {
 	
 	public WalkspeedInject() {
 		ChatHookManager.registerCallback(this);
-		HelpManager.addHelp("Walkspeed", "Changes the walk speed /masterwalkspeed walkspeed, /roadwalkspeed walkspeed and /sandwalkspeed walkspeed");
+		HelpManager.addHelp("masterwalkspeed", "<speed> | Change master walk speed.");
+		HelpManager.addHelp("roadwalkspeed", "<speed> | Change road walk speed.");
+		HelpManager.addHelp("sandwalkspeed", "<speed> | Change sand walk speed.");
 	}
 	
 	public static double getWalkSpeed() {

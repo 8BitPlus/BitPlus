@@ -16,6 +16,6 @@ public class HelpManager {
 	}
 	
 	public static String getHelpDescriptionFor(String pluginName) {
-		return lookup.containsKey(pluginName.toLowerCase()) ? lookup.get(pluginName.toLowerCase()) : "There is no command for that";
+		return lookup.containsKey(pluginName.toLowerCase()) ? lookup.get(pluginName.toLowerCase()) : "Command not found.";
 	}
 }
