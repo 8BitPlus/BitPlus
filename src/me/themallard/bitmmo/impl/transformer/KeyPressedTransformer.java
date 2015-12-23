@@ -13,12 +13,27 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>. */
 
-package me.themallard.bitmmo.impl.plugin.inputactiontracker;
+package me.themallard.bitmmo.impl.transformer;
 
-import HTMud.InputActionTracker$ActionType;
+import org.objectweb.asm.tree.ClassNode;
 
-public interface IInputActionTracker {
-	public boolean isKeyDown(InputActionTracker$ActionType paramActionType);
+import me.themallard.bitmmo.api.transformer.Transformer;
+import me.themallard.bitmmo.api.util.Filter;
 
-	public void setKeyDown(InputActionTracker$ActionType paramActionType, boolean r);
+public class KeyPressedTransformer extends Transformer {
+	public KeyPressedTransformer() {
+		super("KeyPresser");
+		addFilter(new Filter<ClassNode>() {
+			public boolean accept(ClassNode cn) {
+				String x = getRefactoredName(cn.name);
+				return x != null && x.equals("Key");
+			}
+		});
+	}
+
+	@Override
+	public void run(ClassNode cn) {
+		createSetter(cn, cn.fields.get(2), "setKeyPressed");
+		createGetter(cn, cn.fields.get(2), "getKeyPressed");
+	}
 }

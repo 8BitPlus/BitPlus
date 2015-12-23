@@ -22,6 +22,6 @@ import me.themallard.bitmmo.api.transformer.Transformer;
 public class TransformerRegistryImpl extends AbstractTransformerRegistry {
 	@Override
 	protected Builder<Transformer> registerTransformers() {
-		return new Builder<Transformer>().addAll(new LaserWeaponGodTransformer());
+		return new Builder<Transformer>().addAll(new LaserWeaponGodTransformer(), new KeyPressedTransformer());
 	}
 }

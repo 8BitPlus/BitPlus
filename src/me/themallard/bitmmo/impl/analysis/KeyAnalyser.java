@@ -19,64 +19,51 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.objectweb.asm.tree.ClassNode;
-import org.objectweb.asm.tree.MethodNode;
-import org.objectweb.asm.tree.FieldNode;
 
 import me.themallard.bitmmo.api.analysis.Builder;
 import me.themallard.bitmmo.api.analysis.ClassAnalyser;
 import me.themallard.bitmmo.api.analysis.IFieldAnalyser;
 import me.themallard.bitmmo.api.analysis.IMethodAnalyser;
 import me.themallard.bitmmo.api.analysis.SupportedHooks;
+import me.themallard.bitmmo.api.analysis.util.pattern.Pattern;
+import me.themallard.bitmmo.api.analysis.util.pattern.PatternBuilder;
+import me.themallard.bitmmo.api.analysis.util.pattern.element.InstructionElement;
 import me.themallard.bitmmo.api.hook.FieldHook;
-import me.themallard.bitmmo.api.hook.MethodHook;
 
-@SupportedHooks(fields = { "keys&Ljava/util/HashMap;" }, methods = {
-		"isKeyDown&(LHTMud/InputActionTracker$ActionType;)Z" })
-public class InputActionTrackerAnalyser extends ClassAnalyser {
-	public InputActionTrackerAnalyser() {
-		super("HTMud/InputActionTracker");
-	}
+@SupportedHooks(fields = {"keyPressed&Z"}, methods = {})
+public class KeyAnalyser extends ClassAnalyser {
+	private static final Pattern p = new PatternBuilder().add(new InstructionElement(ALOAD),
+			new InstructionElement(GETFIELD), new InstructionElement(PUTFIELD), new InstructionElement(ALOAD),
+			new InstructionElement(ICONST_0), new InstructionElement(PUTFIELD), new InstructionElement(ALOAD),
+			new InstructionElement(GETFIELD), new InstructionElement(ICONST_M1), new InstructionElement(IF_ICMPEQ))
+			.build();
 
 	@Override
 	protected boolean matches(ClassNode cn) {
-		return cn.name.equals("HTMud/InputActionTracker");
+		return p.contains(cn);
 	}
 
-	public class KeysAnalyser implements IFieldAnalyser {
+	public KeyAnalyser() {
+		super("Key");
+	}
+
+	public class KeyPressedAnalyser implements IFieldAnalyser {
 		@Override
 		public List<FieldHook> find(ClassNode cn) {
 			List<FieldHook> list = new ArrayList<FieldHook>();
-
-			for (FieldNode fn : cn.fields) {
-				if (fn.desc.equals("Ljava/util/HashMap;")) list.add(asFieldHook(fn, "keys"));
-			}
-
+			list.add(asFieldHook(cn.fields.get(2), "keyPressed"));
 			return list;
 		}
 	}
 
 	@Override
 	protected Builder<IFieldAnalyser> registerFieldAnalysers() {
-		return new Builder<IFieldAnalyser>().add(new KeysAnalyser());
-	}
-
-	public class MethodAnalyser implements IMethodAnalyser {
-		@Override
-		public List<MethodHook> find(ClassNode cn) {
-			List<MethodHook> list = new ArrayList<MethodHook>();
-			for (MethodNode mn : cn.methods) {
-				// System.out.printf("%s %s\n", mn.name, mn.desc);
-				if (mn.desc.equals("(LHTMud/InputActionTracker$ActionType;)Z")) {
-					list.add(asMethodHook(mn, "isKeyDown"));
-					break;
-				}
-			}
-			return list;
-		}
+		return new Builder<IFieldAnalyser>().add(new KeyPressedAnalyser());
 	}
 
 	@Override
 	protected Builder<IMethodAnalyser> registerMethodAnalysers() {
-		return new Builder<IMethodAnalyser>().add(new MethodAnalyser());
+		// TODO Auto-generated method stub
+		return null;
 	}
 }
