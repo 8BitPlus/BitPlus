@@ -46,10 +46,18 @@ public class TickHook extends SimplePlugin implements Opcodes {
 	}
 
 	private void registerPreTickHook(MethodNode mn) {
-		int offset = PATTERN.getOffset(mn.instructions) - 20;
+		int offset = PATTERN.getOffset(mn.instructions) - 30; // -20
 
 		mn.instructions.insert(mn.instructions.get(offset), new MethodInsnNode(INVOKESTATIC,
 				"me/themallard/bitmmo/impl/plugin/tickhook/TickHookManager", "preTick", "()V", false));
+	}
+	
+	private void registerPostTickHook(MethodNode mn) {
+//		int offset = PATTERN.getOffset(mn.instructions) + 12; // -20
+		int offset = mn.instructions.size() - 30; 
+
+		mn.instructions.insert(mn.instructions.get(offset), new MethodInsnNode(INVOKESTATIC,
+				"me/themallard/bitmmo/impl/plugin/tickhook/TickHookManager", "postTick", "()V", false));
 	}
 
 	@Override
@@ -57,6 +65,7 @@ public class TickHook extends SimplePlugin implements Opcodes {
 		for (MethodNode mn : cn.methods) {
 			if (PATTERN.contains(mn.instructions)) {
 				registerPreTickHook(mn);
+				registerPostTickHook(mn);
 				break;
 			}
 		}

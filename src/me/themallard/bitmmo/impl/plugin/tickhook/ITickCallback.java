@@ -16,5 +16,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>. */
 package me.themallard.bitmmo.impl.plugin.tickhook;
 
 public interface ITickCallback {
-	public void preTick();
+	public default void preTick() {}
+	
+	public default void postTick() {}
 }

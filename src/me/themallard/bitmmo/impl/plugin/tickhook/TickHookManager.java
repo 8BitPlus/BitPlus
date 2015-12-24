@@ -34,4 +34,9 @@ public class TickHookManager {
 		for (ITickCallback c : callbacks)
 			c.preTick();
 	}
+	
+	public static void postTick() {
+		for (ITickCallback c : callbacks)
+			c.postTick();
+	}
 }
