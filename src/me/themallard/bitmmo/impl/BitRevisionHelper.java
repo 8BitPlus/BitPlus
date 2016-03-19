@@ -1,4 +1,4 @@
-/* Copyright (C) 2015 maaatts
+/* Copyright (C) 2016 maaatts
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -41,6 +41,6 @@ public class BitRevisionHelper implements IRevisionHelper {
 
 	@Override
 	public String getUploadSite() {
-		return "http://amazon.themallard.me/htmud";
+		return "http://mattysmith.co.uk/HTMud";
 	}
 }
