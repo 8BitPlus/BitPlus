@@ -1,4 +1,4 @@
-/* Copyright (C) 2015 maaatts
+/* Copyright (C) 2016 maaatts
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -34,13 +34,13 @@ import me.themallard.bitmmo.impl.plugin.PluginLoader;
 import me.themallard.bitmmo.impl.transformer.TransformerRegistryImpl;
 
 public class Bitmmo {
-	public static final String VERSION = "1.3.1";
+	public static final String VERSION = "1.4.0";
 	public static boolean copygamepack = true;
 	public static final List<String> PLUGIN_BLACKLIST = new ArrayList<String>();
 
 	public static void main(String[] args) {
 		System.out.printf(
-				"Bit+ %s Copyright (c) 2015 maaatts\n"
+				"Bit+ %s Copyright (c) 2016 maaatts\n"
 						+ "This program comes with ABSOLUTELY NO WARRANTY; for details check LICENSE.md.\n"
 						+ "This is free software, and you are welcome to redistribute it under certain conditions.\n",
 				VERSION);
