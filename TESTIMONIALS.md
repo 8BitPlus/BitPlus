@@ -19,3 +19,6 @@
 
 >Apparently incorrect. Looking into it I'm actually quite surprised and dare I say proud of what Zooty's been able to accomplish. From a network security standpoint it's incredible.
 
+## Happy Parents
+
+![http://i.imgur.com/LQmVJIU.jpg](http://i.imgur.com/LQmVJIU.jpg)
