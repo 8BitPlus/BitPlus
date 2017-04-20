@@ -28,7 +28,7 @@ import me.themallard.bitmmo.api.analysis.AbstractAnalysisProvider;
 import me.themallard.bitmmo.api.analysis.AnalysisProviderRegistry;
 import me.themallard.bitmmo.api.transformer.AbstractTransformerRegistry;
 import me.themallard.bitmmo.api.util.IRevisionHelper;
-import me.themallard.bitmmo.impl.BitRevisionHelper;
+import me.themallard.bitmmo.impl.LatestRevisionHelper;
 import me.themallard.bitmmo.impl.analysis.provider.ProviderRegistry;
 import me.themallard.bitmmo.impl.plugin.PluginLoader;
 import me.themallard.bitmmo.impl.transformer.TransformerRegistryImpl;
@@ -75,7 +75,7 @@ public class Bitmmo {
 			new File("./resources/jars/").mkdirs();
 		}
 
-		IRevisionHelper helper = new BitRevisionHelper();
+		IRevisionHelper helper = new LatestRevisionHelper();
 
 		if (revision == null) {
 			revision = helper.getLatestRevision();
@@ -86,7 +86,7 @@ public class Bitmmo {
 					revision);
 
 			try {
-				URL web = new URL(String.format("%s/HTMudWeb_%s.jar", helper.getUploadSite(), revision));
+				URL web = new URL(helper.getOnlineFilePath());
 				Revision.getFile(revision).createNewFile();
 				Files.copy(web.openStream(), Revision.getFile(revision).toPath(), StandardCopyOption.REPLACE_EXISTING);
 				Thread.sleep(100);

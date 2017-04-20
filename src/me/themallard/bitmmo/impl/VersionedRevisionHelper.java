@@ -1,4 +1,4 @@
-/* Copyright (C) 2016 maaatts
+/* Copyright (C) 2016, 2017 maaatts
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -20,13 +20,19 @@ import java.util.Scanner;
 
 import me.themallard.bitmmo.api.util.IRevisionHelper;
 
-public class BitRevisionHelper implements IRevisionHelper {
+public class VersionedRevisionHelper implements IRevisionHelper {
+	/*
+	 * This doesn't work, don't bother trying it.
+	 * Just here for historical purposes.
+	 */
+	private static final String SITE = "http://mattysmith.co.uk/HTMud";
+	
 	@Override
 	public String getLatestRevision() {
 		// TODO: Grab this from the website
 		try {
 			@SuppressWarnings("resource")
-			Scanner scanner = new Scanner(new URL(String.format("%s/latest.txt", getUploadSite())).openStream(), "UTF-8")
+			Scanner scanner = new Scanner(new URL(String.format("%s/latest.txt", SITE)).openStream(), "UTF-8")
 					.useDelimiter("\\A");
 			String s = scanner.nextLine();
 			scanner.close();
@@ -40,7 +46,7 @@ public class BitRevisionHelper implements IRevisionHelper {
 	}
 
 	@Override
-	public String getUploadSite() {
-		return "http://mattysmith.co.uk/HTMud";
+	public String getOnlineFilePath() {
+		return String.format("%s/HTMudWeb_%s.jar", SITE, getLatestRevision());
 	}
 }
