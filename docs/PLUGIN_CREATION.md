@@ -18,25 +18,25 @@ You can look at the `WORKSPACE_SETUP.md` file to learn how to do that.
 		- Modify or inject code
 		- Register callbacks
 		- Register dependencies to be injected for runtime
-	- The changes are exported automagically
+	- The changes are exported automatically
 
 ### What are the components of a plugin?
 * Main plugin file
 	- Extends SimplePlugin
-	- Has Plugin annotation
+	- Has plugin annotation
 	- Manages everything for your plugin
 * Injected files
-	- Is injected by Main plugin file
+	- Is injected by main plugin file
 	- Contains callbacks/things that actually interact with the
 	  game whilst it runs.
 
 ### How do I write a plugin?
 We will write a simple plugin that responds to "!ping" with "PONG" in the chat.
 
-1. Create plugin package
+1. Create the plugin package
 	- in src\_plugin create a new package example.ping
 	- The convention is to use username.plugin\_name
-2. Create main plugin class
+2. Create the main plugin class
 	- PingBot in example.ping package
 	- Add the `@Plugin` annotation (you may have to import Plugin)
 	- Extend SimplePlugin (you may have to import SimplePlugin)
@@ -46,7 +46,7 @@ We will write a simple plugin that responds to "!ping" with "PONG" in the chat.
 		  be displayed to users.
 	- Override the run method
 		- Our plugin does not need this method, we can just leave it empty.
-	- Your code should look something like this
+	- Your code should look something like this: 
 		```
 		package example.ping;
 
@@ -80,7 +80,7 @@ We will write a simple plugin that responds to "!ping" with "PONG" in the chat.
 		- If the message contains "!time", send a chat message
 			- *Hint:* You can send a chat message with
 			`GameContext.getChatWindow().sendChatMessage`
-	- It should look like this
+	- It should look like this: 
 		```java
 		package example.ping;
 
